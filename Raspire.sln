@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raspire", "Raspire\Raspire.csproj", "{8E4A812C-2D5A-45A9-A02C-B19346519D97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM.Build.0 = Debug|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM.Deploy.0 = Debug|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM64.Build.0 = Debug|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x64.ActiveCfg = Debug|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x64.Build.0 = Debug|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x64.Deploy.0 = Debug|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x86.ActiveCfg = Debug|x86
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x86.Build.0 = Debug|x86
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Debug|x86.Deploy.0 = Debug|x86
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM.ActiveCfg = Release|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM.Build.0 = Release|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM.Deploy.0 = Release|ARM
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM64.ActiveCfg = Release|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM64.Build.0 = Release|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|ARM64.Deploy.0 = Release|ARM64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x64.ActiveCfg = Release|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x64.Build.0 = Release|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x64.Deploy.0 = Release|x64
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x86.ActiveCfg = Release|x86
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x86.Build.0 = Release|x86
+		{8E4A812C-2D5A-45A9-A02C-B19346519D97}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2FDAC5E-626E-4705-9A14-9EAE805B30C5}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/netsword
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Raspire\\Raspire.csproj
+		SccProjectName1 = Raspire
+		SccLocalPath1 = Raspire
+	EndGlobalSection
+EndGlobal

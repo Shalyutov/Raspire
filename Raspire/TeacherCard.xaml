@@ -1,0 +1,109 @@
+﻿<ContentDialog xmlns:my="using:Microsoft.UI.Xaml.Controls" 
+    x:Class="Raspire.TeacherCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Raspire"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Карточка учителя"
+    PrimaryButtonText="Готово"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonText="Удалить"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    CornerRadius="10">
+    <ContentDialog.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="Расписание" FontFamily="/Assets/Jost.ttf#Jost"/>
+        </DataTemplate>
+    </ContentDialog.TitleTemplate>
+    <ContentDialog.PrimaryButtonStyle>
+        <Style TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
+        </Style>
+    </ContentDialog.PrimaryButtonStyle>
+    <ContentDialog.SecondaryButtonStyle>
+        <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
+        </Style>
+    </ContentDialog.SecondaryButtonStyle>
+    <ContentDialog.Resources>
+        <ResourceDictionary>
+            <CommandBarFlyout x:Name="SubjectCommandBar">
+                <AppBarButton Label="Выбрать" Icon="Accept" Click="SubjectSelect" />
+            </CommandBarFlyout>
+            <CommandBarFlyout x:Name="SubgroupCommandBar">
+                <AppBarButton Label="Класс" Icon="SelectAll" Click="SelectAllClassForSubject" />
+                <AppBarButton Click="SelectFirstSubgroup" >
+                    <AppBarButton.Content>
+                        <TextBlock Text="1" FontSize="16" FontWeight="Bold" />
+                    </AppBarButton.Content>
+                </AppBarButton>
+                <AppBarButton Click="SelectSecondSubgroup" >
+                    <AppBarButton.Content>
+                        <TextBlock Text="2" FontSize="16" FontWeight="Bold" />
+                    </AppBarButton.Content>
+                </AppBarButton>
+                <AppBarButton local:CompatExtensions.AllowFocusOnInteraction="True" Icon="Target" >
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <TextBox x:Name="CabinetBox" />
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBarFlyout>
+            <CommandBarFlyout x:Name="HostCommandBar">
+                <AppBarButton Label="Удалить" Icon="Delete" Click="HostSelect" />
+                <AppBarButton Label="Классы" Icon="Edit">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <ListView x:Name="ClassesList" ItemsSource="{x:Bind Forms}" MaxHeight="300" SelectionMode="Multiple" SelectionChanged="FormsSelected" Loaded="LoadForms" Margin="4" IsItemClickEnabled="True" ItemClick="ClassesList_ItemClick"/>
+                                <Button Click="SelectAllClasses" Margin="4" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon Symbol="SelectAll" Margin="4" />
+                                        <TextBlock Text="Выбрать всё" Margin="4"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Click="UnSelectAllClasses" Margin="4">
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon Symbol="ClearSelection" Margin="4"/>
+                                        <TextBlock Text="Снять выделение" Margin="4"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+            </CommandBarFlyout>
+        </ResourceDictionary>
+    </ContentDialog.Resources>
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{x:Bind Teacher.Name}" Header="Ф.И.О." TextChanged="NameChanged" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <my:NumberBox Text="{x:Bind Teacher.Cabinet}" Header="Кабинет" ValueChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="0,4"/>
+            <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
+                <ListView ItemsSource="{x:Bind Subjects}" Header="Предметы" Padding="8,4,8,4" IsItemClickEnabled="True" ItemClick="SubjectClicked" MaxHeight="350" FontFamily="/Assets/Jost.ttf#Jost">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:SubjectUnit">
+                            <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
+                                <TextBlock Text="{x:Bind CallName}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView ItemsSource="{x:Bind Teacher.HostedSubjects}" Header="Выбранные" Padding="8,4,8,4" IsItemClickEnabled="True" ItemClick="HostClicked" FontFamily="/Assets/Jost.ttf#Jost">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:HostUnit">
+                            <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
+                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind Subject.CallName}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

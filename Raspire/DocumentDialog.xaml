@@ -1,0 +1,73 @@
+﻿<ContentDialog xmlns:my="using:Microsoft.UI.Xaml.Controls" 
+    x:Class="Raspire.DocumentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Raspire"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Расписание"
+    PrimaryButtonText="Готово"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonText="Удалить"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+     Closing="ClosingDialog" CornerRadius="10">
+    <ContentDialog.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="Расписание" FontFamily="/Assets/Jost.ttf#Jost"/>
+        </DataTemplate>
+    </ContentDialog.TitleTemplate>
+    <ContentDialog.PrimaryButtonStyle>
+        <Style TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
+        </Style>
+    </ContentDialog.PrimaryButtonStyle>
+    <ContentDialog.SecondaryButtonStyle>
+        <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
+            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
+        </Style>
+    </ContentDialog.SecondaryButtonStyle>
+    <StackPanel>
+        <TextBox x:Name="DocumentName" Header="Имя документа" Text="{x:Bind Schedule.Name}" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
+        <TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
+        <StackPanel Orientation="Horizontal">
+            <Button IsEnabled="False" Content="{x:Bind GetTypeLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <Button x:Name="SemiButton" Margin="12,0,0,0">
+                <Button.Flyout>
+                    <Flyout x:Name="ChangeSemiScheduleFlyout" >
+                        <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Content="1" Margin="4" Click="ChangeSemi" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            <Button Content="2" Margin="4" Click="ChangeSemi" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <TextBlock Text="{x:Bind GetSemiScheduleLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+            </Button>
+            <Button x:Name="QuartButton" Margin="12,0,0,0">
+                <Button.Flyout>
+                    <Flyout x:Name="ChangeQuarterScheduleFlyout" >
+                        <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button Content="1" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            <Button Content="2" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            <Button Content="3" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            <Button Content="4" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <TextBlock Text="{x:Bind GetQuarterScheduleLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+            </Button>
+        </StackPanel>
+        <Button Click="ExportDocument" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="SaveLocal"/>
+                <TextBlock Text="Экспорт" Margin="8,0"/>
+            </StackPanel>
+        </Button>
+        <Button IsEnabled="False" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="CalendarReply"/>
+                <TextBlock Text="Изменения" Margin="8,0"/>
+            </StackPanel>
+        </Button>
+    </StackPanel>
+</ContentDialog>
