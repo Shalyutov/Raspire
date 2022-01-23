@@ -21,19 +21,19 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="Assets/Square44x44Logo.png" HorizontalAlignment="Left" Width="30" Height="30" Margin="20,8,8,8"/>
-            <StackPanel Grid.Column="1" CornerRadius="5" Padding="6,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Green">
-                <TextBlock x:Name="FrameState" Text="Редактор" Style="{StaticResource CaptionTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <Image Grid.Column="0" Source="Assets/Square44x44Logo.png" HorizontalAlignment="Left" Width="30" Height="30" Margin="10"/>
+            <StackPanel Grid.Column="1" CornerRadius="4" Padding="8,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Green">
+                <TextBlock x:Name="FrameState" Text="Редактор" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>
             <StackPanel Grid.Column="2" x:Name="FileNameParent" Margin="8,0" Visibility="Collapsed" Orientation="Horizontal" CornerRadius="4" Padding="6,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="{ThemeResource SystemAccentColor}">
-                <TextBlock x:Name="FileName" Text="Файл" Style="{StaticResource CaptionTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                <TextBlock x:Name="FileName" Text="Файл" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Frame x:Name="MainFrame" Grid.Column="0" Navigated="MainNav" Margin="16,0,16,16"/>
+            <Frame x:Name="MainFrame" Grid.Column="0" Navigated="MainNav"/>
         </Grid>
     </Grid>
 

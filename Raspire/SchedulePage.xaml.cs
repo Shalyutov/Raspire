@@ -78,7 +78,7 @@ namespace Raspire
         {
             if (doc_opened)
             {
-                Frame.Navigate(typeof(EditorV2), null, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(Editor), null, new DrillInNavigationTransitionInfo());
                 return;
             }
             if (file == null)
@@ -100,7 +100,7 @@ namespace Raspire
                 //schedule.IsInternal = false;
                 //schedule.Path = file.Path;
                 doc_opened = true;
-                _ = Frame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());
+                _ = Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             else
             {
@@ -115,7 +115,7 @@ namespace Raspire
                 Schedule schedule = new Schedule("Расписание", 0);
                 
                 List<object> param = new List<object>() { schedule, null};
-                Frame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             else
             {
@@ -132,7 +132,7 @@ namespace Raspire
                 //Schedule schedule = new Schedule("Расписание", new System.Collections.ObjectModel.ObservableCollection<LessonsClassUnit>(), 1, null);
                 Schedule schedule = new Schedule("Расписание", 1);
                 List<object> param = new List<object>() { schedule, null };
-                Frame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             else
             {
@@ -148,7 +148,7 @@ namespace Raspire
             {
                 Schedule schedule = new Schedule("Расписание", 2);
                 List<object> param = new List<object>() { schedule, null };
-                Frame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             else
             {
@@ -174,7 +174,7 @@ namespace Raspire
                 Schedule schedule = JsonConvert.DeserializeObject<Schedule>(text);
                 
                 List<object> param = new List<object>() { schedule, file };
-                Frame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());
+                Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             /*LocalStorageDialog dialog = new LocalStorageDialog();
             await dialog.ShowAsync();

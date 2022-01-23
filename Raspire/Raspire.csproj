@@ -11,7 +11,7 @@
     <AssemblyName>Raspire</AssemblyName>
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -132,6 +132,9 @@
     <Compile Include="DocumentDialog.xaml.cs">
       <DependentUpon>DocumentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editor.xaml.cs">
+      <DependentUpon>Editor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditorV2.xaml.cs">
       <DependentUpon>EditorV2.xaml</DependentUpon>
     </Compile>
@@ -230,6 +233,7 @@
     <Content Include="Assets\Jost.ttf" />
     <Content Include="Assets\Jost-Italic.ttf" />
     <Content Include="Raspire doc.png" />
+    <Content Include="Assets\Didact.ttf" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -245,6 +249,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="DocumentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -287,6 +295,10 @@
     <Page Include="TeacherCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -12,8 +12,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
+            <ColumnDefinition Width="58"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Margin="16,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Column="0" Margin="16,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             <StackPanel.ChildrenTransitions>
                 <TransitionCollection>
                     <EntranceThemeTransition IsStaggeringEnabled="True" FromVerticalOffset="56" />
@@ -51,12 +52,15 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
         </StackPanel>
+        <Button x:Name="BackButton" Margin="8" Grid.Column="0" Padding="8" Visibility="Visible" Style="{ThemeResource ButtonRevealStyle}" Click="BackWork" VerticalAlignment="Center">
+            <SymbolIcon Symbol="Back" Margin="2,2"/>
+        </Button>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" HorizontalScrollMode="Enabled" Margin="0,16">
+            <ScrollViewer Grid.Row="0" HorizontalScrollMode="Enabled">
                 <StackPanel x:Name="SettingsStack" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel.ChildrenTransitions>
                         <TransitionCollection>
@@ -68,15 +72,16 @@
                         </TransitionCollection>
                     </StackPanel.ChildrenTransitions>
                     <StackPanel x:Name="GeneralStack" Margin="16">
-                        <ToggleSwitch Header="Открывать последний документ" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Нет, вручную" OnContent="Да, автоматически" IsOn="{x:Bind ScheduleStartupButton()}" Margin="0,4" Toggled="StartupToggled" />
-                        <ToggleSwitch Header="Кнопка Продолжить" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Не показывать" OnContent="Показывать" IsOn="{x:Bind ShowContinueButton()}" Margin="0,4" Toggled="ShowContinueButtonToogled"/>
+                        <TextBlock Text="Общие" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <ToggleSwitch Header="Открыть последний файл" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Вручную" OnContent="Автоматически" IsOn="{x:Bind ScheduleStartupButton()}" Margin="0,4" Toggled="StartupToggled" />
+                        <ToggleSwitch Header="Кнопка Продолжить" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Не показывать" OnContent="Показывать" IsOn="{x:Bind ShowContinueButton()}" Margin="0,4" Toggled="ShowContinueButtonToogled"/>
                         <ToggleSwitch Header="Семантическое выделение" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено" IsOn="{x:Bind SemanticSelectionButton()}" Toggled="SemanticSelectionToggled" Margin="0,4" Visibility="Collapsed"/>
-                        <ToggleSwitch Header="Логика" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключена" OnContent="Включена" IsOn="{x:Bind LogicsOn()}" Margin="0,4" Toggled="LogicsToogled" IsEnabled="False"/>
-                        <ToggleSwitch Header="Автосохранения" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено"  Margin="0,4" IsEnabled="False"/>
+                        <ToggleSwitch Header="Логика" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключена" OnContent="Включена" IsOn="{x:Bind LogicsOn()}" Margin="0,4" Toggled="LogicsToogled" IsEnabled="False"/>
+                        <ToggleSwitch Header="Автосохранения" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено"  Margin="0,4" IsEnabled="False"/>
                     </StackPanel>
-                    <StackPanel x:Name="WorkdaysList" >
-                        <TextBlock Text="Учебные дни" Margin="16,4" FontFamily="/Assets/Jost.ttf#Jost"/>
-                        <StackPanel x:Name="WorkdaysPanel" Orientation="Horizontal" Margin="16,4">
+                    <StackPanel x:Name="WorkdaysList" Margin="16,4">
+                        <TextBlock Text="Учебные дни" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <StackPanel x:Name="WorkdaysPanel" Orientation="Horizontal" >
                             <ToggleButton Content="ПН" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(0)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
                             <ToggleButton Content="ВТ" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(1)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
                             <ToggleButton Content="СР" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(2)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -87,12 +92,13 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel x:Name="ClassesStack" Margin="16">
-                        <ToggleSwitch Header="Две смены" OffContent="Нет" OnContent="Да" IsOn="{x:Bind SecondShiftEnabled()}" FontFamily="/Assets/Jost.ttf#Jost" Margin="0,4" Toggled="SecondShiftToggled" />
-                        <ListView x:Name="FormUnitsList" Header="Классы" FontFamily="/Assets/Jost.ttf#Jost" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" >
+                        <TextBlock Text="Классы" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <ToggleSwitch OffContent="Одна смена" OnContent="Две смены" IsOn="{x:Bind SecondShiftEnabled()}" FontFamily="/Assets/Jost.ttf#Jost" Margin="0,4" Toggled="SecondShiftToggled" />
+                        <ListView x:Name="FormUnitsList" FontFamily="/Assets/Jost.ttf#Jost" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" >
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:FormUnit">
-                                    <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
-                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="{x:Bind ToString()}"/>
+                                    <StackPanel Orientation="Horizontal" Padding="0">
+                                        <TextBlock FontFamily="/Assets/Jost.ttf#Jost" FontSize="14" Text="{x:Bind ToString()}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -102,11 +108,12 @@
                                 </MenuFlyout>
                             </ListView.ContextFlyout>
                         </ListView>
-                        <ListView x:Name="FormUnitsList2" Header="2 смена" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind Shift2}" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" Margin="0,6">
+                        <Border BorderThickness="1" BorderBrush="{ThemeResource ButtonForegroundThemeBrush}" Margin="64,6"/>
+                        <ListView x:Name="FormUnitsList2" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind Shift2}" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" Margin="0,6">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:FormUnit">
-                                    <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
-                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind ToString()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                                    <StackPanel Orientation="Horizontal" Padding="0">
+                                        <TextBlock Text="{x:Bind ToString()}" FontSize="14" FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -125,12 +132,13 @@
                             <CheckBox x:Name="SecondShiftCheckBox" IsEnabled="{x:Bind SecondShiftEnabled()}" FontFamily="/Assets/Jost.ttf#Jost" Grid.Column="1" Margin="8,4" Content="2 смена" Checked="GetShiftChecked" Unchecked="GetShiftChecked"/>
                         </Grid>
                     </StackPanel>
-                    <StackPanel x:Name="SubjectsStack"  Margin="16">
-                        <ListView x:Name="SubjectUnitsList" FontFamily="/Assets/Jost.ttf#Jost" Header="Предметы" ItemsSource="{x:Bind SettingsInstance.SubjectUnits}" KeyDown="KeyDeleteSubjectHandler">
+                    <StackPanel x:Name="SubjectsStack" Margin="16">
+                        <TextBlock Text="Предметы" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <ListView x:Name="SubjectUnitsList" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind SettingsInstance.SubjectUnits}" KeyDown="KeyDeleteSubjectHandler">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:SubjectUnit">
-                                    <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
-                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind CallName}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                                    <StackPanel Orientation="Horizontal" Padding="4">
+                                        <TextBlock Text="{x:Bind CallName}" FontSize="16"  FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -143,34 +151,27 @@
                         <TextBox PlaceholderText="Название" KeyDown="KeyHandlerSubject" HorizontalAlignment="Stretch" Width="Auto" Margin="0,4" FontFamily="/Assets/Jost.ttf#Jost" />
                     </StackPanel>
                     <StackPanel x:Name="TeachersStack" Margin="16">
-                        <ListView x:Name="TeacherUnitsList" Header="Учителя" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind SettingsInstance.TeacherUnits}" SelectionChanged="TeacherSelected">
+                        <TextBlock Text="Учителя" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <ListView x:Name="TeacherUnitsList" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind SettingsInstance.TeacherUnits}" SelectionChanged="TeacherSelected">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:TeacherUnit">
-                                    <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
-                                        <my:PersonPicture DisplayName="{x:Bind Name}" Width="30" Height="30" />
-                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind Name}" Margin="4,0,0,0" HorizontalAlignment="Center" FontFamily="/Assets/Jost.ttf#Jost"/>
+                                    <StackPanel Orientation="Horizontal" Padding="4">
+                                        <my:PersonPicture DisplayName="{x:Bind Name}" Width="24" Height="24" />
+                                        <TextBlock Text="{x:Bind Name}" Margin="4,0,0,0" HorizontalAlignment="Center" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <TextBox PlaceholderText="Ф.И.О." KeyDown="EnterTeacherHandler" HorizontalAlignment="Stretch" Width="Auto" Margin="0,4" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <TextBox PlaceholderText="Полное имя" KeyDown="EnterTeacherHandler" HorizontalAlignment="Stretch" Width="Auto" Margin="0,4" FontFamily="/Assets/Jost.ttf#Jost"/>
                     </StackPanel>
                     <StackPanel x:Name="InfoStack" Margin="16">
-                        <TextBox x:Name="Organization" Text="{x:Bind SettingsInstance.SchoolName}" PlaceholderText="Наименование" FontFamily="/Assets/Jost.ttf#Jost" Header="Организация" TextChanged="SchoolNameChanged" Margin="6"/>
-                        <TextBox x:Name="Head" Text="{x:Bind SettingsInstance.HeadSchool}" PlaceholderText="ФИО" Header="Директор" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="HeadSchoolChanged" Margin="6"/>
-                        <TextBox x:Name="Holder" Text="{x:Bind SettingsInstance.ScheduleHolder}" PlaceholderText="ФИО" Header="Ответственный за расписание" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="ScheduleHolderChanged" Margin="6" />
+                        <TextBlock Text="Сведения об организации" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <TextBox x:Name="Organization" Text="{x:Bind SettingsInstance.SchoolName}" PlaceholderText="Наименование" FontFamily="/Assets/Jost.ttf#Jost" Header="Организация" TextChanged="SchoolNameChanged" Margin="0,4"/>
+                        <TextBox x:Name="Head" Text="{x:Bind SettingsInstance.HeadSchool}" PlaceholderText="Полное имя" Header="Директор" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="HeadSchoolChanged" Margin="0,4"/>
+                        <TextBox x:Name="Holder" Text="{x:Bind SettingsInstance.ScheduleHolder}" PlaceholderText="Полное имя" Header="Ответственный за расписание" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="ScheduleHolderChanged" Margin="0,4" />
                     </StackPanel>
-                    <TextBlock Foreground="Gray" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" Text="Перезапустите приложение, чтобы применить" TextWrapping="WrapWholeWords" Width="300"/>
-
                 </StackPanel>
-
             </ScrollViewer>
-            <Button x:Name="BackButton" Margin="8" Grid.Row="1" Style="{ThemeResource ButtonRevealStyle}" Click="BackWork" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Back" Margin="2,2"/>
-                    <TextBlock Text="Вернуться" Margin="8,2" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
-                </StackPanel>
-            </Button>
         </Grid>
         
     </Grid>

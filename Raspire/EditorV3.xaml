@@ -36,7 +36,6 @@
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
-        
     </Page.Resources>
     <Grid Margin="7,0">
         <Grid.RowDefinitions>

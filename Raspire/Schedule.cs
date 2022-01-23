@@ -101,6 +101,13 @@ namespace Raspire
                 }
                 LessonsClassUnits[f].WorkdaysUnits[w].LessonUnits.Add(item.Lesson);
             }
+            /*foreach (var i in LessonsClassUnits)
+            {
+                foreach(var j in i.WorkdaysUnits)
+                {
+                    while (j.LessonUnits.Count < 8) j.LessonUnits.Add(new LessonUnit());
+                }
+            }*/
             return LessonsClassUnits;
         }
         private int GetIndexForm(FormUnit form)
@@ -147,6 +154,13 @@ namespace Raspire
                 int w = GetIndexWorkday(item.Workday);
                 WorkdayClassesUnits[w].ClassesUnits[f].Units.Add(item.Lesson);
             }
+            /*foreach (var i in WorkdayClassesUnits)
+            {
+                foreach (var j in i.ClassesUnits)
+                {
+                    while (j.Units.Count < 8) j.Units.Add(new LessonUnit());
+                }
+            }*/
             return WorkdayClassesUnits;
         }
         public void Init(Settings SettingsInstance)
@@ -374,7 +388,7 @@ namespace Raspire
                 }
                 else
                 {
-                    result = Subject[0].CallName + " | " + Cabinet[0].ToString();
+                    result = Subject[0].CallName + " • " + Cabinet[0].ToString();
                 }
                 
             }
@@ -382,15 +396,15 @@ namespace Raspire
             {
                 if (Subject[0].CallName == Subject[1].CallName)
                 {
-                    result = Subject[0].CallName + " | " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
+                    result = Subject[0].CallName + " • " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
                 }
                 else
                 {
-                    result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5) + " | " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
+                    result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5) + " • " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
                 }
             }
             if (result == "")
-                result = "|  пустой  |";
+                result = "пустой";
             return result;
         }
         public string Represent()
@@ -420,7 +434,7 @@ namespace Raspire
                 }
             }
             if (result == "")
-                result = "|  пустой  |";
+                result = "пустой";
             return result;
         }
         public string RepresentCab()
