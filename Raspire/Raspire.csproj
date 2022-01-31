@@ -132,19 +132,19 @@
     <Compile Include="DocumentDialog.xaml.cs">
       <DependentUpon>DocumentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editor.xaml.cs">
+    <Compile Include="Editors\Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditorV2.xaml.cs">
+    <Compile Include="Editors\EditorV2.xaml.cs">
       <DependentUpon>EditorV2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditorV3.xaml.cs">
+    <Compile Include="Editors\EditorV3.xaml.cs">
       <DependentUpon>EditorV3.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HelpPage.xaml.cs">
+    <Compile Include="NavPages\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LessonEditor.xaml.cs">
+    <Compile Include="Editors\LessonEditor.xaml.cs">
       <DependentUpon>LessonEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="LocalStorageDialog.xaml.cs">
@@ -153,19 +153,19 @@
     <Compile Include="MainV2.xaml.cs">
       <DependentUpon>MainV2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PrintPage.xaml.cs">
+    <Compile Include="NavPages\PrintPage.xaml.cs">
       <DependentUpon>PrintPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schedule.cs" />
-    <Compile Include="SchedulePage.xaml.cs">
+    <Compile Include="Logics\Schedule.cs" />
+    <Compile Include="NavPages\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="SettingsPage.xaml.cs">
+    <Compile Include="Logics\Settings.cs" />
+    <Compile Include="NavPages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TeacherCard.xaml.cs">
+    <Compile Include="Editors\TeacherCard.xaml.cs">
       <DependentUpon>TeacherCard.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -232,9 +232,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Assets\Jost.ttf" />
     <Content Include="Assets\Jost-Italic.ttf" />
-    <Content Include="Raspire doc.png" />
     <Content Include="Assets\Didact.ttf" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -252,23 +250,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Editor.xaml">
+    <Page Include="Editors\Editor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditorV2.xaml">
+    <Page Include="Editors\EditorV2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditorV3.xaml">
+    <Page Include="Editors\EditorV3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HelpPage.xaml">
+    <Page Include="NavPages\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LessonEditor.xaml">
+    <Page Include="Editors\LessonEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,25 +278,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PrintPage.xaml">
+    <Page Include="NavPages\PrintPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SchedulePage.xaml">
+    <Page Include="NavPages\SchedulePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="NavPages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TeacherCard.xaml">
+    <Page Include="Editors\TeacherCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -306,7 +300,7 @@
       <Version>6.2.13</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>7.1.1</Version>
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.7.0</Version>
