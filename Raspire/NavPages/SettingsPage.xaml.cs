@@ -17,7 +17,6 @@ namespace Raspire
     public sealed partial class SettingsPage : Page
     {
         private Settings SettingsInstance = new Settings();
-        private int focus = -1;
         private readonly List<int> Workdays = new List<int>();
         private ObservableCollection<FormUnit> Shift1 = new ObservableCollection<FormUnit>();
         private ObservableCollection<FormUnit> Shift2 = new ObservableCollection<FormUnit>();
@@ -35,7 +34,6 @@ namespace Raspire
         }
         public void Update()
         {
-
             foreach (int workday in SettingsInstance.Workdays)
             {
                 Workdays.Add(workday);
@@ -45,10 +43,12 @@ namespace Raspire
             {
                 FormUnitsList.ItemsSource = SettingsInstance.FormUnits;
                 FormUnitsList2.Visibility = Visibility.Collapsed;
+                ShiftSeparator.Visibility = Visibility.Collapsed;
             }
             else
             {
                 FormUnitsList2.Visibility = Visibility.Visible;
+                ShiftSeparator.Visibility = Visibility.Visible;
                 foreach (FormUnit unit in SettingsInstance.FormUnits)
                 {
                     if (unit.Shift == 1)
@@ -75,7 +75,7 @@ namespace Raspire
         }
         public void CheckSettings()
         {
-            WorkdaysButton.Foreground = Workdays.Count > 0
+            /*WorkdaysButton.Foreground = Workdays.Count > 0
                 ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
                 : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
             ClassesButton.Foreground = SettingsInstance.FormUnits.Count > 0
@@ -86,7 +86,7 @@ namespace Raspire
                 : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
             TeachersButton.Foreground = SettingsInstance.TeacherUnits.Count > 0
                 ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
+                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));*/
         }
         public bool ShowContinueButton()
         {
@@ -295,7 +295,7 @@ namespace Raspire
         private void LoadDefaults(object sender, RoutedEventArgs e)
         {
             SettingsInstance.DefaultSettings();
-            DefaultsPopup.Hide();
+            //DefaultsPopup.Hide();
             foreach (var b in WorkdaysPanel.Children)
             {
                 (b as ToggleButton).IsChecked = false;
@@ -306,54 +306,9 @@ namespace Raspire
             }
             Bindings.Update();
             CheckSettings();
+            Update();
         }
-        private void FocusAllSettings()
-        {
-            foreach (UIElement i in SettingsStack.Children)
-            {
-                i.Visibility = Visibility.Visible;
-            }
-            focus = -1;
-        }
-        private void GeneralFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(0);
-        }
-        private void WorkdaysFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(1);
-        }
-        private void ClassesFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(2);
-        }
-        private void SubjectsFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(3);
-        }
-        private void TeachersFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(4);
-        }
-        private void InfoFocus(object sender, RoutedEventArgs e)
-        {
-            FocusInt(5);
-        }
-        private void FocusInt(int s)
-        {
-            if (focus != s)
-            {
-                for (int i = 0; i < SettingsStack.Children.Count - 1; i++)
-                {
-                    SettingsStack.Children[i].Visibility = i == s ? Visibility.Visible : Visibility.Collapsed;
-                }
-                focus = s;
-            }
-            else
-            {
-                FocusAllSettings();
-            }
-        }
+        
         private void FormUnitsKeyHandler(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key.ToString() == "Delete")

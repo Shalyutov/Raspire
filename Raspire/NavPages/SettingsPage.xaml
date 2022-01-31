@@ -14,6 +14,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="58"/>
         </Grid.ColumnDefinitions>
+        <!--
         <StackPanel Grid.Column="0" Margin="16,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
             <StackPanel.ChildrenTransitions>
                 <TransitionCollection>
@@ -52,6 +53,7 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
         </StackPanel>
+        -->
         <Button x:Name="BackButton" Margin="8" Grid.Column="0" Padding="8" Visibility="Visible" Style="{ThemeResource ButtonRevealStyle}" Click="BackWork" VerticalAlignment="Center">
             <SymbolIcon Symbol="Back" Margin="2,2"/>
         </Button>
@@ -108,7 +110,7 @@
                                 </MenuFlyout>
                             </ListView.ContextFlyout>
                         </ListView>
-                        <Border BorderThickness="1" BorderBrush="{ThemeResource ButtonForegroundThemeBrush}" Margin="64,6"/>
+                        <Border x:Name="ShiftSeparator" BorderThickness="0,1,0,0" BorderBrush="{ThemeResource ButtonForegroundThemeBrush}" Margin="70,6"/>
                         <ListView x:Name="FormUnitsList2" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind Shift2}" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" Margin="0,6">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:FormUnit">
@@ -138,7 +140,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="local:SubjectUnit">
                                     <StackPanel Orientation="Horizontal" Padding="4">
-                                        <TextBlock Text="{x:Bind CallName}" FontSize="16"  FontFamily="/Assets/Jost.ttf#Jost"/>
+                                        <TextBlock Text="{x:Bind CallName}" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -170,6 +172,8 @@
                         <TextBox x:Name="Head" Text="{x:Bind SettingsInstance.HeadSchool}" PlaceholderText="Полное имя" Header="Директор" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="HeadSchoolChanged" Margin="0,4"/>
                         <TextBox x:Name="Holder" Text="{x:Bind SettingsInstance.ScheduleHolder}" PlaceholderText="Полное имя" Header="Ответственный за расписание" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="ScheduleHolderChanged" Margin="0,4" />
                     </StackPanel>
+                    <Button Content="Шаблон" Margin="8" HorizontalAlignment="Center" IsEnabled="False"/>
+                    <Button Content="Очистить" Margin="8" HorizontalAlignment="Center" IsEnabled="False"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
