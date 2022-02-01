@@ -129,7 +129,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocumentDialog.xaml.cs">
+    <Compile Include="Editors\DocumentDialog.xaml.cs">
       <DependentUpon>DocumentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editors\Editor.xaml.cs">
@@ -146,9 +146,6 @@
     </Compile>
     <Compile Include="Editors\LessonEditor.xaml.cs">
       <DependentUpon>LessonEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LocalStorageDialog.xaml.cs">
-      <DependentUpon>LocalStorageDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
@@ -246,7 +243,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="DocumentDialog.xaml">
+    <Page Include="Editors\DocumentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,10 +264,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editors\LessonEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LocalStorageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
