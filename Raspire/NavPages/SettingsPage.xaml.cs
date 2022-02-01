@@ -71,10 +71,11 @@ namespace Raspire
 
             CheckSettings();
 
-            Bindings.Update();
+            //Bindings.Update();
         }
         public void CheckSettings()
         {
+            WorkdaysValidator.Symbol = Workdays.Count > 0 ? Symbol.Accept : Symbol.Remove;
             /*WorkdaysButton.Foreground = Workdays.Count > 0
                 ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
                 : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
@@ -295,7 +296,7 @@ namespace Raspire
         private void LoadDefaults(object sender, RoutedEventArgs e)
         {
             SettingsInstance.DefaultSettings();
-            //DefaultsPopup.Hide();
+            DefaultsPopup.Hide();
             foreach (var b in WorkdaysPanel.Children)
             {
                 (b as ToggleButton).IsChecked = false;
@@ -304,7 +305,7 @@ namespace Raspire
             {
                 (WorkdaysPanel.Children[i] as ToggleButton).IsChecked = true;
             }
-            Bindings.Update();
+            //Bindings.Update();
             CheckSettings();
             Update();
         }
@@ -382,7 +383,7 @@ namespace Raspire
         {
             SettingsHelper.SaveObjectLocal("Settings", "");
             SettingsInstance = new Settings();
-            Bindings.Update();
+            ClearSettingsPopup.Hide();
             CheckSettings();
         }
 
@@ -407,14 +408,14 @@ namespace Raspire
                 FormUnitsList2.Visibility = Visibility.Visible;
                 SecondShiftCheckBox.IsEnabled = true;
                 FormUnitsList.ItemsSource = Shift1;
-                Bindings.Update();
+                //Bindings.Update();
             }
             else
             {
                 FormUnitsList2.Visibility = Visibility.Collapsed;
                 SecondShiftCheckBox.IsEnabled = false;
                 FormUnitsList.ItemsSource = SettingsInstance.FormUnits;
-                Bindings.Update();
+                //Bindings.Update();
             }
         }
 

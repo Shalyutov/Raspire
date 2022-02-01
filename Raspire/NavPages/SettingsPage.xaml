@@ -14,46 +14,6 @@
             <ColumnDefinition />
             <ColumnDefinition Width="58"/>
         </Grid.ColumnDefinitions>
-        <!--
-        <StackPanel Grid.Column="0" Margin="16,0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-            <StackPanel.ChildrenTransitions>
-                <TransitionCollection>
-                    <EntranceThemeTransition IsStaggeringEnabled="True" FromVerticalOffset="56" />
-                    <ReorderThemeTransition/>
-                    <RepositionThemeTransition/>
-                    <ContentThemeTransition/>
-                    <AddDeleteThemeTransition/>
-                </TransitionCollection>
-            </StackPanel.ChildrenTransitions>
-            <AppBarButton Label="Общие" Icon="Bookmarks" Click="GeneralFocus" FontFamily="/Assets/Jost.ttf#Jost" />
-            <AppBarButton x:Name="WorkdaysButton" Label="Учебные дни" Icon="CalendarWeek" Click="WorkdaysFocus" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton x:Name="ClassesButton" Label="Классы" Icon="People" Click="ClassesFocus" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton x:Name="SubjectsButton" Label="Предметы" Icon="AllApps" Click="SubjectsFocus" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton x:Name="TeachersButton" Label="Учителя" Icon="Contact" Click="TeachersFocus" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton Label="О школе" Icon="ContactInfo" Click="InfoFocus" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarSeparator />
-            <AppBarButton Label="Заполнить" Icon="Import" FontFamily="/Assets/Jost.ttf#Jost">
-                <AppBarButton.Flyout>
-                    <Flyout x:Name="DefaultsPopup">
-                        <StackPanel>
-                            <TextBlock Text="Очистка и установка шаблона"/>
-                            <Button Content="Заполнить по умолчанию" Click="LoadDefaults"/>
-                        </StackPanel>
-                    </Flyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-            <AppBarButton Label="Очистить" Icon="Delete" FontFamily="/Assets/Jost.ttf#Jost" >
-                <AppBarButton.Flyout>
-                    <Flyout>
-                        <StackPanel>
-                            <TextBlock Text="Уверены?"/>
-                            <Button Content="Очистить" Click="CleanSettings"/>
-                        </StackPanel>
-                    </Flyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-        </StackPanel>
-        -->
         <Button x:Name="BackButton" Margin="8" Grid.Column="0" Padding="8" Visibility="Visible" Style="{ThemeResource ButtonRevealStyle}" Click="BackWork" VerticalAlignment="Center">
             <SymbolIcon Symbol="Back" Margin="2,2"/>
         </Button>
@@ -67,10 +27,6 @@
                     <StackPanel.ChildrenTransitions>
                         <TransitionCollection>
                             <EntranceThemeTransition IsStaggeringEnabled="True"/>
-                            <ReorderThemeTransition/>
-                            <RepositionThemeTransition/>
-                            <ContentThemeTransition/>
-                            <AddDeleteThemeTransition/>
                         </TransitionCollection>
                     </StackPanel.ChildrenTransitions>
                     <StackPanel x:Name="GeneralStack" Margin="16">
@@ -82,7 +38,10 @@
                         <ToggleSwitch Header="Автосохранения" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено"  Margin="0,4" IsEnabled="False"/>
                     </StackPanel>
                     <StackPanel x:Name="WorkdaysList" Margin="16,4">
-                        <TextBlock Text="Учебные дни" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Учебные дни" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
+                            <SymbolIcon x:Name="WorkdaysValidator" Symbol="Accept" Margin="16,0"/>
+                        </StackPanel>
                         <StackPanel x:Name="WorkdaysPanel" Orientation="Horizontal" >
                             <ToggleButton Content="ПН" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(0)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
                             <ToggleButton Content="ВТ" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(1)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -172,11 +131,28 @@
                         <TextBox x:Name="Head" Text="{x:Bind SettingsInstance.HeadSchool}" PlaceholderText="Полное имя" Header="Директор" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="HeadSchoolChanged" Margin="0,4"/>
                         <TextBox x:Name="Holder" Text="{x:Bind SettingsInstance.ScheduleHolder}" PlaceholderText="Полное имя" Header="Ответственный за расписание" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="ScheduleHolderChanged" Margin="0,4" />
                     </StackPanel>
-                    <Button Content="Шаблон" Margin="8" HorizontalAlignment="Center" IsEnabled="False"/>
-                    <Button Content="Очистить" Margin="8" HorizontalAlignment="Center" IsEnabled="False"/>
+                    <Button Content="Шаблон" Margin="8" HorizontalAlignment="Center">
+                        <Button.Flyout>
+                            <Flyout x:Name="DefaultsPopup">
+                                <StackPanel>
+                                    <TextBlock Text="Очистка и установка шаблона" HorizontalAlignment="Center" Margin="8"/>
+                                    <Button Content="Заполнить по умолчанию" Click="LoadDefaults" HorizontalAlignment="Center" Margin="8"/>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Content="Очистить" Margin="8" HorizontalAlignment="Center">
+                        <Button.Flyout>
+                            <Flyout x:Name="ClearSettingsPopup" >
+                                <StackPanel>
+                                    <TextBlock Text="Уверены?" Margin="8" HorizontalAlignment="Center"/>
+                                    <Button Content="Очистить" Click="CleanSettings" Margin="8" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        
     </Grid>
 </Page>

@@ -150,8 +150,8 @@
     <Compile Include="LocalStorageDialog.xaml.cs">
       <DependentUpon>LocalStorageDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainV2.xaml.cs">
-      <DependentUpon>MainV2.xaml</DependentUpon>
+    <Compile Include="Main.xaml.cs">
+      <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavPages\PrintPage.xaml.cs">
       <DependentUpon>PrintPage.xaml</DependentUpon>
@@ -274,7 +274,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainV2.xaml">
+    <Page Include="Main.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

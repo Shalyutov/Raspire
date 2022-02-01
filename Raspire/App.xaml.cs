@@ -67,7 +67,7 @@ namespace Raspire
                     // Если стек навигации не восстанавливается для перехода к первой странице,
                     // настройка новой страницы путем передачи необходимой информации в качестве параметра
                     // навигации
-                    rootFrame.Navigate(typeof(MainV2), e.Arguments);
+                    rootFrame.Navigate(typeof(Main), e.Arguments);
                 }
                 // Обеспечение активности текущего окна
                 Window.Current.Activate();
@@ -122,7 +122,7 @@ namespace Raspire
                     // Размещение фрейма в текущем окне
                     Window.Current.Content = rootFrame;
                 }
-                rootFrame.Navigate(typeof(MainV2), param);
+                rootFrame.Navigate(typeof(Main), param);
                 Window.Current.Activate();
                 
                 //_ = ((Window.Current.Content as Frame).Content as MainV2).MainFrame.Navigate(typeof(EditorV2), param, new DrillInNavigationTransitionInfo());

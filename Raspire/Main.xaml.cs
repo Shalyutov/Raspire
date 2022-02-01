@@ -16,16 +16,14 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
     /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
+    /// Главная навигационная страница. Хранит Frame и осуществляет переходы на другие страницы приложения.
     /// </summary>
-    public sealed partial class MainV2 : Page
+    public sealed partial class Main : Page
     {
-        public MainV2()
+        public Main()
         {
             this.InitializeComponent();
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -35,10 +33,10 @@ namespace Raspire
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var param = e.Parameter as List<object>;
-            if (param != null)
+            var parameter = e.Parameter as List<object>;
+            if (parameter != null)
             {
-                MainFrame.Navigate(typeof(EditorV3), param, new DrillInNavigationTransitionInfo());
+                MainFrame.Navigate(typeof(EditorV3), parameter, new DrillInNavigationTransitionInfo());
             }
         }
         private void NavSchedule(object sender, RoutedEventArgs e)
