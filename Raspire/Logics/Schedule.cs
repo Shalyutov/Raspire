@@ -50,25 +50,6 @@ namespace Raspire
             Date = date;
             Settings = new Settings();
         }
-        public void Init(ObservableCollection<LessonsClassUnit> LessonsClassUnits)
-        {
-            /*if (LessonsClassUnits.Count == 0) return;
-            UnitsWorkdays = new ObservableCollection<WorkdayClassesUnit>();
-            int i = 0;
-            while(i < LessonsClassUnits[0].LessonUnits.Count)
-            {
-                WorkdayClassesUnit unit = new WorkdayClassesUnit("", new ObservableCollection<ClassesLessonUnit>());
-                string h = "";
-                foreach (LessonsClassUnit u in LessonsClassUnits)
-                {
-                    h = u.LessonUnits[i].Workday;
-                    unit.ClassesLessonUnits.Add(new ClassesLessonUnit(u.LessonUnits[i].LessonUnits, u.FormUnit));
-                }
-                i++;
-                unit.Workday = h;
-                UnitsWorkdays.Add(unit);
-            } */
-        }
         public ObservableCollection<LessonsClassUnit> GetStructLesssonClass()
         {
             ObservableCollection<LessonsClassUnit> LessonsClassUnits = new ObservableCollection<LessonsClassUnit>();
@@ -101,13 +82,6 @@ namespace Raspire
                 }
                 LessonsClassUnits[f].WorkdaysUnits[w].LessonUnits.Add(item.Lesson);
             }
-            /*foreach (var i in LessonsClassUnits)
-            {
-                foreach(var j in i.WorkdaysUnits)
-                {
-                    while (j.LessonUnits.Count < 8) j.LessonUnits.Add(new LessonUnit());
-                }
-            }*/
             return LessonsClassUnits;
         }
         private int GetIndexForm(FormUnit form)
@@ -154,51 +128,7 @@ namespace Raspire
                 int w = GetIndexWorkday(item.Workday);
                 WorkdayClassesUnits[w].ClassesUnits[f].Units.Add(item.Lesson);
             }
-            /*foreach (var i in WorkdayClassesUnits)
-            {
-                foreach (var j in i.ClassesUnits)
-                {
-                    while (j.Units.Count < 8) j.Units.Add(new LessonUnit());
-                }
-            }*/
             return WorkdayClassesUnits;
-        }
-        public void Init(Settings SettingsInstance)
-        {
-            /*if (LessonsClassUnits.Count == 0)
-            {
-                foreach (FormUnit form in SettingsInstance.FormUnits)
-                {
-                    LessonsClassUnits.Add(new LessonsClassUnit(form, new ObservableCollection<CollectionWorkdaysLessons>()));
-                    if (Type == 0 || Type == 1)
-                    {
-                        foreach (int day in SettingsInstance.Workdays)
-                        {
-                            LessonsClassUnits.Last().LessonUnits.Add(new CollectionWorkdaysLessons(new ObservableCollection<LessonUnit>(), GetDay(day)));
-                        }
-                    }
-                    else
-                    {
-                        LessonsClassUnits.Last().LessonUnits.Add(new CollectionWorkdaysLessons(new ObservableCollection<LessonUnit>(), ""));
-                    }
-                }
-            }
-
-            UnitsWorkdays = new ObservableCollection<WorkdayClassesUnit>();
-            int i = 0;
-            while (i < LessonsClassUnits[0].LessonUnits.Count)
-            {
-                WorkdayClassesUnit unit = new WorkdayClassesUnit("", new ObservableCollection<ClassesLessonUnit>());
-                string h = "";
-                foreach (LessonsClassUnit u in LessonsClassUnits)
-                {
-                    h = u.LessonUnits[i].Workday;
-                    unit.ClassesLessonUnits.Add(new ClassesLessonUnit(u.LessonUnits[i].LessonUnits, u.FormUnit));
-                }
-                i++;
-                unit.Workday = h;
-                UnitsWorkdays.Add(unit);
-            }*/
         }
         public async Task<StorageFile> Save(StorageFile file)
         {
@@ -320,13 +250,11 @@ namespace Raspire
     {
         public string Workday { get; set; }
         public ObservableCollection<ClassesLessonUnit> ClassesUnits { get; set; }
-
         public WorkdayClassesUnit(string workday, ObservableCollection<ClassesLessonUnit> classesLessonUnits)
         {
             Workday = workday;
             ClassesUnits = classesLessonUnits;
         }
-        
     }
     public class ClassesLessonUnit
     {
@@ -375,7 +303,6 @@ namespace Raspire
         }
         public LessonUnit()
         {
-
         }
         public override string ToString()
         {
@@ -403,8 +330,7 @@ namespace Raspire
                     result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5) + " • " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
                 }
             }
-            if (result == "")
-                result = "пустой";
+            if (result == "") result = "пустой";
             return result;
         }
         public string Represent()
@@ -412,15 +338,7 @@ namespace Raspire
             string result = "";
             if (Subject.Count == 1)
             {
-                if (Cabinet[0] == -1)
-                {
-                    result = Subject[0].CallName;
-                }
-                else
-                {
-                    result = Subject[0].CallName;
-                }
-
+                result = Subject[0].CallName;
             }
             else if (Subject.Count() == 2)
             {
@@ -433,8 +351,8 @@ namespace Raspire
                     result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5);
                 }
             }
-            if (result == "")
-                result = "пустой";
+            if (result == "") result = "пустой";
+
             return result;
         }
         public string RepresentCab()
