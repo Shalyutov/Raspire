@@ -68,26 +68,14 @@ namespace Raspire
             Organization.Text = SettingsInstance.SchoolName;
             Head.Text = SettingsInstance.HeadSchool;
             Holder.Text = SettingsInstance.ScheduleHolder;
-
             CheckSettings();
-
-            //Bindings.Update();
         }
         public void CheckSettings()
         {
-            WorkdaysValidator.Symbol = Workdays.Count > 0 ? Symbol.Accept : Symbol.Remove;
-            /*WorkdaysButton.Foreground = Workdays.Count > 0
-                ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
-            ClassesButton.Foreground = SettingsInstance.FormUnits.Count > 0
-                ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
-            SubjectsButton.Foreground = SettingsInstance.SubjectUnits.Count > 0
-                ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));
-            TeachersButton.Foreground = SettingsInstance.TeacherUnits.Count > 0
-                ? new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0))
-                : new SolidColorBrush(Windows.UI.Color.FromArgb(255, 255, 0, 0));*/
+            WorkdaysValidator.Symbol = Workdays.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            ClassesValidator.Symbol = SettingsInstance.FormUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            SubjectsValidator.Symbol = SettingsInstance.SubjectUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            TeachersValidator.Symbol = SettingsInstance.TeacherUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
         }
         public bool ShowContinueButton()
         {
@@ -295,8 +283,8 @@ namespace Raspire
         }
         private void LoadDefaults(object sender, RoutedEventArgs e)
         {
-            SettingsInstance.DefaultSettings();
             DefaultsPopup.Hide();
+            SettingsInstance.DefaultSettings();
             foreach (var b in WorkdaysPanel.Children)
             {
                 (b as ToggleButton).IsChecked = false;
@@ -384,7 +372,17 @@ namespace Raspire
             SettingsHelper.SaveObjectLocal("Settings", "");
             SettingsInstance = new Settings();
             ClearSettingsPopup.Hide();
+            foreach (var b in WorkdaysPanel.Children)
+            {
+                (b as ToggleButton).IsChecked = false;
+            }
+            Workdays.Clear();
+            FormUnitsList.ItemsSource = null;
+            FormUnitsList2.ItemsSource = null;
+            SubjectUnitsList.ItemsSource = null;
+            TeacherUnitsList.ItemsSource = null;
             CheckSettings();
+            Update();
         }
 
         private void SecondShiftToggled(object sender, RoutedEventArgs e)

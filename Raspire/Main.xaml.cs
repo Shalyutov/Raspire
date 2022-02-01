@@ -39,38 +39,6 @@ namespace Raspire
                 MainFrame.Navigate(typeof(EditorV3), parameter, new DrillInNavigationTransitionInfo());
             }
         }
-        private void NavSchedule(object sender, RoutedEventArgs e)
-        {
-            if (MainFrame.Content.GetType() != typeof(SchedulePage))
-            {
-                _ = MainFrame.Navigate(typeof(SchedulePage));
-            }
-        }
-
-        private void NavEditor(object sender, RoutedEventArgs e)
-        {
-            if (MainFrame.Content.GetType() != typeof(EditorV2))
-            {
-                _ = MainFrame.Navigate(typeof(EditorV2));
-            }
-        }
-
-        private void NavHelp(object sender, RoutedEventArgs e)
-        {
-            if (MainFrame.Content.GetType() != typeof(HelpPage))
-            {
-                _ = MainFrame.Navigate(typeof(HelpPage));
-            }
-        }
-
-        private void NavSettings(object sender, RoutedEventArgs e)
-        {
-            if (MainFrame.Content.GetType() != typeof(SettingsPage))
-            {
-                _ = MainFrame.Navigate(typeof(SettingsPage));
-            }
-        }
-
         private void MainNav(object sender, NavigationEventArgs e)
         {
             FileNameParent.Visibility = Visibility.Collapsed;
@@ -79,40 +47,27 @@ namespace Raspire
             string p;
             if (page == typeof(SchedulePage))
             {
-                p = "Расписание";
-                
+                p = "Raspire";
             }
-            else if (page == typeof(EditorV2))
-            {
-                p = "Редактор";
-                FileNameParent.Visibility = Visibility.Visible;
-                if (e.Parameter!=null) FileName.Text = ((e.Parameter as List<object>)[0] as Schedule).Name;
-                
-            }
-            else if (page == typeof(EditorV3))
+            else if (page == typeof(EditorV2) | page == typeof(EditorV3) | page == typeof(Editor))
             {
                 p = "Редактор";
                 FileNameParent.Visibility = Visibility.Visible;
                 if (e.Parameter != null) FileName.Text = ((e.Parameter as List<object>)[0] as Schedule).Name;
-                
             }
             else if (page == typeof(HelpPage))
             {
                 p = "Поддержка";
-                
             }
             else if (page == typeof(SettingsPage))
             {
                 p = "Настройки";
-                
             }
             else
             {
                 return;
             }
             FrameState.Text = p;
-            
         }
-
     }
 }
