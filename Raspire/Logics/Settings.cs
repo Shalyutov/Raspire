@@ -316,6 +316,10 @@ namespace Raspire
             Subject = subject;
             Forms = forms;
         }
+        public override string ToString()
+        {
+            return $"{Subject.CallName} • {Forms.Count}";
+        }
     }
     /// <summary>
     /// Запись о проведении предмета у конкретно представленного класса (подгруппы класса)

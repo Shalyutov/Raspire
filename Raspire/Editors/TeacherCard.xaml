@@ -29,6 +29,7 @@
     </ContentDialog.SecondaryButtonStyle>
     <ContentDialog.Resources>
         <ResourceDictionary>
+            <!--
             <CommandBarFlyout x:Name="SubjectCommandBar">
                 <AppBarButton Label="Выбрать" Icon="Accept" Click="SubjectSelect" />
             </CommandBarFlyout>
@@ -78,12 +79,43 @@
                     </AppBarButton.Flyout>
                 </AppBarButton>
             </CommandBarFlyout>
+            -->
         </ResourceDictionary>
     </ContentDialog.Resources>
     <Grid>
-        <StackPanel>
-            <TextBox Text="{x:Bind Teacher.Name}" Header="Ф.И.О." TextChanged="NameChanged" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <my:NumberBox Text="{x:Bind Teacher.Cabinet}" Header="Кабинет" ValueChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="0,4"/>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <TextBox Text="{x:Bind Teacher.Name}" PlaceholderText="Полное имя" TextChanged="NameChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+                <TextBox Text="{x:Bind Teacher.Cabinet}" PlaceholderText="Кабинет" TextChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+            </StackPanel>
+            <StackPanel>
+                <ListView ItemsSource="{x:Bind Teacher.HostedSubjects}" FontFamily="/Assets/Jost.ttf#Jost" FontWeight="Bold"/>
+                <ListView ItemsSource="{x:Bind Subjects}" Padding="4" IsItemClickEnabled="True" ItemClick="SubjectClicked" MaxHeight="350" FontFamily="/Assets/Jost.ttf#Jost"/>
+            </StackPanel>
+            <StackPanel>
+                <ListView x:Name="ClassesList" ItemsSource="{x:Bind Forms}" MaxHeight="300" SelectionMode="Multiple" SelectionChanged="FormsSelected" Loaded="LoadForms" Margin="4" IsItemClickEnabled="True" ItemClick="ClassesList_ItemClick"/>
+                <Button Click="SelectAllClasses" Margin="4" >
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="SelectAll" Margin="4,0" />
+                        <TextBlock Text="Выбрать всё" Margin="4,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Click="UnSelectAllClasses" Margin="4">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="ClearSelection" Margin="4,0"/>
+                        <TextBlock Text="Снять выделение" Margin="4,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <!--<ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:SubjectUnit">
+                        <StackPanel Orientation="Horizontal" Padding="4">
+                            <TextBlock Text="{x:Bind CallName}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>-->
+
+            <!--
             <StackPanel Orientation="Horizontal" Padding="8,4,8,4">
                 <ListView ItemsSource="{x:Bind Subjects}" Header="Предметы" Padding="8,4,8,4" IsItemClickEnabled="True" ItemClick="SubjectClicked" MaxHeight="350" FontFamily="/Assets/Jost.ttf#Jost">
                     <ListView.ItemTemplate>
@@ -104,6 +136,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>
+            -->
         </StackPanel>
     </Grid>
 </ContentDialog>
