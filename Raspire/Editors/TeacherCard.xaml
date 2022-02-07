@@ -85,22 +85,28 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <StackPanel>
-                <TextBox Text="{x:Bind Teacher.Name}" PlaceholderText="Полное имя" TextChanged="NameChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
-                <TextBox Text="{x:Bind Teacher.Cabinet}" PlaceholderText="Кабинет" TextChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon x:Name="NameValidator"/>
+                    <TextBox Text="{x:Bind Teacher.Name}" PlaceholderText="Полное имя" TextChanged="NameChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon x:Name="CabValidator"/>
+                    <TextBox Text="{x:Bind Teacher.Cabinet}" PlaceholderText="Кабинет" TextChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="4,0">
+                <ListView x:Name="HostedSubjectsList" ItemsSource="{x:Bind Teacher.HostedSubjects}" FontFamily="/Assets/Jost.ttf#Jost" FontWeight="Bold" BorderBrush="{ThemeResource SystemAccentColor}" BorderThickness="0,0,0,2" SelectionChanged="HostSelectionChanged"/>
+                <ListView x:Name="SubjectsList" Margin="0,2" ItemsSource="{x:Bind Subjects}" IsItemClickEnabled="True" ItemClick="SubjectClicked" MaxHeight="350" FontFamily="/Assets/Jost.ttf#Jost" SelectionChanged="SubjectSelectionChanged"/>
             </StackPanel>
             <StackPanel>
-                <ListView ItemsSource="{x:Bind Teacher.HostedSubjects}" FontFamily="/Assets/Jost.ttf#Jost" FontWeight="Bold"/>
-                <ListView ItemsSource="{x:Bind Subjects}" Padding="4" IsItemClickEnabled="True" ItemClick="SubjectClicked" MaxHeight="350" FontFamily="/Assets/Jost.ttf#Jost"/>
-            </StackPanel>
-            <StackPanel>
-                <ListView x:Name="ClassesList" ItemsSource="{x:Bind Forms}" MaxHeight="300" SelectionMode="Multiple" SelectionChanged="FormsSelected" Loaded="LoadForms" Margin="4" IsItemClickEnabled="True" ItemClick="ClassesList_ItemClick"/>
-                <Button Click="SelectAllClasses" Margin="4" >
+                <ListView x:Name="ClassesList" ItemsSource="{x:Bind Forms}" MaxHeight="300" SelectionMode="Multiple" SelectionChanged="FormsSelected" Margin="4"/>
+                <Button Click="SelectAllClasses" Margin="4" HorizontalAlignment="Stretch" >
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="SelectAll" Margin="4,0" />
                         <TextBlock Text="Выбрать всё" Margin="4,0"/>
                     </StackPanel>
                 </Button>
-                <Button Click="UnSelectAllClasses" Margin="4">
+                <Button Click="UnSelectAllClasses" Margin="4" HorizontalAlignment="Stretch">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="ClearSelection" Margin="4,0"/>
                         <TextBlock Text="Снять выделение" Margin="4,0"/>

@@ -19,52 +19,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Raspire
 {
-    public class CompatExtensions
-    {
-        public static bool GetAllowFocusOnInteraction(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(AllowFocusOnInteractionProperty);
-        }
-        public static void SetAllowFocusOnInteraction(DependencyObject obj, bool value)
-        {
-            obj.SetValue(AllowFocusOnInteractionProperty, value);
-        }
-        // Using a DependencyProperty as the backing store for AllowFocusOnInteraction.  
-        // This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AllowFocusOnInteractionProperty =
-            DependencyProperty.RegisterAttached("AllowFocusOnInteraction",
-                                                typeof(bool),
-                                                typeof(CompatExtensions),
-                                                new PropertyMetadata(0, AllowFocusOnInteractionChanged));
-
-        private static bool allowFocusOnInteractionAvailable =
-            Windows.Foundation.Metadata.ApiInformation.IsPropertyPresent(
-                "Windows.UI.Xaml.FrameworkElement",
-                "AllowFocusOnInteraction");
-        private static void AllowFocusOnInteractionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (allowFocusOnInteractionAvailable)
-            {
-                var element = d as FrameworkElement;
-                if (element != null)
-                {
-                    element.AllowFocusOnInteraction = (bool)e.NewValue;
-                }
-            }
-        }
-    }
     public sealed partial class TeacherCard : ContentDialog
     {
         public TeacherUnit Teacher { get; set; }
         public ObservableCollection<SubjectUnit> Subjects { get; set; }
         public ObservableCollection<FormUnit> Forms { get; set; }
-
-
         SubjectUnit SelectedSubject;
         HostUnit SelectedHost;
-
         FormUnit CurrentSelectForm;
-        
         bool edit = false;
         /// <summary>
         /// Конструктор диалогового окна для редактирования информации об учителе
@@ -78,9 +40,28 @@ namespace Raspire
             Subjects = subjects;
             Forms = forms;
             this.InitializeComponent();
-            //CabinetBox.Text = Teacher.Cabinet.ToString();
+            Update();
         }
-        
+        private void Update()
+        {
+            SubjectsList.ItemsSource = Subjects;
+            ClassesList.ItemsSource = Forms;
+            CabValidator.Symbol = Symbol.Accept;
+            NameValidator.Symbol = Symbol.Accept;
+            foreach (var host in Teacher.HostedSubjects)
+            {
+                int j = 0;
+                foreach (var f in Subjects)
+                {
+                    if (f.ToString() == host.Subject.ToString())
+                    {
+                        break;
+                    }
+                    j++;
+                }
+                if (j < Subjects.Count) Subjects.RemoveAt(j);
+            }
+        }
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             PrimaryButtonCommandParameter = Teacher;
@@ -98,7 +79,16 @@ namespace Raspire
 
         private void CabinetChanged(object sender, TextChangedEventArgs args)
         {
-            Teacher.Cabinet = int.Parse((sender as TextBox).Text);
+            try
+            {
+                Teacher.Cabinet = int.Parse((sender as TextBox).Text);
+                CabValidator.Symbol = Symbol.Accept;
+            }
+            catch (Exception)
+            {
+                CabValidator.Symbol = Symbol.Clear;
+            }
+            
         }
 
         private void SubjectClicked(object sender, ItemClickEventArgs e)
@@ -140,36 +130,57 @@ namespace Raspire
 
         private void FormsSelected(object sender, SelectionChangedEventArgs e)
         {
-            if (edit)
+            if (!edit) return;
+            if (SelectedHost != null)
             {
-                foreach (var item in e.AddedItems)
+                if (ClassesList.SelectedItems.Count == 0)
                 {
-                    int c = Teacher.Cabinet;
-                    foreach (var i in SelectedHost.Forms)
-                    {
-                        if (i.Form.ToString() == (item as FormUnit).ToString())
-                        {
-                            SelectedHost.Forms.Remove(i);
-                            c = i.Cabinet;
-                            return;
-                        }
-                    }
-                    SelectedHost.Forms.Add(new FormCabinetPair((FormUnit)item, c, 0));
-                }
-                foreach (var item in e.RemovedItems)
-                {
-                    List<FormCabinetPair> list = new List<FormCabinetPair>();
-                    foreach (var pair in SelectedHost.Forms)
-                    {
-                        if (pair.Form.ToString() == item.ToString()) list.Add(pair);
-                    }
-                    foreach (var i in list) SelectedHost.Forms.Remove(i);
+                    Subjects.Add(SelectedHost.Subject);
+                    Teacher.HostedSubjects.Remove(SelectedHost);
+                    SelectedHost = null;
+                    return;
                 }
             }
-            
+            else if (SelectedSubject != null)
+            {
+                if (ClassesList.SelectedItems.Count == 0)
+                {
+                    SelectedHost = null;
+                    return;
+                }
+                var unit = new HostUnit(SelectedSubject, new ObservableCollection<FormCabinetPair>());
+                SelectedHost = unit;
+                Teacher.HostedSubjects.Add(SelectedHost);
+                Subjects.Remove(SelectedSubject);
+            }
+            foreach (var item in e.AddedItems)
+            {
+                int c = Teacher.Cabinet;
+                foreach (var i in SelectedHost.Forms)
+                {
+                    if (i.Form.ToString() == (item as FormUnit).ToString())
+                    {
+                        SelectedHost.Forms.Remove(i);
+                        c = i.Cabinet;
+                        return;
+                    }
+                }
+                SelectedHost.Forms.Add(new FormCabinetPair((FormUnit)item, c, 0));
+            }
+            foreach (var item in e.RemovedItems)
+            {
+                List<FormCabinetPair> list = new List<FormCabinetPair>();
+                foreach (var pair in SelectedHost.Forms)
+                {
+                    if (pair.Form.ToString() == item.ToString()) list.Add(pair);
+                }
+                foreach (var i in list) SelectedHost.Forms.Remove(i);
+            }
+            HostedSubjectsList.SelectedItem = SelectedHost;
+
         }
 
-        private void LoadForms(object sender, RoutedEventArgs e)
+        /*private void LoadForms(object sender, RoutedEventArgs e)
         {
             edit = false;
             (sender as ListView).SelectedItems.Clear();
@@ -177,11 +188,11 @@ namespace Raspire
             { 
                 foreach (FormUnit unit in Forms)
                 {
-                    if(unit.ToString() == item.Form.ToString()) (sender as ListView).SelectedItems.Add(unit);
+                    if (unit.ToString() == item.Form.ToString()) (sender as ListView).SelectedItems.Add(unit);
                 }
             }
             edit = true;
-        }
+        }*/
 
         private void SelectAllClasses(object sender, RoutedEventArgs e)
         {
@@ -243,6 +254,46 @@ namespace Raspire
         private void SetCabinet(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void HostSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                SubjectsList.SelectedItem = null;
+                SelectedHost = e.AddedItems[0] as HostUnit;
+                SelectedSubject = null;
+
+                edit = false;
+                ClassesList.SelectedItems.Clear();
+                foreach (var i in SelectedHost.Forms)
+                {
+                    int j = 0;
+                    foreach(var f in Forms)
+                    {
+                        if (f.ToString() == i.Form.ToString())
+                        {
+                            break;
+                        }
+                        j++;
+                    }
+                    ClassesList.SelectedItems.Add(Forms.ElementAt(j));
+                }
+                edit = true;
+            }
+
+        }
+
+        private void SubjectSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                HostedSubjectsList.SelectedItem = null;
+                SelectedSubject = e.AddedItems[0] as SubjectUnit;
+                SelectedHost = null;
+
+                ClassesList.SelectedItems.Clear();
+            }
         }
     }
 }
