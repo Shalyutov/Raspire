@@ -78,7 +78,7 @@ namespace Raspire
             Subjects = subjects;
             Forms = forms;
             this.InitializeComponent();
-            CabinetBox.Text = Teacher.Cabinet.ToString();
+            //CabinetBox.Text = Teacher.Cabinet.ToString();
         }
         
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -96,9 +96,9 @@ namespace Raspire
             Teacher.Name = (sender as TextBox).Text;
         }
 
-        private void CabinetChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        private void CabinetChanged(object sender, TextChangedEventArgs args)
         {
-            Teacher.Cabinet = (int)sender.Value;
+            Teacher.Cabinet = int.Parse((sender as TextBox).Text);
         }
 
         private void SubjectClicked(object sender, ItemClickEventArgs e)
@@ -107,7 +107,7 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            SubjectCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
+            //SubjectCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
             SelectedSubject = e.ClickedItem as SubjectUnit;
         }
 
@@ -116,7 +116,7 @@ namespace Raspire
             if(SelectedSubject != null)
             {
                 Teacher.HostedSubjects.Add(new HostUnit(SelectedSubject, new ObservableCollection<FormCabinetPair>()));
-                SubjectCommandBar.Hide();
+                //SubjectCommandBar.Hide();
             }
         }
 
@@ -126,7 +126,7 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            HostCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
+            //HostCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
             SelectedHost = e.ClickedItem as HostUnit;
         }
         private void HostSelect(object sender, RoutedEventArgs e)
@@ -134,7 +134,7 @@ namespace Raspire
             if (SelectedHost != null)
             {
                 Teacher.HostedSubjects.Remove(SelectedHost);
-                HostCommandBar.Hide();
+                //HostCommandBar.Hide();
             }
         }
 
@@ -198,14 +198,14 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            SubgroupCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
+            //SubgroupCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
 
             CurrentSelectForm = e.ClickedItem as FormUnit;
             foreach(var i in SelectedHost.Forms)
             {
                 if (i.Form.ToString() == CurrentSelectForm.ToString())
                 {
-                    CabinetBox.Text = i.Cabinet.ToString();
+                    //CabinetBox.Text = i.Cabinet.ToString();
                 }
             }
         }
@@ -233,11 +233,11 @@ namespace Raspire
                 if (i.Form.ToString() == CurrentSelectForm.ToString())
                 {
                     i.Subgroup = subgroup;
-                    i.Cabinet = int.Parse(CabinetBox.Text);
+                    //i.Cabinet = int.Parse(CabinetBox.Text);
                 }
             }
             
-            SubgroupCommandBar.Hide();
+            //SubgroupCommandBar.Hide();
         }
 
         private void SetCabinet(object sender, RoutedEventArgs e)
