@@ -1,19 +1,11 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Диалоговое окно содержимого" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,8 +18,7 @@ namespace Raspire
         public ObservableCollection<FormUnit> Forms { get; set; }
         SubjectUnit SelectedSubject;
         HostUnit SelectedHost;
-        FormUnit CurrentSelectForm;
-        bool edit = false;
+        bool edit = true;
         /// <summary>
         /// Конструктор диалогового окна для редактирования информации об учителе
         /// </summary>
@@ -62,8 +53,14 @@ namespace Raspire
                 if (j < Subjects.Count) Subjects.RemoveAt(j);
             }
         }
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            if (CabValidator.Symbol == Symbol.Clear)
+            {
+                args.Cancel = true;
+                MessageDialog dialog = new MessageDialog("Неверно задан параметр кабинета");
+                _ = await dialog.ShowAsync();
+            }
             PrimaryButtonCommandParameter = Teacher;
         }
 
@@ -81,14 +78,24 @@ namespace Raspire
         {
             try
             {
+                int prev = Teacher.Cabinet;
                 Teacher.Cabinet = int.Parse((sender as TextBox).Text);
                 CabValidator.Symbol = Symbol.Accept;
+                foreach (var i in Teacher.HostedSubjects)
+                {
+                    foreach (var f in i.Forms)
+                    {
+                        if (f.Cabinet == prev)
+                        {
+                            f.Cabinet = Teacher.Cabinet;
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
                 CabValidator.Symbol = Symbol.Clear;
             }
-            
         }
 
         private void SubjectClicked(object sender, ItemClickEventArgs e)
@@ -97,40 +104,11 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            //SubjectCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
             SelectedSubject = e.ClickedItem as SubjectUnit;
         }
-
-        private void SubjectSelect(object sender, RoutedEventArgs e)
-        {
-            if(SelectedSubject != null)
-            {
-                Teacher.HostedSubjects.Add(new HostUnit(SelectedSubject, new ObservableCollection<FormCabinetPair>()));
-                //SubjectCommandBar.Hide();
-            }
-        }
-
-        private void HostClicked(object sender, ItemClickEventArgs e)
-        {
-            FlyoutShowOptions myOption = new FlyoutShowOptions
-            {
-                ShowMode = FlyoutShowMode.Standard
-            };
-            //HostCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
-            SelectedHost = e.ClickedItem as HostUnit;
-        }
-        private void HostSelect(object sender, RoutedEventArgs e)
-        {
-            if (SelectedHost != null)
-            {
-                Teacher.HostedSubjects.Remove(SelectedHost);
-                //HostCommandBar.Hide();
-            }
-        }
-
         private void FormsSelected(object sender, SelectionChangedEventArgs e)
         {
-            if (!edit) return;
+            if (!edit) return; //предохранитель защищающий от выполнения кода во время выбора следующего предмета (во избежание коллизий)
             if (SelectedHost != null)
             {
                 if (ClassesList.SelectedItems.Count == 0)
@@ -177,23 +155,7 @@ namespace Raspire
                 foreach (var i in list) SelectedHost.Forms.Remove(i);
             }
             HostedSubjectsList.SelectedItem = SelectedHost;
-
         }
-
-        /*private void LoadForms(object sender, RoutedEventArgs e)
-        {
-            edit = false;
-            (sender as ListView).SelectedItems.Clear();
-            foreach (FormCabinetPair item in SelectedHost.Forms)
-            { 
-                foreach (FormUnit unit in Forms)
-                {
-                    if (unit.ToString() == item.Form.ToString()) (sender as ListView).SelectedItems.Add(unit);
-                }
-            }
-            edit = true;
-        }*/
-
         private void SelectAllClasses(object sender, RoutedEventArgs e)
         {
             ClassesList.SelectAll();
@@ -202,60 +164,6 @@ namespace Raspire
         {
             ClassesList.SelectedItems.Clear();
         }
-
-        private void ClassesList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            FlyoutShowOptions myOption = new FlyoutShowOptions
-            {
-                ShowMode = FlyoutShowMode.Standard
-            };
-            //SubgroupCommandBar.ShowAt((sender as ListView).ContainerFromItem(e.ClickedItem), myOption);
-
-            CurrentSelectForm = e.ClickedItem as FormUnit;
-            foreach(var i in SelectedHost.Forms)
-            {
-                if (i.Form.ToString() == CurrentSelectForm.ToString())
-                {
-                    //CabinetBox.Text = i.Cabinet.ToString();
-                }
-            }
-        }
-
-        private void SelectAllClassForSubject(object sender, RoutedEventArgs e)
-        {
-            SetSubgroup(0);
-        }
-
-        private void SelectFirstSubgroup(object sender, RoutedEventArgs e)
-        {
-            SetSubgroup(1);
-        }
-
-        private void SelectSecondSubgroup(object sender, RoutedEventArgs e)
-        {
-            SetSubgroup(2);
-        }
-
-        private void SetSubgroup(int subgroup)
-        {
-            ClassesList.SelectedItems.Add(ClassesList.Items.ElementAt(ClassesList.Items.IndexOf(CurrentSelectForm)));
-            foreach (var i in SelectedHost.Forms)
-            {
-                if (i.Form.ToString() == CurrentSelectForm.ToString())
-                {
-                    i.Subgroup = subgroup;
-                    //i.Cabinet = int.Parse(CabinetBox.Text);
-                }
-            }
-            
-            //SubgroupCommandBar.Hide();
-        }
-
-        private void SetCabinet(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void HostSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -269,7 +177,7 @@ namespace Raspire
                 foreach (var i in SelectedHost.Forms)
                 {
                     int j = 0;
-                    foreach(var f in Forms)
+                    foreach (var f in Forms)
                     {
                         if (f.ToString() == i.Form.ToString())
                         {
