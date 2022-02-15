@@ -160,20 +160,24 @@ namespace Raspire
         {
             _ = Frame.Navigate(typeof(SettingsPage));
         }
-
         private void OpenCommander(object sender, PointerRoutedEventArgs e)
         {
+            Commander.Hide();
             FlyoutShowOptions myOption = new FlyoutShowOptions();
             myOption.ShowMode = FlyoutShowMode.Transient;
             Commander.ShowAt(sender as UIElement, myOption);
-            
         }
 
         private void OpenCommander(object sender, RightTappedRoutedEventArgs e)
         {
+            Commander.Hide();
             FlyoutShowOptions myOption = new FlyoutShowOptions();
-            myOption.ShowMode = FlyoutShowMode.Transient;
+            myOption.ShowMode = FlyoutShowMode.Standard;
             Commander.ShowAt(sender as UIElement, myOption);
+        }
+
+        private void AddLesson(object sender, RoutedEventArgs e)
+        {
 
         }
     }

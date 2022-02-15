@@ -11,18 +11,20 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ListItemV2" x:DataType="local:ClassesLessonUnit">
-                <StackPanel Width="135" Height="200" Margin="0,6" Background="{ThemeResource FlipViewButtonBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander">
+                <StackPanel Width="135" Height="200" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
+                    <TextBlock Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
                     <my:ItemsRepeater ItemsSource="{x:Bind Units}"  >
                         <my:ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="local:LessonUnit">
-                                <TextBlock Text="{x:Bind ToString()}" Margin="8,1" FontFamily="/Assets/Jost.ttf#Jost" Foreground="DarkGray" PointerEntered="LessonUnitFocused" PointerExited="LessonUnitUnhovered" DoubleTapped="OpenLessonEditor"/>
+                                <CheckBox>
+                                    <TextBlock Text="{x:Bind ToString()}" Margin="8,1" FontFamily="/Assets/Jost.ttf#Jost" Foreground="DarkGray" PointerEntered="LessonUnitFocused" PointerExited="LessonUnitUnhovered" DoubleTapped="OpenLessonEditor"/>
+                                </CheckBox>
                             </DataTemplate>
                         </my:ItemsRepeater.ItemTemplate>
                         <my:ItemsRepeater.Layout>
                             <my:StackLayout Orientation="Vertical" Spacing="2"/>
                         </my:ItemsRepeater.Layout>
                     </my:ItemsRepeater>
-                    
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayClassesUnit">
@@ -36,14 +38,15 @@
                 </StackPanel>
             </DataTemplate>
             <my:CommandBarFlyout x:Name="Commander" x:Key="Commander">
-                <AppBarButton Icon="Add"/>
                 <AppBarElementContainer>
                     <Grid>
                         <AutoSuggestBox VerticalAlignment="Center" Margin="8,4"/>
                     </Grid>
                 </AppBarElementContainer>
-                <AppBarButton Icon="Remove"/>
-                <AppBarSeparator/>
+                <AppBarButton Icon="Add" Click="AddLesson" />
+            </my:CommandBarFlyout>
+            <my:CommandBarFlyout x:Name="LessonCommander" x:Key="LessonCommander">
+                <AppBarButton Icon="Edit"/>
                 <AppBarButton Icon="Delete"/>
             </my:CommandBarFlyout>
         </ResourceDictionary>
@@ -53,10 +56,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="0,4" CornerRadius="4" HorizontalAlignment="Left">
-            
-        </StackPanel>
-        <ScrollViewer Grid.Row="1" Margin="0,4" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto" >
+        <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Margin="4" HorizontalAlignment="Left">
+            <AppBarButton Icon="Document" Label="Файл" />
+            <AppBarButton Icon="Print" Label="Печать" />
+        </CommandBar>
+        <ScrollViewer Grid.Row="1" Margin="4" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
             <my:ItemsRepeater ItemTemplate="{StaticResource ItemV2}" ItemsSource="{x:Bind UnitsWorkdays}">
                 <my:ItemsRepeater.Layout>
                     <my:StackLayout Orientation="Vertical" Spacing="8"/>
