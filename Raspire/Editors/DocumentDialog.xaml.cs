@@ -20,25 +20,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Raspire
 {
-    public sealed partial class DocumentDialog : ContentDialog
+    internal sealed partial class DocumentDialog : ContentDialog
     {
         Schedule Schedule;
-        bool close = false;
         public DocumentDialog(Schedule schedule)
         {
             this.InitializeComponent();
             Schedule = schedule;
-            switch (Schedule.Type)
-            {
-                case 0:
-                    SemiButton.Visibility = Visibility.Visible;
-                    QuartButton.Visibility = Visibility.Collapsed;
-                    break;
-                case 1:
-                    SemiButton.Visibility = Visibility.Collapsed;
-                    QuartButton.Visibility = Visibility.Visible;
-                    break;
-            }
         }
         private void ChangeSemi(object sender, RoutedEventArgs e)
         {
@@ -62,50 +50,10 @@ namespace Raspire
         }
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            Schedule.Name = DocumentName.Text;
             PrimaryButtonCommandParameter = Schedule;
-            close = true;
             Hide();
         }
-        private async void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            MessageDialog dialog = new MessageDialog("Вы уверены, что хотите удалить файл с расписанием?");
-            dialog.Commands.Add(new UICommand("Да, удалить", null, 1));
-            dialog.Commands.Add(new UICommand("Отмена", null, 0));
-            
-            var res = await dialog.ShowAsync();
-            if ((int)res.Id == 1)
-            {
-                /*if(Schedule.Path != "")
-                {
-                    var file= await Windows.Storage.StorageFile.GetFileFromPathAsync(Schedule.Path);
-                    await file.DeleteAsync();
-                }*/
-                Schedule = null;
-            }
-            PrimaryButtonCommandParameter = Schedule;
-            close = true;
-            Hide();
-        }
-        private void ClosingDialog(ContentDialog sender, ContentDialogClosingEventArgs args)
-        {
-            if(!close) args.Cancel = true;
-        }
-        public string GetTypeLabel()
-        {
-            switch (Schedule.Type)
-            {
-                case 0:
-                    return "Полугодие";
-                case 1:
-                    return "Четверть";
-                case 2:
-                    return "Изменения";
-                default:
-                    return "?";
-            }
-        }
-        private void ExportDocument(object sender, RoutedEventArgs e)//save document in path specifed by user
+        private void ExportDocument(object sender, RoutedEventArgs e)
         {
             _ = Schedule.Export();
         }

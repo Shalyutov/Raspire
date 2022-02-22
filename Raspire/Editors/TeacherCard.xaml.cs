@@ -13,11 +13,11 @@ namespace Raspire
 {
     public sealed partial class TeacherCard : ContentDialog
     {
-        public TeacherUnit Teacher { get; set; }
-        public ObservableCollection<SubjectUnit> Subjects { get; set; }
+        public Teacher Teacher { get; set; }
+        public ObservableCollection<Subject> Subjects { get; set; }
         public ObservableCollection<FormUnit> Forms { get; set; }
-        SubjectUnit SelectedSubject;
-        HostUnit SelectedHost;
+        Subject SelectedSubject;
+        Host SelectedHost;
         bool edit = true;
         /// <summary>
         /// Конструктор диалогового окна для редактирования информации об учителе
@@ -25,7 +25,7 @@ namespace Raspire
         /// <param name="teacher">Созданный на странице настроек экзепляр класса, который хранит информацию об учителе</param>
         /// <param name="subjects">Список изучаемых предметов</param>
         /// <param name="forms">Список классов</param>
-        public TeacherCard(TeacherUnit teacher, ObservableCollection<SubjectUnit> subjects, ObservableCollection<FormUnit> forms)
+        public TeacherCard(Teacher teacher, ObservableCollection<Subject> subjects, ObservableCollection<FormUnit> forms)
         {
             Teacher = teacher;
             Subjects = subjects;
@@ -78,8 +78,8 @@ namespace Raspire
         {
             try
             {
-                int prev = Teacher.Cabinet;
-                Teacher.Cabinet = int.Parse((sender as TextBox).Text);
+                int prev = Teacher.Classroom;
+                Teacher.Classroom = int.Parse((sender as TextBox).Text);
                 CabValidator.Symbol = Symbol.Accept;
                 foreach (var i in Teacher.HostedSubjects)
                 {
@@ -87,7 +87,7 @@ namespace Raspire
                     {
                         if (f.Cabinet == prev)
                         {
-                            f.Cabinet = Teacher.Cabinet;
+                            f.Cabinet = Teacher.Classroom;
                         }
                     }
                 }
@@ -104,7 +104,7 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            SelectedSubject = e.ClickedItem as SubjectUnit;
+            SelectedSubject = e.ClickedItem as Subject;
         }
         private void FormsSelected(object sender, SelectionChangedEventArgs e)
         {
@@ -126,14 +126,14 @@ namespace Raspire
                     SelectedHost = null;
                     return;
                 }
-                var unit = new HostUnit(SelectedSubject, new ObservableCollection<FormCabinetPair>());
+                var unit = new Host(SelectedSubject, new ObservableCollection<FormClassroom>());
                 SelectedHost = unit;
                 Teacher.HostedSubjects.Add(SelectedHost);
                 Subjects.Remove(SelectedSubject);
             }
             foreach (var item in e.AddedItems)
             {
-                int c = Teacher.Cabinet;
+                int c = Teacher.Classroom;
                 foreach (var i in SelectedHost.Forms)
                 {
                     if (i.Form.ToString() == (item as FormUnit).ToString())
@@ -147,7 +147,7 @@ namespace Raspire
             }
             foreach (var item in e.RemovedItems)
             {
-                List<FormCabinetPair> list = new List<FormCabinetPair>();
+                List<FormClassroom> list = new List<FormClassroom>();
                 foreach (var pair in SelectedHost.Forms)
                 {
                     if (pair.Form.ToString() == item.ToString()) list.Add(pair);
@@ -169,7 +169,7 @@ namespace Raspire
             if (e.AddedItems.Count > 0)
             {
                 SubjectsList.SelectedItem = null;
-                SelectedHost = e.AddedItems[0] as HostUnit;
+                SelectedHost = e.AddedItems[0] as Host;
                 SelectedSubject = null;
 
                 edit = false;
@@ -197,7 +197,7 @@ namespace Raspire
             if (e.AddedItems.Count > 0)
             {
                 HostedSubjectsList.SelectedItem = null;
-                SelectedSubject = e.AddedItems[0] as SubjectUnit;
+                SelectedSubject = e.AddedItems[0] as Subject;
                 SelectedHost = null;
 
                 ClassesList.SelectedItems.Clear();

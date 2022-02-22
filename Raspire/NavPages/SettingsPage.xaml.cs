@@ -41,7 +41,7 @@ namespace Raspire
 
             if (!SecondShiftEnabled())
             {
-                FormUnitsList.ItemsSource = SettingsInstance.FormUnits;
+                FormUnitsList.ItemsSource = SettingsInstance.Forms;
                 FormUnitsList2.Visibility = Visibility.Collapsed;
                 ShiftSeparator.Visibility = Visibility.Collapsed;
             }
@@ -49,7 +49,7 @@ namespace Raspire
             {
                 FormUnitsList2.Visibility = Visibility.Visible;
                 ShiftSeparator.Visibility = Visibility.Visible;
-                foreach (FormUnit unit in SettingsInstance.FormUnits)
+                foreach (FormUnit unit in SettingsInstance.Forms)
                 {
                     if (unit.Shift == 1)
                     {
@@ -73,7 +73,7 @@ namespace Raspire
         public void CheckSettings()
         {
             WorkdaysValidator.Symbol = Workdays.Count > 0 ? Symbol.Accept : Symbol.Clear;
-            ClassesValidator.Symbol = SettingsInstance.FormUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            ClassesValidator.Symbol = SettingsInstance.Forms.Count > 0 ? Symbol.Accept : Symbol.Clear;
             SubjectsValidator.Symbol = SettingsInstance.SubjectUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
             TeachersValidator.Symbol = SettingsInstance.TeacherUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
         }
@@ -123,24 +123,24 @@ namespace Raspire
                 {
                     if (SecondShiftCheckBox.IsChecked.HasValue)
                     {
-                        SettingsInstance.FormUnits.Add(new FormUnit($"{n} {l}", SecondShiftCheckBox.IsChecked.Value));
+                        SettingsInstance.Forms.Add(new FormUnit($"{n} {l}", SecondShiftCheckBox.IsChecked.Value));
                         if (SecondShiftCheckBox.IsChecked.Value)
                         {
-                            Shift2.Add(SettingsInstance.FormUnits.Last());
+                            Shift2.Add(SettingsInstance.Forms.Last());
                         }
                         else
                         {
-                            Shift1.Add(SettingsInstance.FormUnits.Last());
+                            Shift1.Add(SettingsInstance.Forms.Last());
                         }
                     }
                     else
                     {
-                        SettingsInstance.FormUnits.Add(new FormUnit($"{n} {l}"));
+                        SettingsInstance.Forms.Add(new FormUnit($"{n} {l}"));
                     }
                 }
                 else
                 {
-                    SettingsInstance.FormUnits.Add(new FormUnit($"{n} {l}", false));
+                    SettingsInstance.Forms.Add(new FormUnit($"{n} {l}", false));
                 }
 
                 SettingsInstance.SaveFormUnits();
@@ -151,7 +151,7 @@ namespace Raspire
         {
             if (FormUnitsList.SelectedItem != null)
             {
-                _ = SettingsInstance.FormUnits.Remove(FormUnitsList.SelectedItem as FormUnit);
+                _ = SettingsInstance.Forms.Remove(FormUnitsList.SelectedItem as FormUnit);
                 if (SecondShiftEnabled())
                 {
                     _ = Shift1.Remove(FormUnitsList.SelectedItem as FormUnit);
@@ -162,7 +162,7 @@ namespace Raspire
             }
             if (FormUnitsList2.SelectedItem != null)
             {
-                _ = SettingsInstance.FormUnits.Remove(FormUnitsList2.SelectedItem as FormUnit);
+                _ = SettingsInstance.Forms.Remove(FormUnitsList2.SelectedItem as FormUnit);
                 if (SecondShiftEnabled())
                 {
                     _ = Shift2.Remove(FormUnitsList2.SelectedItem as FormUnit);
@@ -204,7 +204,7 @@ namespace Raspire
 
         private void AddSubjectUnit(string subject)
         {
-            SettingsInstance.SubjectUnits.Add(new SubjectUnit(subject));
+            SettingsInstance.SubjectUnits.Add(new Subject(subject));
             SettingsInstance.SaveSubjectUnits();
             CheckSettings();
         }
@@ -214,7 +214,7 @@ namespace Raspire
             {
                 if ((sender as ListView).SelectedItem != null)
                 {
-                    _ = SettingsInstance.SubjectUnits.Remove((sender as ListView).SelectedItem as SubjectUnit);
+                    _ = SettingsInstance.SubjectUnits.Remove((sender as ListView).SelectedItem as Subject);
                     SettingsInstance.SaveSubjectUnits();
                     CheckSettings();
                 }
@@ -224,7 +224,7 @@ namespace Raspire
         {
             if (SubjectUnitsList.SelectedItem != null)
             {
-                _ = SettingsInstance.SubjectUnits.Remove(SubjectUnitsList.SelectedItem as SubjectUnit);
+                _ = SettingsInstance.SubjectUnits.Remove(SubjectUnitsList.SelectedItem as Subject);
                 SettingsInstance.SaveSubjectUnits();
                 CheckSettings();
             }
@@ -243,7 +243,7 @@ namespace Raspire
         private void AddTeacherUnit(string name)
         {
             if (name == "") return;
-            SettingsInstance.TeacherUnits.Add(new TeacherUnit(name, 0));
+            SettingsInstance.TeacherUnits.Add(new Teacher(name, 0));
             SettingsInstance.SaveTeacherUnits();
             CheckSettings();
         }
@@ -252,11 +252,11 @@ namespace Raspire
             ListView list = sender as ListView;
             if (list.SelectedIndex != -1)
             {
-                TeacherCard card = new TeacherCard(SettingsInstance.TeacherUnits.ElementAt(list.SelectedIndex), SettingsInstance.SubjectUnits, SettingsInstance.FormUnits);
+                TeacherCard card = new TeacherCard(SettingsInstance.TeacherUnits.ElementAt(list.SelectedIndex), SettingsInstance.SubjectUnits, SettingsInstance.Forms);
                 _ = await card.ShowAsync();
                 if (card.PrimaryButtonCommandParameter != null)
                 {
-                    SettingsInstance.TeacherUnits[list.SelectedIndex] = card.PrimaryButtonCommandParameter as TeacherUnit;
+                    SettingsInstance.TeacherUnits[list.SelectedIndex] = card.PrimaryButtonCommandParameter as Teacher;
                 }
                 else
                 {
@@ -304,7 +304,7 @@ namespace Raspire
             {
                 if ((sender as ListView).SelectedItem != null)
                 {
-                    _ = SettingsInstance.FormUnits.Remove((sender as ListView).SelectedItem as FormUnit);
+                    _ = SettingsInstance.Forms.Remove((sender as ListView).SelectedItem as FormUnit);
                     SettingsInstance.SaveFormUnits();
                     CheckSettings();
                 }
@@ -392,7 +392,7 @@ namespace Raspire
             {
                 Shift1 = new ObservableCollection<FormUnit>();
                 Shift2 = new ObservableCollection<FormUnit>();
-                foreach (FormUnit unit in SettingsInstance.FormUnits)
+                foreach (FormUnit unit in SettingsInstance.Forms)
                 {
                     if (unit.Shift == 1)
                     {
@@ -412,7 +412,7 @@ namespace Raspire
             {
                 FormUnitsList2.Visibility = Visibility.Collapsed;
                 SecondShiftCheckBox.IsEnabled = false;
-                FormUnitsList.ItemsSource = SettingsInstance.FormUnits;
+                FormUnitsList.ItemsSource = SettingsInstance.Forms;
                 //Bindings.Update();
             }
         }

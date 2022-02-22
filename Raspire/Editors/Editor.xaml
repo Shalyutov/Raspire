@@ -11,20 +11,9 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ListItemV2" x:DataType="local:ClassesLessonUnit">
-                <StackPanel Width="135" Height="200" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
+                <StackPanel MinWidth="150" MinHeight="220" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
                     <TextBlock Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
-                    <my:ItemsRepeater ItemsSource="{x:Bind Units}"  >
-                        <my:ItemsRepeater.ItemTemplate>
-                            <DataTemplate x:DataType="local:LessonUnit">
-                                <CheckBox>
-                                    <TextBlock Text="{x:Bind ToString()}" Margin="8,1" FontFamily="/Assets/Jost.ttf#Jost" Foreground="DarkGray" PointerEntered="LessonUnitFocused" PointerExited="LessonUnitUnhovered" DoubleTapped="OpenLessonEditor"/>
-                                </CheckBox>
-                            </DataTemplate>
-                        </my:ItemsRepeater.ItemTemplate>
-                        <my:ItemsRepeater.Layout>
-                            <my:StackLayout Orientation="Vertical" Spacing="2"/>
-                        </my:ItemsRepeater.Layout>
-                    </my:ItemsRepeater>
+                    <ListView ItemsSource="{x:Bind Units}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayClassesUnit">
@@ -40,7 +29,7 @@
             <my:CommandBarFlyout x:Name="Commander" x:Key="Commander">
                 <AppBarElementContainer>
                     <Grid>
-                        <AutoSuggestBox VerticalAlignment="Center" Margin="8,4"/>
+                        <AutoSuggestBox VerticalAlignment="Center" Margin="8,4" QueryIcon="List"/>
                     </Grid>
                 </AppBarElementContainer>
                 <AppBarButton Icon="Add" Click="AddLesson" />
@@ -56,9 +45,18 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Margin="4" HorizontalAlignment="Left">
-            <AppBarButton Icon="Document" Label="Файл" />
-            <AppBarButton Icon="Print" Label="Печать" />
+        <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Margin="4" HorizontalAlignment="Left" >
+            <AppBarButton Icon="Document" Label="Файл" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <AppBarButton Icon="Print" Label="Печать" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <AppBarButton Icon="Setting" Label="Настройки" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <AppBarButton Icon="Help" Label="Помощь" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <AppBarSeparator/>
+            <AppBarElementContainer VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Pin" Margin="10,0"/>
+                    <AutoSuggestBox QueryIcon="List" PlaceholderText="Предмет" Width="150" FontFamily="/Assets/Jost.ttf#Jost"/>
+                </StackPanel>
+            </AppBarElementContainer>
         </CommandBar>
         <ScrollViewer Grid.Row="1" Margin="4" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
             <my:ItemsRepeater ItemTemplate="{StaticResource ItemV2}" ItemsSource="{x:Bind UnitsWorkdays}">

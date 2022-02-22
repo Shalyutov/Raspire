@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Raspire.Logics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,121 +15,51 @@ namespace Raspire
     /// <summary>
     /// Главный класс-структура для храненния расписания.
     /// </summary>
-    public class Schedule
+    internal class Schedule
     {
-        public string Name { get; set; }
-        public int Type { get; set; }
-        public int Number { get; set; }
-        public DateTimeOffset? Date { get; set; }
         public List<LessonItem> LessonItems { get; set; }
         public Settings Settings { get; set; }
-        [JsonConstructor]
-        public Schedule(string name, List<LessonItem> lessons, int type, int number, Settings settings, DateTimeOffset? date = null)
+        public Schedule(List<LessonItem> lessons, Settings settings)
         {
-            Name = name;
             LessonItems = lessons;
-            Type = type;
-            Number = number;
-            Date = date;
             Settings = settings;
         }
-        public Schedule(string name, int type, Settings settings, DateTimeOffset? date = null)
+        public ObservableCollection<FormWorkdays> GetStructForms()
         {
-            Name = name;
-            LessonItems = new List<LessonItem>();
-            Type = type;
-            Number = 1;
-            Date = date;
-            Settings = settings;
-        }
-        public Schedule(string name, int type, int number = 1, DateTimeOffset? date = null)
-        {
-            Name = name;
-            LessonItems = new List<LessonItem>();
-            Type = type;
-            Number = number;
-            Date = date;
-            Settings = new Settings();
-        }
-        public ObservableCollection<LessonsClassUnit> GetStructLesssonClass()
-        {
-            ObservableCollection<LessonsClassUnit> LessonsClassUnits = new ObservableCollection<LessonsClassUnit>();
-            foreach (FormUnit form in Settings.FormUnits)
+            ObservableCollection<FormWorkdays> units = new ObservableCollection<FormWorkdays>();
+            foreach (Form form in Settings.Forms)
             {
-                LessonsClassUnits.Add(new LessonsClassUnit(form, new ObservableCollection<CollectionWorkdaysLessons>()));
-                if (Type == 0 || Type == 1)
+                units.Add(new FormWorkdays(form, new ObservableCollection<WorkdayLessons>()));
+                foreach (int day in Settings.Workdays)
                 {
-                    foreach (int day in Settings.Workdays)
-                    {
-                        LessonsClassUnits.Last().WorkdaysUnits.Add(new CollectionWorkdaysLessons(new ObservableCollection<LessonUnit>(), GetDay(day)));
-                    }
-                }
-                else
-                {
-                    LessonsClassUnits.Last().WorkdaysUnits.Add(new CollectionWorkdaysLessons(new ObservableCollection<LessonUnit>(), ""));
+                    units.Last().WorkdayLessons.Add(new WorkdayLessons(new ObservableCollection<Lesson>(), day));
                 }
             }
             foreach (LessonItem item in LessonItems)
             {
-                int f = GetIndexForm(item.Form);
-                int w = GetIndexWorkday(item.Workday);
-                if (f == -1)
-                {
-                    continue;
-                }
-                if (w == -1)
-                {
-                    continue;
-                }
-                LessonsClassUnits[f].WorkdaysUnits[w].LessonUnits.Add(item.Lesson);
+                int f = Settings.Forms.IndexOf(item.Lesson.Group as Form);
+                units[f].WorkdayLessons[item.Workday].Lessons.Add(item.Lesson);
             }
-            return LessonsClassUnits;
+            return units;
         }
-        private int GetIndexForm(FormUnit form)
+        public ObservableCollection<WorkdayForms> GetStructWorkday()
         {
-            int f = 0;
-            foreach(FormUnit unit in Settings.FormUnits)
-            {
-                if (unit.ToString() == form.ToString())
-                {
-                    return f;
-                }
-                f++;
-            }
-            return -1;
-        }
-        private int GetIndexWorkday(string workday)
-        {
-            int w = 0;
-            foreach (int unit in Settings.Workdays)
-            {
-                if (GetDay(unit) == workday)
-                {
-                    return w;
-                }
-                w++;
-            }
-            return -1;
-        }
-        public ObservableCollection<WorkdayClassesUnit> GetStructWorkday()
-        {
-            ObservableCollection<WorkdayClassesUnit> WorkdayClassesUnits = new ObservableCollection<WorkdayClassesUnit>();
+            ObservableCollection<WorkdayForms> units = new ObservableCollection<WorkdayForms>();
             foreach (int workday in Settings.Workdays)
             {
-                var units = new ObservableCollection<ClassesLessonUnit>();
-                foreach (FormUnit form in Settings.FormUnits)
+                var unitsl = new ObservableCollection<FormLessons>();
+                foreach (Form form in Settings.Forms)
                 {
-                    units.Add(new ClassesLessonUnit(new ObservableCollection<LessonUnit>(), form));
+                    unitsl.Add(new FormLessons(new ObservableCollection<Lesson>(), form));
                 }
-                WorkdayClassesUnits.Add(new WorkdayClassesUnit(GetDay(workday), units));
+                units.Add(new WorkdayForms(workday, unitsl));
             }
             foreach (LessonItem item in LessonItems)
             {
-                int f = GetIndexForm(item.Form);
-                int w = GetIndexWorkday(item.Workday);
-                WorkdayClassesUnits[w].ClassesUnits[f].Units.Add(item.Lesson);
+                int f = Settings.Forms.IndexOf(item.Lesson.Group as Form);
+                units[item.Workday].FormLessons[f].Lessons.Add(item.Lesson);
             }
-            return WorkdayClassesUnits;
+            return units;
         }
         public async Task<StorageFile> Save(StorageFile file)
         {
@@ -160,7 +91,7 @@ namespace Raspire
                 Windows.Storage.Pickers.FileSavePicker savePicker = new Windows.Storage.Pickers.FileSavePicker
                 {
                     SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary,
-                    SuggestedFileName = Name
+                    SuggestedFileName = "Расписание"
                 };
                 savePicker.FileTypeChoices.Add("Файл разметки расписания", new List<string>() { ".rsl" });
                 StorageFile file = await savePicker.PickSaveFileAsync();
@@ -192,7 +123,6 @@ namespace Raspire
                 _ = await dialog.ShowAsync();
                 return null;
             }
-            
         }
         public static string GetDay(int day)
         {
@@ -208,165 +138,45 @@ namespace Raspire
                 default: return "?";
             }
         }
-        public static int GetDayInt(string day)
-        {
-            switch (day)
-            {
-                case "ПН": return 0;
-                case "ВТ": return 1;
-                case "СР": return 2;
-                case "ЧТ": return 3;
-                case "ПТ": return 4;
-                case "СБ": return 5;
-                case "ВС": return 6;
-                default: return -1;
-            }
-        }
     }
-    public class LessonItem
+    internal class FormLessons
     {
-        public LessonUnit Lesson { get; set; }
-        public FormUnit Form { get; set; }
-        public string Workday { get; set; }
-
-        public LessonItem(LessonUnit lesson, FormUnit form, string workday)
+        public Form Form { get; set; }
+        public ObservableCollection<Lesson> Lessons { get; set; }
+        public FormLessons(ObservableCollection<Lesson> units, Form form)
         {
-            Lesson = lesson;
-            Form = form;
-            Workday = workday;
-        }
-    }
-    public class LessonsClassUnit
-    {
-        public FormUnit FormUnit { get; set; }
-        public ObservableCollection<CollectionWorkdaysLessons> WorkdaysUnits { get; set; }
-        public LessonsClassUnit(FormUnit formUnit, ObservableCollection<CollectionWorkdaysLessons> lessonUnits)
-        {
-            FormUnit = formUnit;
-            WorkdaysUnits = lessonUnits;
-        }
-    }
-    public class WorkdayClassesUnit
-    {
-        public string Workday { get; set; }
-        public ObservableCollection<ClassesLessonUnit> ClassesUnits { get; set; }
-        public WorkdayClassesUnit(string workday, ObservableCollection<ClassesLessonUnit> classesLessonUnits)
-        {
-            Workday = workday;
-            ClassesUnits = classesLessonUnits;
-        }
-    }
-    public class ClassesLessonUnit
-    {
-        public ObservableCollection<LessonUnit> Units { get; set; }
-        public FormUnit Form { get; set; }
-
-        public ClassesLessonUnit(ObservableCollection<LessonUnit> units, FormUnit form)
-        {
-            Units = units;
+            Lessons = units;
             Form = form;
         }
     }
-    public class CollectionWorkdaysLessons
+    internal class WorkdayLessons
     {
-        public string Workday { get; set; }
-        public ObservableCollection<LessonUnit> LessonUnits { get; set; }
-        public CollectionWorkdaysLessons(ObservableCollection<LessonUnit> lessonUnits, string workday)
+        public int Workday { get; set; }
+        public ObservableCollection<Lesson> Lessons { get; set; }
+        public WorkdayLessons(ObservableCollection<Lesson> lessonUnits, int workday)
         {
-            LessonUnits = lessonUnits;
+            Lessons = lessonUnits;
             Workday = workday;
         }
     }
-    public class LessonUnit
+    internal class FormWorkdays
     {
-        public ObservableCollection<SubjectUnit> Subject { get; set; } = new ObservableCollection<SubjectUnit>();
-        public ObservableCollection<int> Cabinet { get; set; } = new ObservableCollection<int>();
-        public ObservableCollection<string> Teacher { get; set; } = new ObservableCollection<string>();
-        public LessonUnit(SubjectUnit subject, int cabinet, TeacherUnit teacher)
+        public Form Form { get; set; }
+        public ObservableCollection<WorkdayLessons> WorkdayLessons { get; set; }
+        public FormWorkdays(Form formUnit, ObservableCollection<WorkdayLessons> lessonUnits)
         {
-            Subject.Add(subject);
-            Cabinet.Add(cabinet);
-            Teacher.Add(teacher.Name);
+            Form = formUnit;
+            WorkdayLessons = lessonUnits;
         }
-        [JsonConstructor]
-        public LessonUnit(ObservableCollection<SubjectUnit> subject, ObservableCollection<int> cabinet, ObservableCollection<string> teacher)
+    }
+    internal class WorkdayForms
+    {
+        public int Workday { get; set; }
+        public ObservableCollection<FormLessons> FormLessons { get; set; }
+        public WorkdayForms(int workday, ObservableCollection<FormLessons> formLessonUnits)
         {
-            Subject = subject;
-            Cabinet = cabinet;
-            Teacher = teacher;
-        }
-        public LessonUnit(SubjectUnit subject, TeacherUnit teacher)
-        {
-            Subject.Add(subject);
-            Cabinet.Add(teacher.Cabinet);
-            Teacher.Add(teacher.Name);
-        }
-        public LessonUnit()
-        {
-        }
-        public override string ToString()
-        {
-            string result = "";
-            if (Subject.Count == 1)
-            {
-                if(Cabinet[0] == -1)
-                {
-                    result = Subject[0].CallName;
-                }
-                else
-                {
-                    result = Subject[0].CallName + " • " + Cabinet[0].ToString();
-                }
-                
-            }
-            else if (Subject.Count() == 2)
-            {
-                if (Subject[0].CallName == Subject[1].CallName)
-                {
-                    result = Subject[0].CallName + " • " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
-                }
-                else
-                {
-                    result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5) + " • " + Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
-                }
-            }
-            if (result == "") result = "пустой";
-            return result;
-        }
-        public string Represent()
-        {
-            string result = "";
-            if (Subject.Count == 1)
-            {
-                result = Subject[0].CallName;
-            }
-            else if (Subject.Count() == 2)
-            {
-                if (Subject[0].CallName == Subject[1].CallName)
-                {
-                    result = Subject[0].CallName;
-                }
-                else
-                {
-                    result = Subject[0].CallName.Substring(0, 5) + "/" + Subject[1].CallName.Substring(0, 5);
-                }
-            }
-            if (result == "") result = "пустой";
-
-            return result;
-        }
-        public string RepresentCab()
-        {
-            string result = "";
-            if (Subject.Count == 1)
-            {
-                result = Cabinet[0].ToString();
-            }
-            else if (Subject.Count() == 2)
-            {
-                result = Cabinet[0].ToString() + "/" + Cabinet[1].ToString();
-            }
-            return result;
+            Workday = workday;
+            FormLessons = formLessonUnits;
         }
     }
 }

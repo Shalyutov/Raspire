@@ -21,13 +21,13 @@ namespace Raspire
     public sealed partial class LessonEditor : ContentDialog
     {
         public LessonUnit Unit { get; set; }
-        public ObservableCollection<SubjectUnit> SubjectUnits { get; set; }
-        public ObservableCollection<TeacherUnit> TeacherUnits { get; set; }
+        public ObservableCollection<Subject> SubjectUnits { get; set; }
+        public ObservableCollection<Teacher> TeacherUnits { get; set; }
         public ObservableCollection<FormUnit> FormUnits { get; set; }
         int iForm;
         bool loaded = false;
         bool shield = false;
-        public LessonEditor(LessonUnit unit, ObservableCollection<SubjectUnit> subjectUnits, ObservableCollection<TeacherUnit> teacherUnits, ObservableCollection<FormUnit> formUnits, int indexForm)
+        public LessonEditor(LessonUnit unit, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, ObservableCollection<FormUnit> formUnits, int indexForm)
         {
             Unit = unit == null ? new LessonUnit() : unit;
             SubjectUnits = subjectUnits;
@@ -42,7 +42,7 @@ namespace Raspire
             shield = true;
             if (Unit.Subject.Count == 1)
             {
-                EventSelector.Text = Unit.Subject[0].CallName;
+                EventSelector.Text = Unit.Subject[0].Name;
                 if (Unit.Cabinet[0] == -1)
                 {
                     CabSelector.Visibility = Visibility.Collapsed;
@@ -56,7 +56,7 @@ namespace Raspire
             {
                 SecondUnit.Visibility = Visibility.Visible;
 
-                EventSelector.Text = Unit.Subject[0].CallName;
+                EventSelector.Text = Unit.Subject[0].Name;
                 if (Unit.Cabinet[0] == -1)
                 {
                     CabSelector.Visibility = Visibility.Collapsed;
@@ -66,7 +66,7 @@ namespace Raspire
                     CabSelector.Text = Unit.Cabinet[0].ToString();
                 }
 
-                EventSelector2.Text = Unit.Subject[1].CallName;
+                EventSelector2.Text = Unit.Subject[1].Name;
                 if (Unit.Cabinet[1] == -1)
                 {
                     CabSelector2.Visibility = Visibility.Collapsed;
@@ -186,7 +186,7 @@ namespace Raspire
                 return;
             }
             var text = sender.Text.ToLower();
-            var suitableItems = new List<SubjectUnit>();
+            var suitableItems = new List<Subject>();
             
             if (text == "")
             {
@@ -204,7 +204,7 @@ namespace Raspire
                     suitableItems.Add(unit);
                 }
             }
-            suitableItems.Add(new SubjectUnit(sender.Text + "~ мероприятие"));
+            suitableItems.Add(new Subject(sender.Text + "~ мероприятие"));
             
             sender.ItemsSource = suitableItems;
         }
@@ -214,11 +214,11 @@ namespace Raspire
             shield = true;
             if (args.SelectedItem.ToString().Contains("~"))
             {
-                (args.SelectedItem as SubjectUnit).CallName = args.SelectedItem.ToString().Split("~")[0];
-                EventSelector.Text = (args.SelectedItem as SubjectUnit).CallName;
+                (args.SelectedItem as Subject).Name = args.SelectedItem.ToString().Split("~")[0];
+                EventSelector.Text = (args.SelectedItem as Subject).Name;
                 if (Unit.Subject.Count > 0)
                 {
-                    Unit.Subject[0] = (SubjectUnit)args.SelectedItem;
+                    Unit.Subject[0] = (Subject)args.SelectedItem;
                     Unit.Cabinet[0] = -1;
                     Unit.Teacher[0] = null;
                 }
@@ -232,10 +232,10 @@ namespace Raspire
                 CabSelector.Visibility = Visibility.Visible;
             }
 
-            TeacherUnit teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
+            Teacher teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
             if (teacher != null)
             {
-                Unit = new LessonUnit((SubjectUnit)args.SelectedItem, c, teacher);
+                Unit = new LessonUnit((Subject)args.SelectedItem, c, teacher);
                 CabSelector.Text = c.ToString();
             }
             else
@@ -248,11 +248,11 @@ namespace Raspire
             shield = true;
             if (args.SelectedItem.ToString().Contains("~"))
             {
-                (args.SelectedItem as SubjectUnit).CallName = args.SelectedItem.ToString().Split("~")[0];
-                EventSelector2.Text = (args.SelectedItem as SubjectUnit).CallName;
+                (args.SelectedItem as Subject).Name = args.SelectedItem.ToString().Split("~")[0];
+                EventSelector2.Text = (args.SelectedItem as Subject).Name;
                 if (Unit.Subject.Count == 1)
                 {
-                    Unit.Subject.Add((SubjectUnit)args.SelectedItem);
+                    Unit.Subject.Add((Subject)args.SelectedItem);
                     Unit.Cabinet.Add(-1);
                     Unit.Teacher.Add(null);
                 }
@@ -265,12 +265,12 @@ namespace Raspire
                 CabSelector2.Visibility = Visibility.Visible;
             }
 
-            TeacherUnit teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
+            Teacher teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
             if (teacher != null)
             {
                 if (Unit.Subject.Count == 1)
                 {
-                    Unit.Subject.Add((SubjectUnit)args.SelectedItem);
+                    Unit.Subject.Add((Subject)args.SelectedItem);
                     Unit.Cabinet.Add(c);
                     Unit.Teacher.Add(teacher.Name);
                 }
@@ -281,16 +281,16 @@ namespace Raspire
                 sender.Text = "";
             }
         }
-        public TeacherUnit GetTeacher(string args, out int cab)
+        public Teacher GetTeacher(string args, out int cab)
         {
             cab = -1;
-            foreach (TeacherUnit t in TeacherUnits)
+            foreach (Teacher t in TeacherUnits)
             {
-                foreach (HostUnit s in t.HostedSubjects)
+                foreach (Host s in t.HostedSubjects)
                 {
                     bool subjectMatch = s.Subject.ToString() == args;
                     bool formMatch = false;
-                    foreach (FormCabinetPair f in s.Forms)
+                    foreach (FormClassroom f in s.Forms)
                     {
                         int i = iForm;
                         if (f.Form.ToString() == FormUnits[i].ToString())

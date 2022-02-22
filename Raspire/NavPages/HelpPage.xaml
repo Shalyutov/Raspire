@@ -24,17 +24,15 @@
                             <EntranceThemeTransition  FromVerticalOffset="0" FromHorizontalOffset="-200" />
                         </TransitionCollection>
                     </StackPanel.ChildrenTransitions>
-                    
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        
-                        <Image Source="/Assets/Raspire icon5.png" Width="50" Height="50" Margin="20,20,20,20"/>
-                        <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4,0,0,0" FontWeight="Bold"/>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,8,20,0" CornerRadius="6" Background="{ThemeResource SystemAccentColor}" >
-                            <TextBlock x:Name="VersionLabel" Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind GetAppVersion()}" FontFamily="/Assets/Jost.ttf#Jost" Padding="10,8,10,8"/>
+                        <Image Source="/Assets/Raspire icon5.png" Width="45" Height="45" Margin="16"/>
+                        <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" FontWeight="Bold"/>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" CornerRadius="8" Padding="6" Background="{ThemeResource SystemAccentColor}" >
+                            <TextBlock x:Name="VersionLabel" Text="{x:Bind GetAppVersion()}" FontFamily="/Assets/Jost.ttf#Jost"/>
                         </StackPanel>
                     </StackPanel>
-                    <TextBlock MaxWidth="500" Margin="20" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="Ориентированное на общеобразовательные учреждения приложение для создания, редактирования и доставки расписания"/>
-                    <TextBlock Text="Ведущий разработчик: Шалютов Андрей" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
+                    <TextBlock MaxWidth="500" Margin="20" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="Приложение для создания, редактирования и доставки расписания учебно-образовательного процесса."/>
+                    <TextBlock Text="Разработчик: Шалютов Андрей" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
                     <Image Source="/Assets/netsword full 1.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="132" Height="50" Margin="0,16,0,0" />
                 </StackPanel>
                 <StackPanel Margin="16,6" VerticalAlignment="Center" HorizontalAlignment="Stretch" CornerRadius="6" Background="{ThemeResource SystemBaseLowColor}" Padding="16">
@@ -49,7 +47,7 @@
                                 <EntranceThemeTransition FromVerticalOffset="50" />
                             </TransitionCollection>
                         </StackPanel.ChildrenTransitions>
-                        <TextBlock  Text="Поддержка" Style="{ThemeResource TitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8" FontWeight="Bold"/>
+                        <TextBlock Text="Поддержка" Style="{ThemeResource TitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="8" FontWeight="Bold"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                         <TextBlock Text="Документация доступна на сайте" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>

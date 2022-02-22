@@ -141,6 +141,8 @@
     <Compile Include="Editors\EditorV3.xaml.cs">
       <DependentUpon>EditorV3.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logics\Group.cs" />
+    <Compile Include="Logics\Lesson.cs" />
     <Compile Include="NavPages\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>

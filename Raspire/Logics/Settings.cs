@@ -1,16 +1,17 @@
 ﻿using Newtonsoft.Json;
+using Raspire.Logics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Storage;
 
 namespace Raspire
 {
-    public class Settings
+    internal class Settings
     {
         public List<int> Workdays { get; set; }
-        public ObservableCollection<FormUnit> FormUnits { get; set; }
-        public ObservableCollection<SubjectUnit> SubjectUnits { get; set; }
-        public ObservableCollection<TeacherUnit> TeacherUnits { get; set; }
+        public ObservableCollection<Form> Forms { get; set; }
+        public ObservableCollection<Subject> SubjectUnits { get; set; }
+        public ObservableCollection<Teacher> TeacherUnits { get; set; }
         public string SchoolName { get; set; }
         public string HeadSchool { get; set; }
         public string ScheduleHolder { get; set; }
@@ -25,9 +26,9 @@ namespace Raspire
         public Settings(List<int> workdays, string schoolName, string headSchool, string scheduleHolder)
         {
             Workdays = workdays;
-            FormUnits = new ObservableCollection<FormUnit>();
-            SubjectUnits = new ObservableCollection<SubjectUnit>();
-            TeacherUnits = new ObservableCollection<TeacherUnit>();
+            Forms = new ObservableCollection<Form>();
+            SubjectUnits = new ObservableCollection<Subject>();
+            TeacherUnits = new ObservableCollection<Teacher>();
             SchoolName = schoolName;
             HeadSchool = headSchool;
             ScheduleHolder = scheduleHolder;
@@ -41,9 +42,9 @@ namespace Raspire
             if (SettingsHelper.GetStringLocal("Settings") == "Saved")
             {
                 Workdays = SettingsHelper.GetListLocal<int>("workdays");
-                FormUnits = SettingsHelper.GetObservableCollectionLocal<FormUnit>("formUnits");
-                SubjectUnits = SettingsHelper.GetObservableCollectionLocal<SubjectUnit>("subjectUnits");
-                TeacherUnits = SettingsHelper.GetObservableCollectionLocal<TeacherUnit>("teacherUnits");
+                Forms = SettingsHelper.GetObservableCollectionLocal<Form>("formUnits");
+                SubjectUnits = SettingsHelper.GetObservableCollectionLocal<Subject>("subjectUnits");
+                TeacherUnits = SettingsHelper.GetObservableCollectionLocal<Teacher>("teacherUnits");
                 SchoolName = SettingsHelper.GetStringLocal("schoolName");
                 HeadSchool = SettingsHelper.GetStringLocal("headSchool");
                 ScheduleHolder = SettingsHelper.GetStringLocal("scheduleHolder");
@@ -51,9 +52,9 @@ namespace Raspire
             else
             {
                 Workdays = new List<int>();
-                FormUnits = new ObservableCollection<FormUnit>();
-                SubjectUnits = new ObservableCollection<SubjectUnit>();
-                TeacherUnits = new ObservableCollection<TeacherUnit>();
+                Forms = new ObservableCollection<Form>();
+                SubjectUnits = new ObservableCollection<Subject>();
+                TeacherUnits = new ObservableCollection<Teacher>();
                 SchoolName = "";
                 HeadSchool = "";
                 ScheduleHolder = "";
@@ -61,10 +62,10 @@ namespace Raspire
             }
         }
         [JsonConstructor]
-        public Settings(List<int> workdays, ObservableCollection<FormUnit> formUnits, ObservableCollection<SubjectUnit> subjectUnits, ObservableCollection<TeacherUnit> teacherUnits, string schoolName, string headSchool, string scheduleHolder)
+        public Settings(List<int> workdays, ObservableCollection<Form> formUnits, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, string schoolName, string headSchool, string scheduleHolder)
         {
             Workdays = workdays;
-            FormUnits = formUnits;
+            Forms = formUnits;
             SubjectUnits = subjectUnits;
             TeacherUnits = teacherUnits;
             SchoolName = schoolName;
@@ -75,19 +76,19 @@ namespace Raspire
         public void DefaultSettings()//default data template
         {
             Workdays = new List<int>() { 0, 1, 2, 3, 4 };
-            FormUnits = new ObservableCollection<FormUnit>();
-            foreach (string form in "1 А;2 А;3 А;4 А;5 А;6 А;7 А;8 А;9 А;10 А;11 А".Split(";"))
+            Forms = new ObservableCollection<Form>();
+            foreach (string form in "1А;2А;3А;4А;5А;6А;7А;8А;9А;10А;11А".Split(";"))
             {
-                FormUnits.Add(new FormUnit(form));
+                Forms.Add(new Form(form));
             }
 
-            SubjectUnits = new ObservableCollection<SubjectUnit>();
+            SubjectUnits = new ObservableCollection<Subject>();
             foreach (string subject in "Математика;Русский язык;Литература;История;Обществозание;География;Биология;Информатика;Английский язык;Физика;Химия;ИЗО;Музыка;МХК;Чтение;Окружающий мир;ОБЖ".Split(";"))
             {
-                SubjectUnits.Add(new SubjectUnit(subject));
+                SubjectUnits.Add(new Subject(subject));
             }
 
-            TeacherUnits = new ObservableCollection<TeacherUnit>();
+            TeacherUnits = new ObservableCollection<Teacher>();
             SchoolName = "";
             HeadSchool = "";
             ScheduleHolder = "";
@@ -97,7 +98,7 @@ namespace Raspire
         {
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
             SettingsHelper.SaveObjectLocal("workdays", Workdays);
-            SettingsHelper.SaveObjectLocal("formUnits", FormUnits);
+            SettingsHelper.SaveObjectLocal("formUnits", Forms);
             SettingsHelper.SaveObjectLocal("subjectUnits", SubjectUnits);
             SettingsHelper.SaveObjectLocal("teacherUnits", TeacherUnits);
             SettingsHelper.SaveObjectLocal("SchoolName", SchoolName);
@@ -112,7 +113,7 @@ namespace Raspire
         }
         public void SaveFormUnits()
         {
-            SettingsHelper.SaveObjectLocal("formUnits", FormUnits);
+            SettingsHelper.SaveObjectLocal("formUnits", Forms);
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
         }
         public void SaveSubjectUnits()
@@ -147,7 +148,7 @@ namespace Raspire
                 return false;
             }
 
-            if (FormUnits.Count < 1)
+            if (Forms.Count < 1)
             {
                 return false;
             }
@@ -226,78 +227,40 @@ namespace Raspire
             return JsonConvert.DeserializeObject<List<T>>(localSettings.Values[key] as string);
         }
     }
-    /// <summary>
-    /// Класс представляющий экземпляр учебного класса и его параллель
-    /// </summary>
-    public class FormUnit
+    
+    public class Subject
     {
-        public int Number { get; set; }
-        public string Letter { get; set; }
-        public int Shift { get; set; } = 1;
+        public string Name { get; set; }
         [JsonConstructor]
-        public FormUnit(int Number, string Letter, int shift)//Main Constructor
+        public Subject(string name)
         {
-            this.Number = Number;
-            this.Letter = Letter;
-            Shift = shift;
-        }
-        public FormUnit(string concat)//Additional constructor
-        {
-            string[] args = concat.Split(" ");
-            if (args.Length == 2)
-            {
-                Number = int.Parse(args[0]);
-                Letter = args[1];
-            }
-        }
-        public FormUnit(string concat, bool secondShift)//Additional constructor
-        {
-            string[] args = concat.Split(" ");
-            if (args.Length == 2)
-            {
-                Number = int.Parse(args[0]);
-                Letter = args[1];
-                if (secondShift) Shift = 2;
-            }
+            Name = name;
         }
         public override string ToString()
         {
-            return Number.ToString() + Letter;
+            return Name;
         }
     }
-    public class SubjectUnit
-    {
-        public string CallName { get; set; }
-        [JsonConstructor]
-        public SubjectUnit(string name)
-        {
-            CallName = name;
-        }
-        public override string ToString()
-        {
-            return CallName;
-        }
-    }
-    public class TeacherUnit
+    public class Teacher
     {
         /// <summary>
         /// Класс представляющий информацию об учителе, его кабинете и проводимых им предметов
         /// </summary>
         public string Name { get; set; }
-        public int Cabinet { get; set; }
-        public ObservableCollection<HostUnit> HostedSubjects { get; set; } = new ObservableCollection<HostUnit>();
-        public TeacherUnit(string name, int cabinet)
+        public int Classroom { get; set; }
+        public ObservableCollection<Host> HostedSubjects { get; set; } = new ObservableCollection<Host>();
+        public Teacher(string name, int classroom)
         {
             Name = name;
-            Cabinet = cabinet;
-            HostedSubjects = new ObservableCollection<HostUnit>();
+            Classroom = classroom;
+            HostedSubjects = new ObservableCollection<Host>();
         }
 
         [JsonConstructor]
-        public TeacherUnit(string name, int cabinet, ObservableCollection<HostUnit> subjects)
+        public Teacher(string name, int classroom, ObservableCollection<Host> subjects)
         {
             Name = name;
-            Cabinet = cabinet;
+            Classroom = classroom;
             if (subjects != null)
             {
                 HostedSubjects = subjects;
@@ -307,30 +270,30 @@ namespace Raspire
     /// <summary>
     /// Запись о проводимом предмете и у каких классов (подрупп)
     /// </summary>
-    public class HostUnit
+    internal class Host
     {
-        public SubjectUnit Subject { get; set; }
-        public ObservableCollection<FormCabinetPair> Forms { get; set; }
-        public HostUnit(SubjectUnit subject, ObservableCollection<FormCabinetPair> forms)
+        public Subject Subject { get; set; }
+        public ObservableCollection<FormClassroom> Forms { get; set; }
+        public Host(Subject subject, ObservableCollection<FormClassroom> forms)
         {
             Subject = subject;
             Forms = forms;
         }
         public override string ToString()
         {
-            return $"{Subject.CallName} • {Forms.Count}";
+            return $"{Subject.Name} • {Forms.Count}";
         }
     }
     /// <summary>
     /// Запись о проведении предмета у конкретно представленного класса (подгруппы класса)
     /// </summary>
-    public class FormCabinetPair
+    internal class FormClassroom
     {
-        public FormUnit Form { get; set; }
+        public Form Form { get; set; }
         public int Subgroup { get; set; }
         public int Cabinet { get; set; }
 
-        public FormCabinetPair(FormUnit form, int cabinet, int subgroup)
+        public FormClassroom(Form form, int cabinet, int subgroup)
         {
             Form = form;
             Subgroup = subgroup;

@@ -180,7 +180,7 @@ namespace Raspire
             Schedule.LessonItems.Add(
                     new LessonItem(
                         new LessonUnit(),
-                        Schedule.Settings.FormUnits[f],
+                        Schedule.Settings.Forms[f],
                         Schedule.GetDay(Schedule.Settings.Workdays[w])
                     )
                 );
@@ -190,7 +190,7 @@ namespace Raspire
             shield = true;
             int f = GetCurrentListForm();
             int w = GetCurrentListWorkday(f);
-            LessonEditor lessonEditor = new LessonEditor(CurrentList.SelectedItem as LessonUnit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.FormUnits, f);
+            LessonEditor lessonEditor = new LessonEditor(CurrentList.SelectedItem as LessonUnit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.Forms, f);
             _ = await lessonEditor.ShowAsync();
             if (lessonEditor.PrimaryButtonCommandParameter != null)
             {
@@ -200,7 +200,7 @@ namespace Raspire
                     int index = 0;
                     foreach(LessonItem item in Schedule.LessonItems)
                     {
-                        if ((o as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.FormUnits[f].ToString() && item.Workday == Schedule.GetDay(w))
+                        if ((o as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.Forms[f].ToString() && item.Workday == Schedule.GetDay(w))
                         {
                             index = Schedule.LessonItems.IndexOf(item);
                             Schedule.LessonItems.Remove(item);
@@ -209,7 +209,7 @@ namespace Raspire
                     }
                     src.Insert(src.IndexOf(o as LessonUnit), lessonEditor.PrimaryButtonCommandParameter as LessonUnit);
 
-                    FormUnit form = Schedule.Settings.FormUnits[f];
+                    FormUnit form = Schedule.Settings.Forms[f];
                     string workday = Schedule.GetDay(Schedule.Settings.Workdays[GetCurrentListWorkday(f)]);
                     Schedule.LessonItems.Insert(index, new LessonItem(lessonEditor.PrimaryButtonCommandParameter as LessonUnit, form, workday));
                 }
@@ -235,18 +235,18 @@ namespace Raspire
         }
         private void AddLesson(object sender, RoutedEventArgs e)//function finds best cadidate to assign lesson
         {
-            TeacherUnit teacher = null;
+            Teacher teacher = null;
             int c = -1;
-            foreach (TeacherUnit t in SettingsInstance.TeacherUnits)
+            foreach (Teacher t in SettingsInstance.TeacherUnits)
             {
-                foreach (HostUnit s in t.HostedSubjects)
+                foreach (Host s in t.HostedSubjects)
                 {
                     bool subjectMatch = s.Subject.ToString() == SubjectSelector.SelectedItem.ToString();
                     bool formMatch = false;
-                    foreach (FormCabinetPair f in s.Forms)
+                    foreach (FormClassroom f in s.Forms)
                     {
                         int i = GetCurrentListForm();
-                        if (f.Form.ToString() == SettingsInstance.FormUnits[i].ToString())
+                        if (f.Form.ToString() == SettingsInstance.Forms[i].ToString())
                         {
                             formMatch = true;
                             c = f.Cabinet;
@@ -267,12 +267,12 @@ namespace Raspire
             if (teacher != null)
             {
                 LessonUnit lesson = new LessonUnit(
-                    (SubjectUnit)SubjectSelector.SelectedItem,
+                    (Subject)SubjectSelector.SelectedItem,
                     c,
                     teacher
                 );
                 int f = GetCurrentListForm();
-                FormUnit form = Schedule.Settings.FormUnits[f];
+                FormUnit form = Schedule.Settings.Forms[f];
                 string workday = Schedule.GetDay(Schedule.Settings.Workdays[GetCurrentListWorkday(f)]);
                 (CurrentList.ItemsSource as ObservableCollection<LessonUnit>).Add(lesson);
                 Schedule.LessonItems.Add(new LessonItem(lesson, form, workday));
@@ -294,7 +294,7 @@ namespace Raspire
         private int GetCurrentListWorkday(int form)
         {
             int w = 0;
-            foreach (CollectionWorkdaysLessons i in LessonsClassUnits[form].WorkdaysUnits)
+            foreach (WorkdayLessons i in LessonsClassUnits[form].WorkdaysUnits)
             {
                 if (i.LessonUnits == (CurrentList.ItemsSource as ObservableCollection<LessonUnit>))
                 {
@@ -317,7 +317,7 @@ namespace Raspire
                     _ = (CurrentList.ItemsSource as ObservableCollection<LessonUnit>).Remove(u as LessonUnit);
                     foreach (LessonItem item in Schedule.LessonItems)
                     {
-                        if ((u as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.FormUnits[f].ToString() && item.Workday == Schedule.GetDay(w))
+                        if ((u as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.Forms[f].ToString() && item.Workday == Schedule.GetDay(w))
                         {
                             Schedule.LessonItems.Remove(item);
                             break;
@@ -333,7 +333,7 @@ namespace Raspire
             int w = GetCurrentListWorkday(f);
             foreach (LessonItem item in Schedule.LessonItems)
             {
-                if (item.Form.ToString() == Schedule.Settings.FormUnits[f].ToString() && item.Workday == Schedule.GetDay(w))
+                if (item.Form.ToString() == Schedule.Settings.Forms[f].ToString() && item.Workday == Schedule.GetDay(w))
                 {
                     Schedule.LessonItems.Remove(item);
                     break;
@@ -577,7 +577,7 @@ namespace Raspire
         {
             shield = true;
             int i = GetCurrentListForm();
-            LessonEditor lessonEditor = new LessonEditor(CurrentList.SelectedItem as LessonUnit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.FormUnits, i);
+            LessonEditor lessonEditor = new LessonEditor(CurrentList.SelectedItem as LessonUnit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.Forms, i);
             _ = await lessonEditor.ShowAsync();
             if (lessonEditor.PrimaryButtonCommandParameter != null)
             {
@@ -585,7 +585,7 @@ namespace Raspire
                 src.Add(lessonEditor.PrimaryButtonCommandParameter as LessonUnit);
                 
                 int f = GetCurrentListForm();
-                FormUnit form = Schedule.Settings.FormUnits[f];
+                FormUnit form = Schedule.Settings.Forms[f];
                 string workday = Schedule.GetDay(Schedule.Settings.Workdays[GetCurrentListWorkday(f)]);
                 (CurrentList.ItemsSource as ObservableCollection<LessonUnit>).Add(lessonEditor.PrimaryButtonCommandParameter as LessonUnit);
                 Schedule.LessonItems.Add(new LessonItem(lessonEditor.PrimaryButtonCommandParameter as LessonUnit, form, workday));

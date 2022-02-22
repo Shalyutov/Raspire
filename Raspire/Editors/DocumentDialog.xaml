@@ -8,10 +8,8 @@
     mc:Ignorable="d"
     Title="Расписание"
     PrimaryButtonText="Готово"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonText="Удалить"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
-     Closing="ClosingDialog" CornerRadius="10">
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick" 
+    Closing="ClosingDialog" CornerRadius="10">
     <ContentDialog.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="Расписание" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -22,11 +20,6 @@
             <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
         </Style>
     </ContentDialog.PrimaryButtonStyle>
-    <ContentDialog.SecondaryButtonStyle>
-        <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">
-            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
-        </Style>
-    </ContentDialog.SecondaryButtonStyle>
     <StackPanel>
         <TextBox x:Name="DocumentName" Header="Имя документа" Text="{x:Bind Schedule.Name}" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
         <TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>

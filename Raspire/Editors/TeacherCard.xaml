@@ -91,7 +91,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon x:Name="CabValidator"/>
-                    <TextBox Text="{x:Bind Teacher.Cabinet}" PlaceholderText="Кабинет" TextChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
+                    <TextBox Text="{x:Bind Teacher.Classroom}" PlaceholderText="Кабинет" TextChanged="CabinetChanged" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="4,0">

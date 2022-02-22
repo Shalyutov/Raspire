@@ -27,7 +27,7 @@ namespace Raspire
     public sealed partial class EditorV3 : Page
     {
         public Schedule Schedule { get; set; }
-        public ObservableCollection<WorkdayClassesUnit> UnitsWorkdays { get; set; }
+        public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
         public StorageFile File;
         private Settings SettingsInstance { get; set; }
         private bool shield = false;
@@ -91,13 +91,13 @@ namespace Raspire
             //int w = GetCurrentListWorkday(f);
 
             LessonUnit unit = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS];
-            LessonEditor lessonEditor = new LessonEditor(unit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.FormUnits, CurrentC);
+            LessonEditor lessonEditor = new LessonEditor(unit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.Forms, CurrentC);
             _ = await lessonEditor.ShowAsync();
 
             int index = 0;
             foreach (LessonItem item in Schedule.LessonItems)
             {
-                if ((lessonEditor.PrimaryButtonCommandParameter as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.FormUnits[CurrentC].ToString() && item.Workday == Schedule.GetDay(CurrentW))
+                if ((lessonEditor.PrimaryButtonCommandParameter as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.Forms[CurrentC].ToString() && item.Workday == Schedule.GetDay(CurrentW))
                 {
                     index = Schedule.LessonItems.IndexOf(item);
                     Schedule.LessonItems.Remove(item);
@@ -109,7 +109,7 @@ namespace Raspire
             {
                 ObservableCollection<LessonUnit> src = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units;
 
-                FormUnit form = Schedule.Settings.FormUnits[CurrentC];
+                FormUnit form = Schedule.Settings.Forms[CurrentC];
                 string workday = Schedule.GetDay(Schedule.Settings.Workdays[CurrentW]);
                 Schedule.LessonItems.Insert(index, new LessonItem(lessonEditor.PrimaryButtonCommandParameter as LessonUnit, form, workday));
 

@@ -41,7 +41,7 @@ namespace Raspire
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
 
-            return "Версия " + string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+            return $"22H{version.Major}V{version.Minor}";
 
         }
         public void BackWork(object sender, RoutedEventArgs e)

@@ -103,9 +103,9 @@
                         </StackPanel>
                         <ListView x:Name="SubjectUnitsList" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind SettingsInstance.SubjectUnits}" KeyDown="KeyDeleteSubjectHandler">
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:SubjectUnit">
+                                <DataTemplate x:DataType="local:Subject">
                                     <StackPanel Orientation="Horizontal" Padding="4">
-                                        <TextBlock Text="{x:Bind CallName}" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
+                                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -124,7 +124,7 @@
                         </StackPanel>
                         <ListView x:Name="TeacherUnitsList" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind SettingsInstance.TeacherUnits}" SelectionChanged="TeacherSelected">
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:TeacherUnit">
+                                <DataTemplate x:DataType="local:Teacher">
                                     <StackPanel Orientation="Horizontal" Padding="4">
                                         <my:PersonPicture DisplayName="{x:Bind Name}" Width="24" Height="24" />
                                         <TextBlock Text="{x:Bind Name}" Margin="4,0,0,0" HorizontalAlignment="Center" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>

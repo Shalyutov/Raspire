@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -53,7 +54,7 @@ namespace Raspire
             {
                 p = "Редактор";
                 FileNameParent.Visibility = Visibility.Visible;
-                if (e.Parameter != null) FileName.Text = ((e.Parameter as List<object>)[0] as Schedule).Name;
+                if (e.Parameter != null) FileName.Text = ((e.Parameter as List<object>)[1] as StorageFile).DisplayName;
             }
             else if (page == typeof(HelpPage))
             {
