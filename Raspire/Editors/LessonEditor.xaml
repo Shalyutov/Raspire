@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Урок"
-    CornerRadius="10" Loaded="DialogLoaded">
+    CornerRadius="10" >
     <ContentDialog.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="Урок" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -20,32 +20,32 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox x:Name="EventSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps" TextChanged="TextChangedSuggest" SuggestionChosen="SuggestChosen" />
-            <TextBox Grid.Column="1" x:Name="CabSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" TextChanged="CabSelectorChanged"/>
+            <AutoSuggestBox x:Name="EventSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps"  />
+            <TextBox Grid.Column="1" x:Name="CabSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" />
         </Grid>
         <Grid x:Name="SecondUnit" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox x:Name="EventSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps" TextChanged="TextChangedSuggest" SuggestionChosen="SuggestChosen2"  />
-            <TextBox Grid.Column="1" x:Name="CabSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" TextChanged="CabSelector2Changed" />
+            <AutoSuggestBox x:Name="EventSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps"  />
+            <TextBox Grid.Column="1" x:Name="CabSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" />
         </Grid>
         
         <StackPanel Orientation="Horizontal" Margin="0,4">
-            <Button Margin="4" Click="StandardLesson" ToolTipService.ToolTip="Обычный урок">
+            <Button Margin="4" ToolTipService.ToolTip="Обычный урок">
                 <SymbolIcon Symbol="Accept" Margin="4"/>
             </Button>
-            <Button Margin="4" Click="DoubleLesson" ToolTipService.ToolTip="Двойной урок" >
+            <Button Margin="4"  ToolTipService.ToolTip="Двойной урок" >
                 <SymbolIcon Symbol="ShowResults" Margin="4"/>
             </Button>
-            <Button Margin="4" Click="StandardEvent" ToolTipService.ToolTip="Мероприятие">
+            <Button Margin="4"  ToolTipService.ToolTip="Мероприятие">
                 <SymbolIcon Symbol="Flag" Margin="4"/>
             </Button>
-            <Button Margin="4" Click="EmptyLesson" ToolTipService.ToolTip="Пустой урок (окно)">
+            <Button Margin="4" ToolTipService.ToolTip="Пустой урок (окно)">
                 <SymbolIcon Symbol="ClearSelection" Margin="4"/>
             </Button>
-            <Button Margin="4" Click="DeleteLesson" ToolTipService.ToolTip="Удалить урок">
+            <Button Margin="4"  ToolTipService.ToolTip="Удалить урок">
                 <SymbolIcon Symbol="Delete" Margin="4"/>
             </Button>
         </StackPanel>

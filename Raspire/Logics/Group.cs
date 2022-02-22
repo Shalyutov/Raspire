@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raspire.Logics
+namespace Raspire
 {
     /// <summary>
     /// Класс представляющий экземпляр учебной группы
     /// </summary>
-    internal class Group : IEquatable<Group>
+    public class Group : IEquatable<Group>
     {
         public string Name { get; set; }
         public int SubgroupCount { get; set; }
@@ -57,7 +57,7 @@ namespace Raspire.Logics
     /// <summary>
     /// Класс представляющий экземпляр учебного класса
     /// </summary>
-    internal class Form : Group
+    public class Form : Group
     {
         public int Shift { get; set; }
 

@@ -37,7 +37,7 @@ namespace Raspire
             var parameter = e.Parameter as List<object>;
             if (parameter != null)
             {
-                MainFrame.Navigate(typeof(EditorV3), parameter, new DrillInNavigationTransitionInfo());
+                MainFrame.Navigate(typeof(Editor), parameter, new DrillInNavigationTransitionInfo());
             }
         }
         private void MainNav(object sender, NavigationEventArgs e)
@@ -50,7 +50,7 @@ namespace Raspire
             {
                 p = "Raspire";
             }
-            else if (page == typeof(EditorV2) | page == typeof(EditorV3) | page == typeof(Editor))
+            else if (page == typeof(Editor))
             {
                 p = "Редактор";
                 FileNameParent.Visibility = Visibility.Visible;

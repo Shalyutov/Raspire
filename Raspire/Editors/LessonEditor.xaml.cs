@@ -14,22 +14,21 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Диалоговое окно содержимого" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
-    public sealed partial class LessonEditor : ContentDialog
+    /*
+    internal sealed partial class LessonEditor : ContentDialog
     {
-        public LessonUnit Unit { get; set; }
+        public Lesson Unit { get; set; }
         public ObservableCollection<Subject> SubjectUnits { get; set; }
         public ObservableCollection<Teacher> TeacherUnits { get; set; }
-        public ObservableCollection<FormUnit> FormUnits { get; set; }
+        public ObservableCollection<Form> FormUnits { get; set; }
         int iForm;
         bool loaded = false;
         bool shield = false;
-        public LessonEditor(LessonUnit unit, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, ObservableCollection<FormUnit> formUnits, int indexForm)
+        public LessonEditor(Lesson unit, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, ObservableCollection<Form> formUnits, int indexForm)
         {
-            Unit = unit == null ? new LessonUnit() : unit;
+            //Unit = unit == null ? new Lesson() : unit;
             SubjectUnits = subjectUnits;
             TeacherUnits = teacherUnits;
             FormUnits = formUnits;
@@ -309,4 +308,5 @@ namespace Raspire
             return null;
         }
     }
+    */
 }

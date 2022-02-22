@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Raspire"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      mc:Ignorable="d"
     NavigationCacheMode="Required">
 
     <Grid>
@@ -60,7 +60,7 @@
                         <ToggleSwitch OffContent="Одна смена" OnContent="Две смены" IsOn="{x:Bind SecondShiftEnabled()}" FontFamily="/Assets/Jost.ttf#Jost" Margin="0,4" Toggled="SecondShiftToggled" />
                         <ListView x:Name="FormUnitsList" FontFamily="/Assets/Jost.ttf#Jost" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" >
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:FormUnit">
+                                <DataTemplate x:DataType="local:Form">
                                     <StackPanel Orientation="Horizontal" Padding="0">
                                         <TextBlock FontFamily="/Assets/Jost.ttf#Jost" FontSize="14" Text="{x:Bind ToString()}"/>
                                     </StackPanel>
@@ -75,7 +75,7 @@
                         <Border x:Name="ShiftSeparator" BorderThickness="0,1,0,0" BorderBrush="{ThemeResource ButtonForegroundThemeBrush}" Margin="70,6"/>
                         <ListView x:Name="FormUnitsList2" FontFamily="/Assets/Jost.ttf#Jost" ItemsSource="{x:Bind Shift2}" CanReorderItems="True" CanDragItems="True" AllowDrop="True" DragItemsCompleted="SaveOrderFormUnits" KeyDown="FormUnitsKeyHandler" Margin="0,6">
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:FormUnit">
+                                <DataTemplate x:DataType="local:Form">
                                     <StackPanel Orientation="Horizontal" Padding="0">
                                         <TextBlock Text="{x:Bind ToString()}" FontSize="14" FontFamily="/Assets/Jost.ttf#Jost"/>
                                     </StackPanel>

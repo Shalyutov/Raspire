@@ -7,9 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Расписание"
-    PrimaryButtonText="Готово"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick" 
-    Closing="ClosingDialog" CornerRadius="10">
+    PrimaryButtonText="Готово" CornerRadius="10">
     <ContentDialog.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="Расписание" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -21,10 +19,9 @@
         </Style>
     </ContentDialog.PrimaryButtonStyle>
     <StackPanel>
-        <TextBox x:Name="DocumentName" Header="Имя документа" Text="{x:Bind Schedule.Name}" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
         <TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
         <StackPanel Orientation="Horizontal">
-            <Button IsEnabled="False" Content="{x:Bind GetTypeLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <Button IsEnabled="False" Content="" FontFamily="/Assets/Jost.ttf#Jost"/>
             <Button x:Name="SemiButton" Margin="12,0,0,0">
                 <Button.Flyout>
                     <Flyout x:Name="ChangeSemiScheduleFlyout" >
@@ -34,7 +31,7 @@
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
-                <TextBlock Text="{x:Bind GetSemiScheduleLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                <TextBlock Text="" FontFamily="/Assets/Jost.ttf#Jost"/>
             </Button>
             <Button x:Name="QuartButton" Margin="12,0,0,0">
                 <Button.Flyout>
@@ -47,10 +44,10 @@
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
-                <TextBlock Text="{x:Bind GetQuarterScheduleLabel()}" FontFamily="/Assets/Jost.ttf#Jost"/>
+                <TextBlock Text="" FontFamily="/Assets/Jost.ttf#Jost"/>
             </Button>
         </StackPanel>
-        <Button Click="ExportDocument" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
+        <Button Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="SaveLocal"/>
                 <TextBlock Text="Экспорт" Margin="8,0"/>

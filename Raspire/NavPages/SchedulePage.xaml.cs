@@ -112,9 +112,9 @@ namespace Raspire
             Settings settings = new Settings();
             if (settings.AreSettingsCorreсt())
             {
-                Schedule schedule = new Schedule("Расписание", 0);
+                Schedule schedule = new Schedule(new List<LessonItem>(), settings);
                 
-                List<object> param = new List<object>() { schedule, null};
+                List<object> param = new List<object>() {schedule, null};
                 Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
             else
@@ -130,7 +130,7 @@ namespace Raspire
             if (settings.AreSettingsCorreсt())
             {
                 //Schedule schedule = new Schedule("Расписание", new System.Collections.ObjectModel.ObservableCollection<LessonsClassUnit>(), 1, null);
-                Schedule schedule = new Schedule("Расписание", 1);
+                Schedule schedule = new Schedule(new List<LessonItem>(), settings);
                 List<object> param = new List<object>() { schedule, null };
                 Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }
@@ -146,7 +146,7 @@ namespace Raspire
             Settings settings = new Settings();
             if (settings.AreSettingsCorreсt())
             {
-                Schedule schedule = new Schedule("Расписание", 2);
+                Schedule schedule = new Schedule(new List<LessonItem>(), settings);
                 List<object> param = new List<object>() { schedule, null };
                 Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
             }

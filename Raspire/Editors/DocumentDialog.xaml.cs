@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Raspire
 {
-    internal sealed partial class DocumentDialog : ContentDialog
+    public sealed partial class DocumentDialog : ContentDialog
     {
         Schedule Schedule;
         public DocumentDialog(Schedule schedule)
@@ -30,24 +30,24 @@ namespace Raspire
         }
         private void ChangeSemi(object sender, RoutedEventArgs e)
         {
-            Schedule.Number = int.Parse((sender as Button).Content.ToString());
+            //Schedule.Number = int.Parse((sender as Button).Content.ToString());
             ChangeSemiScheduleFlyout.Hide();
-            Bindings.Update();
+            //Bindings.Update();
         }
-        public string GetSemiScheduleLabel()
+        /*public string GetSemiScheduleLabel()
         {
             return Schedule != null ? $"{Schedule.Number} полугодие" : "-";
-        }
+        }*/
         private void ChangeQuarter(object sender, RoutedEventArgs e)
         {
-            Schedule.Number = int.Parse((sender as Button).Content.ToString());
+            //Schedule.Number = int.Parse((sender as Button).Content.ToString());
             ChangeQuarterScheduleFlyout.Hide();
-            Bindings.Update();
+            //Bindings.Update();
         }
-        public string GetQuarterScheduleLabel()
+        /*public string GetQuarterScheduleLabel()
         {
             return Schedule != null ? $"{Schedule.Number} четверть" : "-";
-        }
+        }*/
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             PrimaryButtonCommandParameter = Schedule;

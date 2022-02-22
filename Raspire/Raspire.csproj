@@ -135,12 +135,6 @@
     <Compile Include="Editors\Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editors\EditorV2.xaml.cs">
-      <DependentUpon>EditorV2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Editors\EditorV3.xaml.cs">
-      <DependentUpon>EditorV3.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Logics\Group.cs" />
     <Compile Include="Logics\Lesson.cs" />
     <Compile Include="NavPages\HelpPage.xaml.cs">
@@ -151,9 +145,6 @@
     </Compile>
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NavPages\PrintPage.xaml.cs">
-      <DependentUpon>PrintPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logics\Schedule.cs" />
@@ -253,14 +244,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Editors\EditorV2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Editors\EditorV3.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="NavPages\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -270,10 +253,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Main.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NavPages\PrintPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

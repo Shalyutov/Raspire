@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Raspire.Logics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +14,7 @@ namespace Raspire
     /// <summary>
     /// Главный класс-структура для храненния расписания.
     /// </summary>
-    internal class Schedule
+    public class Schedule
     {
         public List<LessonItem> LessonItems { get; set; }
         public Settings Settings { get; set; }
@@ -139,7 +138,7 @@ namespace Raspire
             }
         }
     }
-    internal class FormLessons
+    public class FormLessons
     {
         public Form Form { get; set; }
         public ObservableCollection<Lesson> Lessons { get; set; }
@@ -149,7 +148,7 @@ namespace Raspire
             Form = form;
         }
     }
-    internal class WorkdayLessons
+    public class WorkdayLessons
     {
         public int Workday { get; set; }
         public ObservableCollection<Lesson> Lessons { get; set; }
@@ -159,7 +158,7 @@ namespace Raspire
             Workday = workday;
         }
     }
-    internal class FormWorkdays
+    public class FormWorkdays
     {
         public Form Form { get; set; }
         public ObservableCollection<WorkdayLessons> WorkdayLessons { get; set; }
@@ -169,7 +168,7 @@ namespace Raspire
             WorkdayLessons = lessonUnits;
         }
     }
-    internal class WorkdayForms
+    public class WorkdayForms
     {
         public int Workday { get; set; }
         public ObservableCollection<FormLessons> FormLessons { get; set; }

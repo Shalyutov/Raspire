@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Raspire.Logics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Storage;
 
 namespace Raspire
 {
-    internal class Settings
+    public class Settings
     {
         public List<int> Workdays { get; set; }
         public ObservableCollection<Form> Forms { get; set; }
@@ -79,7 +78,7 @@ namespace Raspire
             Forms = new ObservableCollection<Form>();
             foreach (string form in "1А;2А;3А;4А;5А;6А;7А;8А;9А;10А;11А".Split(";"))
             {
-                Forms.Add(new Form(form));
+                Forms.Add(new Form(form, 0));
             }
 
             SubjectUnits = new ObservableCollection<Subject>();
@@ -270,7 +269,7 @@ namespace Raspire
     /// <summary>
     /// Запись о проводимом предмете и у каких классов (подрупп)
     /// </summary>
-    internal class Host
+    public class Host
     {
         public Subject Subject { get; set; }
         public ObservableCollection<FormClassroom> Forms { get; set; }
@@ -287,7 +286,7 @@ namespace Raspire
     /// <summary>
     /// Запись о проведении предмета у конкретно представленного класса (подгруппы класса)
     /// </summary>
-    internal class FormClassroom
+    public class FormClassroom
     {
         public Form Form { get; set; }
         public int Subgroup { get; set; }

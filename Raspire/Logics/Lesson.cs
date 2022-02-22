@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Raspire.Logics
+namespace Raspire
 {
-    internal class Lesson : IEquatable<Lesson>
+    public class Lesson : IEquatable<Lesson>
     {
         public Subject Subject { get; set; }
         public Group Group { get; set; }
@@ -54,7 +54,7 @@ namespace Raspire.Logics
             return $"{Subject} • {Classroom}";
         }
     }
-    internal class LessonItem
+    public class LessonItem
     {
         public Lesson Lesson { get; set; }
         public int Workday { get; set; }

@@ -17,8 +17,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
     /// <summary>
@@ -28,7 +26,7 @@ namespace Raspire
     {
         public Schedule Schedule { get; set; }
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
-        public StorageFile File;
+        public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
         private bool shield = false;
         int CurrentS;
@@ -50,7 +48,7 @@ namespace Raspire
                 UnitsWorkdays = Schedule.GetStructWorkday();
             }
         }
-        private List<string> GetWorkdayStringList()
+        /*private List<string> GetWorkdayStringList()
         {
             List<string> result = new List<string>();
             foreach (int day in SettingsInstance.Workdays)
@@ -58,8 +56,8 @@ namespace Raspire
                 result.Add(Schedule.GetDay(day));
             }
             return result;
-        }
-        private void LessonUnitFocused(object sender, PointerRoutedEventArgs e)
+        }*/
+        /*private void LessonUnitFocused(object sender, PointerRoutedEventArgs e)
         {
             if (shield) return;
             TextBlock t = sender as TextBlock;
@@ -73,22 +71,15 @@ namespace Raspire
             //CabinetSelector.Text = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS].RepresentCab();
             //LessonIndex.Text = (CurrentS + 1).ToString();
             t.Foreground = ActualTheme == ElementTheme.Dark ? new SolidColorBrush(Windows.UI.Colors.White) : new SolidColorBrush(Windows.UI.Colors.Black);
-        }
-
-        private void LessonUnitUnhovered(object sender, PointerRoutedEventArgs e)
-        {
-            TextBlock t = sender as TextBlock;
-            t.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
-        }
-
-        private async void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
+        }*/
+        private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
         {
             shield = true;
 
             //int f = GetCurrentListForm();
             //int w = GetCurrentListWorkday(f);
 
-            LessonUnit unit = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS];
+            /*Lesson unit = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS];
             LessonEditor lessonEditor = new LessonEditor(unit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.Forms, CurrentC);
             _ = await lessonEditor.ShowAsync();
 
@@ -119,7 +110,7 @@ namespace Raspire
             {
                 UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units.RemoveAt(CurrentS);
                 Schedule.LessonItems.RemoveAt(index);
-            }
+            }*/
             shield = false;
         }
 
@@ -132,11 +123,11 @@ namespace Raspire
             }
         }
 
-        private void EnterEditor2(object sender, RoutedEventArgs e)
+        /*private void EnterEditor2(object sender, RoutedEventArgs e)
         {
             List<object> param = new List<object>() { Schedule, File };
             Frame.Navigate(typeof(EditorV2), param);
-        }
+        }*/
 
         private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
         {

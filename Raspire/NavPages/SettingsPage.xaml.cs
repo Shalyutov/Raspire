@@ -18,8 +18,8 @@ namespace Raspire
     {
         private Settings SettingsInstance = new Settings();
         private readonly List<int> Workdays = new List<int>();
-        private ObservableCollection<FormUnit> Shift1 = new ObservableCollection<FormUnit>();
-        private ObservableCollection<FormUnit> Shift2 = new ObservableCollection<FormUnit>();
+        private ObservableCollection<Form> Shift1 = new ObservableCollection<Form>();
+        private ObservableCollection<Form> Shift2 = new ObservableCollection<Form>();
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -49,7 +49,7 @@ namespace Raspire
             {
                 FormUnitsList2.Visibility = Visibility.Visible;
                 ShiftSeparator.Visibility = Visibility.Visible;
-                foreach (FormUnit unit in SettingsInstance.Forms)
+                foreach (Form unit in SettingsInstance.Forms)
                 {
                     if (unit.Shift == 1)
                     {
@@ -121,10 +121,11 @@ namespace Raspire
                 }
                 if (SecondShiftEnabled())
                 {
-                    if (SecondShiftCheckBox.IsChecked.HasValue)
+                    var value = SecondShiftCheckBox.IsChecked;
+                    if (value.HasValue)
                     {
-                        SettingsInstance.Forms.Add(new FormUnit($"{n} {l}", SecondShiftCheckBox.IsChecked.Value));
-                        if (SecondShiftCheckBox.IsChecked.Value)
+                        SettingsInstance.Forms.Add(new Form(FormUnitBox.Text, 0, value.Value ? 2 : 1));
+                        if (value.Value)
                         {
                             Shift2.Add(SettingsInstance.Forms.Last());
                         }
@@ -135,12 +136,12 @@ namespace Raspire
                     }
                     else
                     {
-                        SettingsInstance.Forms.Add(new FormUnit($"{n} {l}"));
+                        SettingsInstance.Forms.Add(new Form(FormUnitBox.Text, 0));
                     }
                 }
                 else
                 {
-                    SettingsInstance.Forms.Add(new FormUnit($"{n} {l}", false));
+                    SettingsInstance.Forms.Add(new Form(FormUnitBox.Text, 0));
                 }
 
                 SettingsInstance.SaveFormUnits();
@@ -151,10 +152,10 @@ namespace Raspire
         {
             if (FormUnitsList.SelectedItem != null)
             {
-                _ = SettingsInstance.Forms.Remove(FormUnitsList.SelectedItem as FormUnit);
+                _ = SettingsInstance.Forms.Remove(FormUnitsList.SelectedItem as Form);
                 if (SecondShiftEnabled())
                 {
-                    _ = Shift1.Remove(FormUnitsList.SelectedItem as FormUnit);
+                    _ = Shift1.Remove(FormUnitsList.SelectedItem as Form);
                 }
                 SettingsInstance.SaveFormUnits();
                 CheckSettings();
@@ -162,10 +163,10 @@ namespace Raspire
             }
             if (FormUnitsList2.SelectedItem != null)
             {
-                _ = SettingsInstance.Forms.Remove(FormUnitsList2.SelectedItem as FormUnit);
+                _ = SettingsInstance.Forms.Remove(FormUnitsList2.SelectedItem as Form);
                 if (SecondShiftEnabled())
                 {
-                    _ = Shift2.Remove(FormUnitsList2.SelectedItem as FormUnit);
+                    _ = Shift2.Remove(FormUnitsList2.SelectedItem as Form);
                 }
                 SettingsInstance.SaveFormUnits();
                 CheckSettings();
@@ -304,7 +305,7 @@ namespace Raspire
             {
                 if ((sender as ListView).SelectedItem != null)
                 {
-                    _ = SettingsInstance.Forms.Remove((sender as ListView).SelectedItem as FormUnit);
+                    _ = SettingsInstance.Forms.Remove((sender as ListView).SelectedItem as Form);
                     SettingsInstance.SaveFormUnits();
                     CheckSettings();
                 }
@@ -390,9 +391,9 @@ namespace Raspire
             SettingsHelper.SaveObjectLocal("SecondShift", (sender as ToggleSwitch).IsOn);
             if ((sender as ToggleSwitch).IsOn)
             {
-                Shift1 = new ObservableCollection<FormUnit>();
-                Shift2 = new ObservableCollection<FormUnit>();
-                foreach (FormUnit unit in SettingsInstance.Forms)
+                Shift1 = new ObservableCollection<Form>();
+                Shift2 = new ObservableCollection<Form>();
+                foreach (Form unit in SettingsInstance.Forms)
                 {
                     if (unit.Shift == 1)
                     {

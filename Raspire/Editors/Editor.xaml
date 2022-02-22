@@ -10,16 +10,16 @@
     xmlns:my="using:Microsoft.UI.Xaml.Controls">
     <Page.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="ListItemV2" x:DataType="local:ClassesLessonUnit">
+            <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
                 <StackPanel MinWidth="150" MinHeight="220" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
                     <TextBlock Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
-                    <ListView ItemsSource="{x:Bind Units}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander"/>
+                    <ListView ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander"/>
                 </StackPanel>
             </DataTemplate>
-            <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayClassesUnit">
+            <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" >
                     <TextBlock Text="{x:Bind Workday}" Width="30" Margin="20" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>
-                    <my:ItemsRepeater ItemsSource="{x:Bind ClassesUnits}" ItemTemplate="{StaticResource ListItemV2}">
+                    <my:ItemsRepeater ItemsSource="{x:Bind FormLessons}" ItemTemplate="{StaticResource ListItemV2}">
                         <my:ItemsRepeater.Layout>
                             <my:StackLayout Orientation="Horizontal" Spacing="4"/>
                         </my:ItemsRepeater.Layout>

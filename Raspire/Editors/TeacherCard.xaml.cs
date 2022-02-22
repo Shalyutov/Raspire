@@ -11,11 +11,11 @@ using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Raspire
 {
-    public sealed partial class TeacherCard : ContentDialog
+    internal sealed partial class TeacherCard : ContentDialog
     {
         public Teacher Teacher { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
-        public ObservableCollection<FormUnit> Forms { get; set; }
+        public ObservableCollection<Form> Forms { get; set; }
         Subject SelectedSubject;
         Host SelectedHost;
         bool edit = true;
@@ -25,7 +25,7 @@ namespace Raspire
         /// <param name="teacher">Созданный на странице настроек экзепляр класса, который хранит информацию об учителе</param>
         /// <param name="subjects">Список изучаемых предметов</param>
         /// <param name="forms">Список классов</param>
-        public TeacherCard(Teacher teacher, ObservableCollection<Subject> subjects, ObservableCollection<FormUnit> forms)
+        public TeacherCard(Teacher teacher, ObservableCollection<Subject> subjects, ObservableCollection<Form> forms)
         {
             Teacher = teacher;
             Subjects = subjects;
@@ -136,14 +136,14 @@ namespace Raspire
                 int c = Teacher.Classroom;
                 foreach (var i in SelectedHost.Forms)
                 {
-                    if (i.Form.ToString() == (item as FormUnit).ToString())
+                    if (i.Form.ToString() == (item as Form).ToString())
                     {
                         SelectedHost.Forms.Remove(i);
                         c = i.Cabinet;
                         return;
                     }
                 }
-                SelectedHost.Forms.Add(new FormCabinetPair((FormUnit)item, c, 0));
+                SelectedHost.Forms.Add(new FormClassroom((Form)item, c, 0));
             }
             foreach (var item in e.RemovedItems)
             {
