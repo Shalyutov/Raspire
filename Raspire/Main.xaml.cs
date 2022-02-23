@@ -49,26 +49,58 @@ namespace Raspire
             if (page == typeof(SchedulePage))
             {
                 p = "Raspire";
+                NavView.SelectedItem = NavDocItem;
             }
             else if (page == typeof(Editor))
             {
                 p = "Редактор";
                 FileNameParent.Visibility = Visibility.Visible;
                 if (e.Parameter != null) FileName.Text = ((e.Parameter as List<object>)[1] as StorageFile).DisplayName;
+                NavView.SelectedItem = NavEditItem;
             }
             else if (page == typeof(HelpPage))
             {
                 p = "Поддержка";
+                NavView.SelectedItem = NavHelpItem;
             }
             else if (page == typeof(SettingsPage))
             {
                 p = "Настройки";
+                NavView.SelectedItem = NavView.SettingsItem;
+            }
+            else
+            {
+                NavView.SelectedItem = null;
+                return;
+            }
+            FrameState.Text = p;
+        }
+
+        private void NavItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
+        {
+            Type pageType;
+            if (args.InvokedItem.ToString() == NavDocItem.Content.ToString())
+            {
+                pageType = typeof(SchedulePage);
+            }
+            else if (args.InvokedItem.ToString() == NavEditItem.Content.ToString())
+            {
+                pageType = typeof(Editor);
+            }
+            else if (args.InvokedItem.ToString() == NavHelpItem.Content.ToString())
+            {
+                pageType = typeof(HelpPage);
+            }
+            else if (args.IsSettingsInvoked)
+            {
+                pageType = typeof(SettingsPage);
             }
             else
             {
                 return;
             }
-            FrameState.Text = p;
+            MainFrame.Navigate(pageType, null, new DrillInNavigationTransitionInfo());
+
         }
     }
 }

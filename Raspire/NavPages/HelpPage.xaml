@@ -10,14 +10,12 @@
 
     <Grid>
         <ScrollViewer>
-            
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel.ChildrenTransitions>
                     <TransitionCollection>
                         <EntranceThemeTransition/>
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
-                
                 <StackPanel Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="6" Background="{ThemeResource SystemBaseLowColor}" Padding="16">
                     <StackPanel.ChildrenTransitions>
                         <TransitionCollection>
@@ -27,13 +25,11 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Image Source="/Assets/Raspire icon5.png" Width="45" Height="45" Margin="16"/>
                         <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" FontWeight="Bold"/>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8" CornerRadius="8" Padding="6" Background="{ThemeResource SystemAccentColor}" >
-                            <TextBlock x:Name="VersionLabel" Text="{x:Bind GetAppVersion()}" FontFamily="/Assets/Jost.ttf#Jost"/>
-                        </StackPanel>
                     </StackPanel>
                     <TextBlock MaxWidth="500" Margin="20" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="Приложение для создания, редактирования и доставки расписания учебно-образовательного процесса."/>
                     <TextBlock Text="Разработчик: Шалютов Андрей" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
                     <Image Source="/Assets/netsword full 1.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="132" Height="50" Margin="0,16,0,0" />
+                    <TextBlock x:Name="VersionLabel" Text="{x:Bind GetAppVersion()}" HorizontalAlignment="Center" FontFamily="/Assets/Jost.ttf#Jost" Margin="8"/>
                 </StackPanel>
                 <StackPanel Margin="16,6" VerticalAlignment="Center" HorizontalAlignment="Stretch" CornerRadius="6" Background="{ThemeResource SystemBaseLowColor}" Padding="16">
                     <StackPanel.ChildrenTransitions>
@@ -54,15 +50,7 @@
                         <HyperlinkButton NavigateUri="https://netsword.azurewebsites.net/raspire-docs" FontFamily="/Assets/Jost.ttf#Jost" Content="Raspire Docs" />
                     </StackPanel>
                 </StackPanel>
-                
             </StackPanel>
-            
         </ScrollViewer>
-        <Button x:Name="BackButton" Margin="8"  Style="{ThemeResource ButtonRevealStyle}" Click="BackWork" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <StackPanel Orientation="Horizontal">
-                <SymbolIcon Symbol="Back" Margin="2,2"/>
-                <TextBlock Text="Вернуться" Margin="8,2" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost"/>
-            </StackPanel>
-        </Button>
     </Grid>
 </Page>

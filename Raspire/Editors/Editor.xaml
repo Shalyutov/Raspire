@@ -48,9 +48,7 @@
         <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Margin="4" HorizontalAlignment="Left" >
             <AppBarButton Icon="Document" Label="Файл" FontFamily="/Assets/Jost.ttf#Jost"/>
             <AppBarButton Icon="Print" Label="Печать" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton Icon="Setting" Label="Настройки" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton Icon="Help" Label="Помощь" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarSeparator/>
+            <AppBarSeparator Margin="8,0"/>
             <AppBarElementContainer VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Pin" Margin="10,0"/>

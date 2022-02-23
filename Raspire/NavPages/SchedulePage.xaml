@@ -20,40 +20,19 @@
                     <TextBlock Text="Продолжить" Margin="8" FontFamily="/Assets/Jost.ttf#Jost" />
                 </StackPanel>
             </Button>
-            <Button Margin="10" HorizontalAlignment="Stretch">
-                <Button.Flyout>
-                    <Flyout Placement="Bottom">
-                        <StackPanel Margin="16" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button Content="Полугодие" Click="CreateNewSchedule" HorizontalAlignment="Stretch" Margin="8" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="Четверть" Click="CreateNewQuarterSchedule" HorizontalAlignment="Stretch" Margin="8" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="Изменения" Click="CreateNewChangesSchedule" HorizontalAlignment="Stretch" Margin="8" FontFamily="/Assets/Jost.ttf#Jost"/>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
+            <Button Margin="10" HorizontalAlignment="Stretch" Click="CreateNewSchedule">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="Document" Margin="4"/>
                     <TextBlock Text="Расписание" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" />
                 </StackPanel>
             </Button>
-
             <Button Click="OpenSchedule" Margin="10" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Symbol="OpenFile" Margin="4"/>
                     <TextBlock Text="Открыть" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" />
                 </StackPanel>
             </Button>
-            <Button Click="OpenHelp" Margin="10" Padding="6" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Help" Margin="4"/>
-                    <TextBlock Text="Помощь" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" />
-                </StackPanel>
-            </Button>
-            <Button Click="OpenSettings" Margin="10" Padding="6" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Setting" Margin="4"/>
-                    <TextBlock Text="Настройки" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" />
-                </StackPanel>
-            </Button>
+            
         </StackPanel>
     </Grid>
 </Page>

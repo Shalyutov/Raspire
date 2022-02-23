@@ -32,7 +32,7 @@ namespace Raspire
             base.OnNavigatedTo(e);
             if (!Frame.CanGoBack)
             {
-                BackButton.Visibility = Visibility.Collapsed;
+                //BackButton.Visibility = Visibility.Collapsed;
             }
         }
         public string GetAppVersion()
@@ -41,7 +41,7 @@ namespace Raspire
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
 
-            return $"22H{version.Major}V{version.Minor}B{version.Build}";
+            return $"2022 • H1 • V{version.Minor} • B{version.Build}";
         }
         public void BackWork(object sender, RoutedEventArgs e)
         {

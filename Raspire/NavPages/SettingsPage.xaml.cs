@@ -29,7 +29,7 @@ namespace Raspire
         {
             if (!Frame.CanGoBack)
             {
-                BackButton.Visibility = Visibility.Collapsed;
+                //BackButton.Visibility = Visibility.Collapsed;
             }
         }
         public void Update()

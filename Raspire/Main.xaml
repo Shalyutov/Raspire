@@ -1,14 +1,15 @@
 ﻿<Page
-    x:Class="Raspire.Main"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Raspire"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Microsoft.UI.Xaml.Controls"
+    x:Class="Raspire.Main"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,12 +30,14 @@
                 <TextBlock x:Name="FileName" Text="Файл" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Frame x:Name="MainFrame" Grid.Column="0" Navigated="MainNav"/>
-        </Grid>
+        <Custom:NavigationView x:Name="NavView" Grid.Row="1" ItemInvoked="NavItemInvoked" IsBackButtonVisible="Collapsed" PaneDisplayMode="LeftCompact">
+            <Custom:NavigationView.MenuItems>
+                <Custom:NavigationViewItem x:Name="NavDocItem" Content="Документ" Icon="Document" />
+                <Custom:NavigationViewItem x:Name="NavEditItem" Content="Редактор" Icon="Edit" />
+                <Custom:NavigationViewItem x:Name="NavHelpItem" Content="Помощь" Icon="Help"/>
+            </Custom:NavigationView.MenuItems>
+            <Frame x:Name="MainFrame" Navigated="MainNav"/>
+        </Custom:NavigationView>
     </Grid>
-
+    
 </Page>
