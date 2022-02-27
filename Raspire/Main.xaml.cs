@@ -55,7 +55,10 @@ namespace Raspire
             {
                 p = "Редактор";
                 FileNameParent.Visibility = Visibility.Visible;
-                if (e.Parameter != null) FileName.Text = ((e.Parameter as List<object>)[1] as StorageFile).DisplayName;
+                if (e.Parameter != null)
+                {
+                    if ((e.Parameter as List<object>)[1] != null) FileName.Text = ((e.Parameter as List<object>)[1] as StorageFile).DisplayName;
+                }
                 NavView.SelectedItem = NavEditItem;
             }
             else if (page == typeof(HelpPage))

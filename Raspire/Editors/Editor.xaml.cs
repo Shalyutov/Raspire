@@ -28,17 +28,18 @@ namespace Raspire
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
         public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
-        private bool shield = false;
+        private ListView list;
+        /*private bool shield = false;
         int CurrentS;
         int CurrentC;
-        int CurrentW;
+        int CurrentW;*/
         public Editor()
         {
             this.InitializeComponent();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            SettingsInstance = new Settings();
+            SettingsInstance = Settings.GetSavedSettings();
             if (e.Parameter != null)
             {
                 if (Schedule == (Schedule)(e.Parameter as List<object>)[0] & Schedule != null) return;
@@ -74,7 +75,7 @@ namespace Raspire
         }*/
         private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
         {
-            shield = true;
+            //shield = true;
 
             //int f = GetCurrentListForm();
             //int w = GetCurrentListWorkday(f);
@@ -111,7 +112,7 @@ namespace Raspire
                 UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units.RemoveAt(CurrentS);
                 Schedule.LessonItems.RemoveAt(index);
             }*/
-            shield = false;
+            //shield = false;
         }
 
         private async void SaveSchedule(object sender, RoutedEventArgs e)
@@ -129,7 +130,7 @@ namespace Raspire
             Frame.Navigate(typeof(EditorV2), param);
         }*/
 
-        private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
+        /*private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
         {
             DocumentDialog document = new DocumentDialog(Schedule);
             _ = await document.ShowAsync();
@@ -139,34 +140,106 @@ namespace Raspire
                 _ = Frame.Navigate(typeof(SchedulePage), null, new DrillInNavigationTransitionInfo());
                 SettingsHelper.SaveObjectLocal("Recent", "");
             }
-        }
-        private void NavHelp(object sender, RoutedEventArgs e)
-        {
-            _ = Frame.Navigate(typeof(HelpPage));
-        }
-        private void NavSettings(object sender, RoutedEventArgs e)
-        {
-            _ = Frame.Navigate(typeof(SettingsPage));
-        }
+        }*/
         private void OpenCommander(object sender, PointerRoutedEventArgs e)
         {
             Commander.Hide();
-            FlyoutShowOptions myOption = new FlyoutShowOptions();
-            myOption.ShowMode = FlyoutShowMode.Transient;
+            FlyoutShowOptions myOption = new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Transient
+            };
+            list = sender as ListView;
+            Selector.Focus(FocusState.Programmatic);
             Commander.ShowAt(sender as UIElement, myOption);
         }
 
         private void OpenCommander(object sender, RightTappedRoutedEventArgs e)
         {
             Commander.Hide();
-            FlyoutShowOptions myOption = new FlyoutShowOptions();
-            myOption.ShowMode = FlyoutShowMode.Standard;
+            FlyoutShowOptions myOption = new FlyoutShowOptions
+            {
+                ShowMode = FlyoutShowMode.Standard
+            };
+            list = sender as ListView;
+            Selector.Focus(FocusState.Programmatic);
             Commander.ShowAt(sender as UIElement, myOption);
         }
 
         private void AddLesson(object sender, RoutedEventArgs e)
         {
+            /*Teacher teacher = null;
+            int c = -1;
+            foreach (Teacher t in SettingsInstance.Teachers)
+            {
+                foreach (Host s in t.HostedSubjects)
+                {
+                    bool subjectMatch = s.Subject.ToString() == item;
+                    bool formMatch = false;
+                    foreach (FormClassroom f in s.Forms)
+                    {
+                        int i = GetCurrentListForm();
+                        if (f.Form.ToString() == SettingsInstance.Forms[i].ToString())
+                        {
+                            formMatch = true;
+                            c = f.Cabinet;
+                            break;
+                        }
+                    }
+                    if (subjectMatch && formMatch)
+                    {
+                        teacher = t;
+                        break;
+                    }
+                }
+                if (teacher != null)
+                {
+                    break;
+                }
+            }
+            if (teacher != null)
+            {
+                LessonUnit lesson = new LessonUnit(
+                    (Subject)SubjectSelector.SelectedItem,
+                    c,
+                    teacher
+                );
+                int f = GetCurrentListForm();
+                FormUnit form = Schedule.Settings.Forms[f];
+                string workday = Schedule.GetDay(Schedule.Settings.Workdays[GetCurrentListWorkday(f)]);
+                (CurrentList.ItemsSource as ObservableCollection<LessonUnit>).Add(lesson);
+                Schedule.LessonItems.Add(new LessonItem(lesson, form, workday));
+            }*/
+        }
 
+        private void SelectorTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            var text = sender.Text.ToLower();
+            var suitableItems = new List<Subject>();
+
+            if (text == "")
+            {
+                sender.ItemsSource = SettingsInstance.Subjects;
+                return;
+            }
+            foreach (var unit in SettingsInstance.Subjects)
+            {
+                var found = text.Split(" ").All((key) =>
+                {
+                    return unit.ToString().ToLower().Contains(key);
+                });
+                if (found)
+                {
+                    suitableItems.Add(unit);
+                }
+            }
+            suitableItems.Add(new Subject($"{sender.Text}•"));
+
+            sender.ItemsSource = suitableItems;
+        }
+
+        private void SelectorFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as AutoSuggestBox).ItemsSource = SettingsInstance.Subjects;
         }
     }
 }

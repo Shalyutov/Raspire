@@ -9,8 +9,8 @@ namespace Raspire
     {
         public List<int> Workdays { get; set; }
         public ObservableCollection<Form> Forms { get; set; }
-        public ObservableCollection<Subject> SubjectUnits { get; set; }
-        public ObservableCollection<Teacher> TeacherUnits { get; set; }
+        public ObservableCollection<Subject> Subjects { get; set; }
+        public ObservableCollection<Teacher> Teachers { get; set; }
         public string SchoolName { get; set; }
         public string HeadSchool { get; set; }
         public string ScheduleHolder { get; set; }
@@ -21,57 +21,46 @@ namespace Raspire
         /// <param name="schoolName">CallName of the school</param>
         /// <param name="headSchool">CallName of Head of the school</param>
         /// <param name="scheduleHolder">CallName of Schedule Responder</param>
-        
-        public Settings(List<int> workdays, string schoolName, string headSchool, string scheduleHolder)
+        public Settings()
         {
-            Workdays = workdays;
+            Workdays = new List<int>();
             Forms = new ObservableCollection<Form>();
-            SubjectUnits = new ObservableCollection<Subject>();
-            TeacherUnits = new ObservableCollection<Teacher>();
-            SchoolName = schoolName;
-            HeadSchool = headSchool;
-            ScheduleHolder = scheduleHolder;
-            SettingsHelper.SaveObjectLocal("Settings", "Saved");
+            Subjects = new ObservableCollection<Subject>();
+            Teachers = new ObservableCollection<Teacher>();
+            SchoolName = "";
+            HeadSchool = "";
+            ScheduleHolder = "";
         }
         /// <summary>
         /// Fetch data from previously saved settings
         /// </summary>
-        public Settings()//Fetch data from saved settings or create new blank instance
+        public static Settings GetSavedSettings()
         {
+            Settings settings = new Settings();
             if (SettingsHelper.GetStringLocal("Settings") == "Saved")
             {
-                Workdays = SettingsHelper.GetListLocal<int>("workdays");
-                Forms = SettingsHelper.GetObservableCollectionLocal<Form>("formUnits");
-                SubjectUnits = SettingsHelper.GetObservableCollectionLocal<Subject>("subjectUnits");
-                TeacherUnits = SettingsHelper.GetObservableCollectionLocal<Teacher>("teacherUnits");
-                SchoolName = SettingsHelper.GetStringLocal("schoolName");
-                HeadSchool = SettingsHelper.GetStringLocal("headSchool");
-                ScheduleHolder = SettingsHelper.GetStringLocal("scheduleHolder");
+                settings.Workdays = SettingsHelper.GetListLocal<int>("workdays");
+                settings.Forms = SettingsHelper.GetObservableCollectionLocal<Form>("formUnits");
+                settings.Subjects = SettingsHelper.GetObservableCollectionLocal<Subject>("subjectUnits");
+                settings.Teachers = SettingsHelper.GetObservableCollectionLocal<Teacher>("teacherUnits");
+                settings.SchoolName = SettingsHelper.GetStringLocal("schoolName");
+                settings.HeadSchool = SettingsHelper.GetStringLocal("headSchool");
+                settings.ScheduleHolder = SettingsHelper.GetStringLocal("scheduleHolder");
+                return settings;
             }
-            else
-            {
-                Workdays = new List<int>();
-                Forms = new ObservableCollection<Form>();
-                SubjectUnits = new ObservableCollection<Subject>();
-                TeacherUnits = new ObservableCollection<Teacher>();
-                SchoolName = "";
-                HeadSchool = "";
-                ScheduleHolder = "";
-                SaveSettings();
-            }
+            else return null;
         }
         [JsonConstructor]
         public Settings(List<int> workdays, ObservableCollection<Form> formUnits, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, string schoolName, string headSchool, string scheduleHolder)
         {
             Workdays = workdays;
             Forms = formUnits;
-            SubjectUnits = subjectUnits;
-            TeacherUnits = teacherUnits;
+            Subjects = subjectUnits;
+            Teachers = teacherUnits;
             SchoolName = schoolName;
             HeadSchool = headSchool;
             ScheduleHolder = scheduleHolder;
         }
-
         public void DefaultSettings()//default data template
         {
             Workdays = new List<int>() { 0, 1, 2, 3, 4 };
@@ -81,13 +70,13 @@ namespace Raspire
                 Forms.Add(new Form(form, 0));
             }
 
-            SubjectUnits = new ObservableCollection<Subject>();
+            Subjects = new ObservableCollection<Subject>();
             foreach (string subject in "Математика;Русский язык;Литература;История;Обществозание;География;Биология;Информатика;Английский язык;Физика;Химия;ИЗО;Музыка;МХК;Чтение;Окружающий мир;ОБЖ".Split(";"))
             {
-                SubjectUnits.Add(new Subject(subject));
+                Subjects.Add(new Subject(subject));
             }
 
-            TeacherUnits = new ObservableCollection<Teacher>();
+            Teachers = new ObservableCollection<Teacher>();
             SchoolName = "";
             HeadSchool = "";
             ScheduleHolder = "";
@@ -98,11 +87,11 @@ namespace Raspire
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
             SettingsHelper.SaveObjectLocal("workdays", Workdays);
             SettingsHelper.SaveObjectLocal("formUnits", Forms);
-            SettingsHelper.SaveObjectLocal("subjectUnits", SubjectUnits);
-            SettingsHelper.SaveObjectLocal("teacherUnits", TeacherUnits);
-            SettingsHelper.SaveObjectLocal("SchoolName", SchoolName);
-            SettingsHelper.SaveObjectLocal("HeadSchool", HeadSchool);
-            SettingsHelper.SaveObjectLocal("ScheduleHolder", ScheduleHolder);
+            SettingsHelper.SaveObjectLocal("subjectUnits", Subjects);
+            SettingsHelper.SaveObjectLocal("teacherUnits", Teachers);
+            SettingsHelper.SaveObjectLocal("schoolName", SchoolName);
+            SettingsHelper.SaveObjectLocal("headSchool", HeadSchool);
+            SettingsHelper.SaveObjectLocal("scheduleHolder", ScheduleHolder);
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
         }
         public void SaveWorkdays()
@@ -117,12 +106,12 @@ namespace Raspire
         }
         public void SaveSubjectUnits()
         {
-            SettingsHelper.SaveObjectLocal("subjectUnits", SubjectUnits);
+            SettingsHelper.SaveObjectLocal("subjectUnits", Subjects);
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
         }
         public void SaveTeacherUnits()
         {
-            SettingsHelper.SaveObjectLocal("teacherUnits", TeacherUnits);
+            SettingsHelper.SaveObjectLocal("teacherUnits", Teachers);
             SettingsHelper.SaveObjectLocal("Settings", "Saved");
         }
         public void SaveSchoolName()
@@ -152,12 +141,12 @@ namespace Raspire
                 return false;
             }
 
-            if (SubjectUnits.Count < 1)
+            if (Subjects.Count < 1)
             {
                 return false;
             }
 
-            if (TeacherUnits.Count < 1)
+            if (Teachers.Count < 1)
             {
                 return false;
             }
@@ -226,7 +215,9 @@ namespace Raspire
             return JsonConvert.DeserializeObject<List<T>>(localSettings.Values[key] as string);
         }
     }
-    
+    /// <summary>
+    /// Класс представляющий информацию о предмете (дисциплине)
+    /// </summary>
     public class Subject
     {
         public string Name { get; set; }
@@ -240,11 +231,11 @@ namespace Raspire
             return Name;
         }
     }
+    /// <summary>
+    /// Класс представляющий информацию об учителе, его кабинете и проводимых им предметов
+    /// </summary>
     public class Teacher
     {
-        /// <summary>
-        /// Класс представляющий информацию об учителе, его кабинете и проводимых им предметов
-        /// </summary>
         public string Name { get; set; }
         public int Classroom { get; set; }
         public ObservableCollection<Host> HostedSubjects { get; set; } = new ObservableCollection<Host>();

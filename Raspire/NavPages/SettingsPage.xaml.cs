@@ -16,7 +16,7 @@ namespace Raspire
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        private Settings SettingsInstance = new Settings();
+        private Settings SettingsInstance = Settings.GetSavedSettings();
         private readonly List<int> Workdays = new List<int>();
         private ObservableCollection<Form> Shift1 = new ObservableCollection<Form>();
         private ObservableCollection<Form> Shift2 = new ObservableCollection<Form>();
@@ -27,10 +27,8 @@ namespace Raspire
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!Frame.CanGoBack)
-            {
-                //BackButton.Visibility = Visibility.Collapsed;
-            }
+            SettingsInstance = Settings.GetSavedSettings();
+            if (SettingsInstance == null) SettingsInstance = new Settings();
         }
         public void Update()
         {
@@ -63,8 +61,8 @@ namespace Raspire
                 FormUnitsList.ItemsSource = Shift1;
             }
 
-            SubjectUnitsList.ItemsSource = SettingsInstance.SubjectUnits;
-            TeacherUnitsList.ItemsSource = SettingsInstance.TeacherUnits;
+            SubjectUnitsList.ItemsSource = SettingsInstance.Subjects;
+            TeacherUnitsList.ItemsSource = SettingsInstance.Teachers;
             Organization.Text = SettingsInstance.SchoolName;
             Head.Text = SettingsInstance.HeadSchool;
             Holder.Text = SettingsInstance.ScheduleHolder;
@@ -74,8 +72,8 @@ namespace Raspire
         {
             WorkdaysValidator.Symbol = Workdays.Count > 0 ? Symbol.Accept : Symbol.Clear;
             ClassesValidator.Symbol = SettingsInstance.Forms.Count > 0 ? Symbol.Accept : Symbol.Clear;
-            SubjectsValidator.Symbol = SettingsInstance.SubjectUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
-            TeachersValidator.Symbol = SettingsInstance.TeacherUnits.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            SubjectsValidator.Symbol = SettingsInstance.Subjects.Count > 0 ? Symbol.Accept : Symbol.Clear;
+            TeachersValidator.Symbol = SettingsInstance.Teachers.Count > 0 ? Symbol.Accept : Symbol.Clear;
         }
         public bool ShowContinueButton()
         {
@@ -205,7 +203,7 @@ namespace Raspire
 
         private void AddSubjectUnit(string subject)
         {
-            SettingsInstance.SubjectUnits.Add(new Subject(subject));
+            SettingsInstance.Subjects.Add(new Subject(subject));
             SettingsInstance.SaveSubjectUnits();
             CheckSettings();
         }
@@ -215,7 +213,7 @@ namespace Raspire
             {
                 if ((sender as ListView).SelectedItem != null)
                 {
-                    _ = SettingsInstance.SubjectUnits.Remove((sender as ListView).SelectedItem as Subject);
+                    _ = SettingsInstance.Subjects.Remove((sender as ListView).SelectedItem as Subject);
                     SettingsInstance.SaveSubjectUnits();
                     CheckSettings();
                 }
@@ -225,7 +223,7 @@ namespace Raspire
         {
             if (SubjectUnitsList.SelectedItem != null)
             {
-                _ = SettingsInstance.SubjectUnits.Remove(SubjectUnitsList.SelectedItem as Subject);
+                _ = SettingsInstance.Subjects.Remove(SubjectUnitsList.SelectedItem as Subject);
                 SettingsInstance.SaveSubjectUnits();
                 CheckSettings();
             }
@@ -244,7 +242,7 @@ namespace Raspire
         private void AddTeacherUnit(string name)
         {
             if (name == "") return;
-            SettingsInstance.TeacherUnits.Add(new Teacher(name, 0));
+            SettingsInstance.Teachers.Add(new Teacher(name, 0));
             SettingsInstance.SaveTeacherUnits();
             CheckSettings();
         }
@@ -253,15 +251,15 @@ namespace Raspire
             ListView list = sender as ListView;
             if (list.SelectedIndex != -1)
             {
-                TeacherCard card = new TeacherCard(SettingsInstance.TeacherUnits.ElementAt(list.SelectedIndex), SettingsInstance.SubjectUnits, SettingsInstance.Forms);
+                TeacherCard card = new TeacherCard(SettingsInstance.Teachers.ElementAt(list.SelectedIndex), SettingsInstance.Subjects, SettingsInstance.Forms);
                 _ = await card.ShowAsync();
                 if (card.PrimaryButtonCommandParameter != null)
                 {
-                    SettingsInstance.TeacherUnits[list.SelectedIndex] = card.PrimaryButtonCommandParameter as Teacher;
+                    SettingsInstance.Teachers[list.SelectedIndex] = card.PrimaryButtonCommandParameter as Teacher;
                 }
                 else
                 {
-                    SettingsInstance.TeacherUnits.RemoveAt(list.SelectedIndex);
+                    SettingsInstance.Teachers.RemoveAt(list.SelectedIndex);
                 }
                 SettingsInstance.SaveTeacherUnits();
                 CheckSettings();

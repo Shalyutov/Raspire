@@ -109,7 +109,13 @@ namespace Raspire
         }
         private async void CreateNewSchedule(object sender, RoutedEventArgs e)
         {
-            Settings settings = new Settings();
+            Settings settings = Settings.GetSavedSettings();
+            if(settings == null)
+            {
+                MessageDialog dialog = new MessageDialog("Перед началом работы с расписаниями проверьте данные о школе в Параметрах");
+                _ = await dialog.ShowAsync();
+                Frame.Navigate(typeof(SettingsPage), null, new DrillInNavigationTransitionInfo());
+            }
             if (settings.AreSettingsCorreсt())
             {
                 Schedule schedule = new Schedule(new List<LessonItem>(), settings);

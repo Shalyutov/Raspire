@@ -18,7 +18,7 @@
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" >
-                    <TextBlock Text="{x:Bind Workday}" Width="30" Margin="20" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind GetDay(Workday)}" Width="30" Margin="20" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>
                     <my:ItemsRepeater ItemsSource="{x:Bind FormLessons}" ItemTemplate="{StaticResource ListItemV2}">
                         <my:ItemsRepeater.Layout>
                             <my:StackLayout Orientation="Horizontal" Spacing="4"/>
@@ -29,7 +29,7 @@
             <my:CommandBarFlyout x:Name="Commander" x:Key="Commander">
                 <AppBarElementContainer>
                     <Grid>
-                        <AutoSuggestBox VerticalAlignment="Center" Margin="8,4" QueryIcon="List"/>
+                        <AutoSuggestBox x:Name="Selector" VerticalAlignment="Center" Margin="8,4" TextChanged="SelectorTextChanged" GotFocus="SelectorFocus" MinWidth="120"/>
                     </Grid>
                 </AppBarElementContainer>
                 <AppBarButton Icon="Add" Click="AddLesson" />
