@@ -148,8 +148,11 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Transient
             };
-            list = sender as ListView;
-            Selector.Focus(FocusState.Programmatic);
+            if (sender as ListView != null)
+                list = sender as ListView;
+            else
+                list = (sender as StackPanel).Children[1] as ListView;
+            Selector.ItemsSource = SettingsInstance.Subjects;
             Commander.ShowAt(sender as UIElement, myOption);
         }
 
@@ -160,55 +163,72 @@ namespace Raspire
             {
                 ShowMode = FlyoutShowMode.Standard
             };
-            list = sender as ListView;
-            Selector.Focus(FocusState.Programmatic);
+            if (sender as ListView != null)
+                list = sender as ListView;
+            else
+                list = (sender as StackPanel).Children[1] as ListView;
+            Selector.ItemsSource = SettingsInstance.Subjects;
             Commander.ShowAt(sender as UIElement, myOption);
         }
-
-        private void AddLesson(object sender, RoutedEventArgs e)
+        int GetListIndex()
         {
-            /*Teacher teacher = null;
-            int c = -1;
+            var i = list.Parent as StackPanel;
+            return (i.Parent as ItemsRepeater).GetElementIndex(i);
+        }
+        int GetListWorkday()
+        {
+            var i = ((list.Parent as StackPanel).Parent as ItemsRepeater).Parent as StackPanel;
+            return (i.Parent as ItemsRepeater).GetElementIndex(i);
+        }
+        int GetHostedClassroom(Teacher teacher, Subject subject, Form form)
+        {
+            foreach (Host s in teacher.HostedSubjects)
+            {
+                if (s.Subject != subject) continue;
+                foreach (FormClassroom f in s.Forms)
+                {
+                    if (f.Form == form)
+                    {
+                        return f.Classroom;
+                    }
+                }
+            }
+            return -1;
+        }
+        Teacher GetTeacher(Subject subject, int form)
+        {
             foreach (Teacher t in SettingsInstance.Teachers)
             {
                 foreach (Host s in t.HostedSubjects)
                 {
-                    bool subjectMatch = s.Subject.ToString() == item;
-                    bool formMatch = false;
+                    if (s.Subject != subject) continue;
                     foreach (FormClassroom f in s.Forms)
                     {
-                        int i = GetCurrentListForm();
-                        if (f.Form.ToString() == SettingsInstance.Forms[i].ToString())
+                        if (f.Form == SettingsInstance.Forms[form])
                         {
-                            formMatch = true;
-                            c = f.Cabinet;
-                            break;
+                            return t;
                         }
                     }
-                    if (subjectMatch && formMatch)
-                    {
-                        teacher = t;
-                        break;
-                    }
-                }
-                if (teacher != null)
-                {
-                    break;
                 }
             }
-            if (teacher != null)
-            {
-                LessonUnit lesson = new LessonUnit(
-                    (Subject)SubjectSelector.SelectedItem,
-                    c,
-                    teacher
+            return null;
+        }
+        private void AddLesson(object sender, RoutedEventArgs e)
+        {
+            Subject subject = new Subject(Selector.Text);
+            int form = GetListIndex();
+            int workday = GetListWorkday();
+            Teacher teacher = GetTeacher(subject, form);
+            if (teacher == null) return;
+            int classroom = GetHostedClassroom(teacher, subject, SettingsInstance.Forms[form]);
+            Lesson lesson = new Lesson(
+                subject,
+                SettingsInstance.Forms[form],
+                teacher.Name,
+                classroom
                 );
-                int f = GetCurrentListForm();
-                FormUnit form = Schedule.Settings.Forms[f];
-                string workday = Schedule.GetDay(Schedule.Settings.Workdays[GetCurrentListWorkday(f)]);
-                (CurrentList.ItemsSource as ObservableCollection<LessonUnit>).Add(lesson);
-                Schedule.LessonItems.Add(new LessonItem(lesson, form, workday));
-            }*/
+            (list.ItemsSource as ObservableCollection<Lesson>).Add(lesson);
+            Schedule.LessonItems.Add(new LessonItem(lesson, workday));
         }
 
         private void SelectorTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -232,14 +252,10 @@ namespace Raspire
                     suitableItems.Add(unit);
                 }
             }
-            suitableItems.Add(new Subject($"{sender.Text}•"));
+            suitableItems.Add(new Subject($"{sender.Text} •"));
 
             sender.ItemsSource = suitableItems;
         }
 
-        private void SelectorFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as AutoSuggestBox).ItemsSource = SettingsInstance.Subjects;
-        }
     }
 }

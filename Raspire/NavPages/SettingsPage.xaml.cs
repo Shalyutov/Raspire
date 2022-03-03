@@ -23,12 +23,12 @@ namespace Raspire
         public SettingsPage()
         {
             this.InitializeComponent();
-            Update();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             SettingsInstance = Settings.GetSavedSettings();
             if (SettingsInstance == null) SettingsInstance = new Settings();
+            Update();
         }
         public void Update()
         {

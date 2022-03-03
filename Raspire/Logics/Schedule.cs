@@ -55,7 +55,7 @@ namespace Raspire
             }
             foreach (LessonItem item in LessonItems)
             {
-                int f = Settings.Forms.IndexOf(item.Lesson.Group as Form);
+                int f = Settings.Forms.IndexOf(item.Lesson.Group);
                 units[item.Workday].FormLessons[f].Lessons.Add(item.Lesson);
             }
             return units;
@@ -67,7 +67,10 @@ namespace Raspire
                 try
                 {
                     SettingsHelper.SaveObjectLocal("Recent", file.Path);
-                    await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(this));
+                    await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }));
                     _ = StorageApplicationPermissions.FutureAccessList.Add(file);
                     return file;
                 }
@@ -99,7 +102,10 @@ namespace Raspire
                     CachedFileManager.DeferUpdates(file);
                     SettingsHelper.SaveObjectLocal("Recent", file.Path);
                     _ = StorageApplicationPermissions.FutureAccessList.Add(file);
-                    await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(this));
+                    await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    }));
 
                     Windows.Storage.Provider.FileUpdateStatus status =
                         await CachedFileManager.CompleteUpdatesAsync(file);

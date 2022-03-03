@@ -40,8 +40,8 @@ namespace Raspire
             Package package = Package.Current;
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
-
-            return $"2022 • H1 • V{version.Minor} • B{version.Build}";
+            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return $"Версия: 22{alphabet[version.Minor]}{version.Build}";
         }
         public void BackWork(object sender, RoutedEventArgs e)
         {

@@ -57,7 +57,7 @@ namespace Raspire
     /// <summary>
     /// Класс представляющий экземпляр учебного класса
     /// </summary>
-    public class Form : Group
+    public class Form : Group, IEquatable<Form>
     {
         public int Shift { get; set; }
 
@@ -65,6 +65,40 @@ namespace Raspire
         public Form(string name, int subgroupCount, int shift = 1) : base(name, subgroupCount)
         {
             Shift = shift;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Form);
+        }
+
+        public bool Equals(Form other)
+        {
+            return other != null &&
+                   base.Equals(other) &&
+                   Name == other.Name &&
+                   SubgroupCount == other.SubgroupCount &&
+                   Shift == other.Shift;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -2000714018;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + SubgroupCount.GetHashCode();
+            hashCode = hashCode * -1521134295 + Shift.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(Form left, Form right)
+        {
+            return EqualityComparer<Form>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Form left, Form right)
+        {
+            return !(left == right);
         }
     }
 }

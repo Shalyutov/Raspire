@@ -85,9 +85,9 @@ namespace Raspire
                 {
                     foreach (var f in i.Forms)
                     {
-                        if (f.Cabinet == prev)
+                        if (f.Classroom == prev)
                         {
-                            f.Cabinet = Teacher.Classroom;
+                            f.Classroom = Teacher.Classroom;
                         }
                     }
                 }
@@ -139,7 +139,7 @@ namespace Raspire
                     if (i.Form.ToString() == (item as Form).ToString())
                     {
                         SelectedHost.Forms.Remove(i);
-                        c = i.Cabinet;
+                        c = i.Classroom;
                         return;
                     }
                 }

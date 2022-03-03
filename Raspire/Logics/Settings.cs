@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Storage;
@@ -218,7 +219,7 @@ namespace Raspire
     /// <summary>
     /// Класс представляющий информацию о предмете (дисциплине)
     /// </summary>
-    public class Subject
+    public class Subject : IEquatable<Subject>
     {
         public string Name { get; set; }
         [JsonConstructor]
@@ -229,6 +230,32 @@ namespace Raspire
         public override string ToString()
         {
             return Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Subject);
+        }
+
+        public bool Equals(Subject other)
+        {
+            return other != null &&
+                   Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
+        }
+
+        public static bool operator ==(Subject left, Subject right)
+        {
+            return EqualityComparer<Subject>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Subject left, Subject right)
+        {
+            return !(left == right);
         }
     }
     /// <summary>
@@ -281,13 +308,13 @@ namespace Raspire
     {
         public Form Form { get; set; }
         public int Subgroup { get; set; }
-        public int Cabinet { get; set; }
+        public int Classroom { get; set; }
 
-        public FormClassroom(Form form, int cabinet, int subgroup)
+        public FormClassroom(Form form, int classroom, int subgroup)
         {
             Form = form;
             Subgroup = subgroup;
-            Cabinet = cabinet;
+            Classroom = classroom;
         }
     }
 }
