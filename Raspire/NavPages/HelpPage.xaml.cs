@@ -27,25 +27,13 @@ namespace Raspire
         {
             this.InitializeComponent();
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (!Frame.CanGoBack)
-            {
-                //BackButton.Visibility = Visibility.Collapsed;
-            }
-        }
         public string GetAppVersion()
         {
             Package package = Package.Current;
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return $"Версия: 22{alphabet[version.Minor]}{version.Build}";
-        }
-        public void BackWork(object sender, RoutedEventArgs e)
-        {
-            Frame.GoBack();
+            return $"Версия: 22{alphabet[version.Minor]}{version.Build} • α";
         }
     }
 }

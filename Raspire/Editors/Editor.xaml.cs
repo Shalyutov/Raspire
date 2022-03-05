@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,15 +30,11 @@ namespace Raspire
         public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
         private ListView list;
-        /*private bool shield = false;
-        int CurrentS;
-        int CurrentC;
-        int CurrentW;*/
         public Editor()
         {
             this.InitializeComponent();
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             SettingsInstance = Settings.GetSavedSettings();
             if (e.Parameter != null)
@@ -47,6 +44,17 @@ namespace Raspire
                 Schedule = (Schedule)(e.Parameter as List<object>)[0];
                 File = (StorageFile)(e.Parameter as List<object>)[1];
                 UnitsWorkdays = Schedule.GetStructWorkday();
+            }
+            if (Schedule == null)
+            {
+                MessageDialog dialog = new MessageDialog("Создайте раписание или откройте существующее");
+                _ = await dialog.ShowAsync();
+                Frame.Navigate(typeof(SchedulePage), null, new DrillInNavigationTransitionInfo());
+            }
+            if (SettingsInstance.Subjects.Count > 0)
+            {
+                MainSelector.SelectedIndex = 0;
+                Selector.SelectedIndex = 0;
             }
         }
         /*private List<string> GetWorkdayStringList()
@@ -123,52 +131,76 @@ namespace Raspire
                 File = f;
             }
         }
-
-        /*private void EnterEditor2(object sender, RoutedEventArgs e)
-        {
-            List<object> param = new List<object>() { Schedule, File };
-            Frame.Navigate(typeof(EditorV2), param);
-        }*/
-
-        /*private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
+        private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
         {
             DocumentDialog document = new DocumentDialog(Schedule);
             _ = await document.ShowAsync();
             Schedule = document.PrimaryButtonCommandParameter as Schedule;
-            if (Schedule == null)
-            {
-                _ = Frame.Navigate(typeof(SchedulePage), null, new DrillInNavigationTransitionInfo());
-                SettingsHelper.SaveObjectLocal("Recent", "");
-            }
-        }*/
+        }
         private void OpenCommander(object sender, PointerRoutedEventArgs e)
         {
-            Commander.Hide();
             FlyoutShowOptions myOption = new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient
             };
+            var previous = list;
             if (sender as ListView != null)
                 list = sender as ListView;
             else
                 list = (sender as StackPanel).Children[1] as ListView;
             Selector.ItemsSource = SettingsInstance.Subjects;
-            Commander.ShowAt(sender as UIElement, myOption);
+            if (previous != list)
+            {
+                Commander.Hide();
+                Commander.ShowAt(sender as UIElement, myOption);
+                Selector.Focus(FocusState.Programmatic);
+            }
         }
 
         private void OpenCommander(object sender, RightTappedRoutedEventArgs e)
         {
-            Commander.Hide();
             FlyoutShowOptions myOption = new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Standard
             };
+            var previous = list;
             if (sender as ListView != null)
                 list = sender as ListView;
             else
                 list = (sender as StackPanel).Children[1] as ListView;
             Selector.ItemsSource = SettingsInstance.Subjects;
-            Commander.ShowAt(sender as UIElement, myOption);
+            if (previous != list)
+            {
+                Commander.Hide();
+                LessonCommander.Hide();
+                if (list.SelectedItems.Count > 0)
+                {
+                    LessonCommander.ShowAt(sender as UIElement, myOption);
+                }
+                else
+                {
+                    Commander.ShowAt(sender as UIElement, myOption);
+                    Selector.Focus(FocusState.Programmatic);
+                }
+            }
+            else
+            {
+                if(list.SelectedItems.Count > 0)
+                {
+                    if (!LessonCommander.IsOpen)
+                    {
+                        LessonCommander.ShowAt(sender as UIElement, myOption);
+                    }
+                }
+                else
+                {
+                    if (!Commander.IsOpen)
+                    {
+                        Commander.ShowAt(sender as UIElement, myOption);
+                    }
+                }
+                
+            }
         }
         int GetListIndex()
         {
@@ -215,7 +247,7 @@ namespace Raspire
         }
         private void AddLesson(object sender, RoutedEventArgs e)
         {
-            Subject subject = new Subject(Selector.Text);
+            Subject subject = Selector.SelectedItem as Subject;
             int form = GetListIndex();
             int workday = GetListWorkday();
             Teacher teacher = GetTeacher(subject, form);
@@ -257,5 +289,49 @@ namespace Raspire
             sender.ItemsSource = suitableItems;
         }
 
+        private void MainSelectorChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                Selector.SelectedItem = e.AddedItems[0];
+            }
+            else
+            {
+                Selector.SelectedIndex = 0;
+            }
+        }
+
+        private void SelectorChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                MainSelector.SelectedItem = e.AddedItems[0];
+            }
+            else
+            {
+                MainSelector.SelectedIndex = 0;
+            }
+        }
+
+        private void DeleteLessons(object sender, RoutedEventArgs e)
+        {
+            if (list.SelectedItems != null)
+            {
+                List<object> unitsToDelete = new List<object>();
+                unitsToDelete.AddRange(list.SelectedItems);
+                foreach (object u in unitsToDelete)
+                {
+                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(u as Lesson);
+                    foreach (LessonItem item in Schedule.LessonItems)
+                    {
+                        if (item.Lesson == u as Lesson & item.Workday == GetListWorkday())
+                        {
+                            Schedule.LessonItems.Remove(item);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

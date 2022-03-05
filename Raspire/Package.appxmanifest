@@ -49,7 +49,7 @@
             </uap:SupportedFileTypes>
             <uap:EditFlags OpenIsSafe="true"/>
             <uap:DisplayName>Raspire Schedule Logic</uap:DisplayName>
-            <uap:Logo>Raspire doc.png</uap:Logo>
+            <uap:Logo>Assets\Raspire doc.png</uap:Logo>
           </uap:FileTypeAssociation>
         </uap:Extension>
       </Extensions>

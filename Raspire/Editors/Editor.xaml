@@ -7,13 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    xmlns:my="using:Microsoft.UI.Xaml.Controls">
+    xmlns:my="using:Microsoft.UI.Xaml.Controls"
+    NavigationCacheMode="Enabled">
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
-                <StackPanel MinWidth="150" MinHeight="220" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
+                <StackPanel Width="200" MinHeight="220" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
                     <TextBlock Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
-                    <ListView ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander"/>
+                    <ListView ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
@@ -29,14 +30,14 @@
             <my:CommandBarFlyout x:Name="Commander" x:Key="Commander">
                 <AppBarElementContainer>
                     <Grid>
-                        <AutoSuggestBox x:Name="Selector" VerticalAlignment="Center" Margin="8,4" TextChanged="SelectorTextChanged" MinWidth="120"/>
+                        <ComboBox x:Name="Selector" VerticalAlignment="Center" Margin="8,4" ItemsSource="{x:Bind SettingsInstance.Subjects}" MinWidth="120" FontFamily="/Assets/Jost.ttf#Jost" SelectionChanged="SelectorChanged"/>
                     </Grid>
                 </AppBarElementContainer>
                 <AppBarButton Icon="Add" Click="AddLesson" />
             </my:CommandBarFlyout>
             <my:CommandBarFlyout x:Name="LessonCommander" x:Key="LessonCommander">
                 <AppBarButton Icon="Edit"/>
-                <AppBarButton Icon="Delete"/>
+                <AppBarButton Icon="Delete" Click="DeleteLessons"/>
             </my:CommandBarFlyout>
         </ResourceDictionary>
     </Page.Resources>
@@ -45,15 +46,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right" Margin="4" HorizontalAlignment="Left" >
-            <AppBarButton Icon="Document" Label="Файл" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <AppBarButton Icon="Save" Label="Сохранить" FontFamily="/Assets/Jost.ttf#Jost" Click="SaveSchedule"/>
-            <AppBarButton Icon="Print" Label="Печать" FontFamily="/Assets/Jost.ttf#Jost"/>
+        <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Collapsed" Margin="4" HorizontalAlignment="Left" >
+            <AppBarButton Icon="Document" FontFamily="/Assets/Jost.ttf#Jost" Click="OpenDocumentProperties"/>
+            <AppBarButton Icon="Save" FontFamily="/Assets/Jost.ttf#Jost" Click="SaveSchedule"/>
+            <AppBarButton Icon="Print" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
             <AppBarSeparator Margin="8,0"/>
             <AppBarElementContainer VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Symbol="Pin" Margin="10,0"/>
-                    <AutoSuggestBox QueryIcon="List" PlaceholderText="Предмет" Width="150" FontFamily="/Assets/Jost.ttf#Jost"/>
+                    <ComboBox x:Name="MainSelector" PlaceholderText="Предмет" Width="150" ItemsSource="{x:Bind SettingsInstance.Subjects}" FontFamily="/Assets/Jost.ttf#Jost" SelectionChanged="MainSelectorChanged"/>
                 </StackPanel>
             </AppBarElementContainer>
         </CommandBar>

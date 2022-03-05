@@ -28,27 +28,7 @@ namespace Raspire
             this.InitializeComponent();
             Schedule = schedule;
         }
-        private void ChangeSemi(object sender, RoutedEventArgs e)
-        {
-            //Schedule.Number = int.Parse((sender as Button).Content.ToString());
-            ChangeSemiScheduleFlyout.Hide();
-            //Bindings.Update();
-        }
-        /*public string GetSemiScheduleLabel()
-        {
-            return Schedule != null ? $"{Schedule.Number} полугодие" : "-";
-        }*/
-        private void ChangeQuarter(object sender, RoutedEventArgs e)
-        {
-            //Schedule.Number = int.Parse((sender as Button).Content.ToString());
-            ChangeQuarterScheduleFlyout.Hide();
-            //Bindings.Update();
-        }
-        /*public string GetQuarterScheduleLabel()
-        {
-            return Schedule != null ? $"{Schedule.Number} четверть" : "-";
-        }*/
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void PrimaryClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             PrimaryButtonCommandParameter = Schedule;
             Hide();

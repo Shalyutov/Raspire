@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Расписание"
+    PrimaryButtonClick="PrimaryClick"
     PrimaryButtonText="Готово" CornerRadius="10">
     <ContentDialog.TitleTemplate>
         <DataTemplate>
@@ -19,7 +20,7 @@
         </Style>
     </ContentDialog.PrimaryButtonStyle>
     <StackPanel>
-        <TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
+        <!--<TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
         <StackPanel Orientation="Horizontal">
             <Button IsEnabled="False" Content="" FontFamily="/Assets/Jost.ttf#Jost"/>
             <Button x:Name="SemiButton" Margin="12,0,0,0">
@@ -46,8 +47,8 @@
                 </Button.Flyout>
                 <TextBlock Text="" FontFamily="/Assets/Jost.ttf#Jost"/>
             </Button>
-        </StackPanel>
-        <Button Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
+        </StackPanel>-->
+        <Button Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}" Click="ExportDocument">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="SaveLocal"/>
                 <TextBlock Text="Экспорт" Margin="8,0"/>
