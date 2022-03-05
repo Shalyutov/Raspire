@@ -317,14 +317,14 @@ namespace Raspire
         {
             if (list.SelectedItems != null)
             {
-                List<object> unitsToDelete = new List<object>();
-                unitsToDelete.AddRange(list.SelectedItems);
-                foreach (object u in unitsToDelete)
+                List<object> deleted = new List<object>();
+                deleted.AddRange(list.SelectedItems);
+                foreach (object lesson in deleted)
                 {
-                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(u as Lesson);
+                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(lesson as Lesson);
                     foreach (LessonItem item in Schedule.LessonItems)
                     {
-                        if (item.Lesson == u as Lesson & item.Workday == GetListWorkday())
+                        if (item.Lesson == lesson as Lesson & item.Workday == GetListWorkday())
                         {
                             Schedule.LessonItems.Remove(item);
                             break;

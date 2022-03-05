@@ -12,7 +12,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
-                <StackPanel Width="200" MinHeight="220" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
+                <StackPanel Width="200" Height="350" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
                     <TextBlock Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
                     <ListView ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True"/>
                 </StackPanel>
