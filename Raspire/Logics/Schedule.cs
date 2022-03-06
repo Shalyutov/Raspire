@@ -60,6 +60,20 @@ namespace Raspire
             }
             return units;
         }
+        public void RestoreStruct(ObservableCollection<WorkdayForms> units)
+        {
+            LessonItems.Clear();
+            foreach(WorkdayForms unit in units)
+            {
+                foreach(FormLessons form in unit.FormLessons)
+                {
+                    foreach(Lesson lesson in form.Lessons)
+                    {
+                        LessonItems.Add(new LessonItem(lesson, unit.Workday));
+                    }
+                }
+            }
+        }
         public async Task<StorageFile> Save(StorageFile file)
         {
             if (file != null)

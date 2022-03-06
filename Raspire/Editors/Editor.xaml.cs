@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -57,30 +59,6 @@ namespace Raspire
                 Selector.SelectedIndex = 0;
             }
         }
-        /*private List<string> GetWorkdayStringList()
-        {
-            List<string> result = new List<string>();
-            foreach (int day in SettingsInstance.Workdays)
-            {
-                result.Add(Schedule.GetDay(day));
-            }
-            return result;
-        }*/
-        /*private void LessonUnitFocused(object sender, PointerRoutedEventArgs e)
-        {
-            if (shield) return;
-            TextBlock t = sender as TextBlock;
-            //CheckBox t = tt.Parent as CheckBox;
-            CurrentS = (t.Parent as ItemsRepeater).GetElementIndex(t);
-            CurrentC = (((t.Parent as ItemsRepeater).Parent as StackPanel).Parent as ItemsRepeater).GetElementIndex((t.Parent as ItemsRepeater).Parent as StackPanel);
-            CurrentW = (((((t.Parent as ItemsRepeater).Parent as StackPanel).Parent as ItemsRepeater).Parent as StackPanel).Parent as ItemsRepeater).GetElementIndex((((t.Parent as ItemsRepeater).Parent as StackPanel).Parent as ItemsRepeater).Parent as StackPanel);
-            //ClassSelector.SelectedIndex = CurrentC;
-            //WorkdaySelector.SelectedIndex = CurrentW;
-            //SubjectSelector.Text = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS].Represent();
-            //CabinetSelector.Text = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS].RepresentCab();
-            //LessonIndex.Text = (CurrentS + 1).ToString();
-            t.Foreground = ActualTheme == ElementTheme.Dark ? new SolidColorBrush(Windows.UI.Colors.White) : new SolidColorBrush(Windows.UI.Colors.Black);
-        }*/
         private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
         {
             //shield = true;
@@ -125,12 +103,14 @@ namespace Raspire
 
         private async void SaveSchedule(object sender, RoutedEventArgs e)
         {
+            Schedule.RestoreStruct(UnitsWorkdays);
             var f = await Schedule.Save(File);
             if (f != null)
             {
                 File = f;
             }
         }
+        #region Menu Entries
         private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
         {
             DocumentDialog document = new DocumentDialog(Schedule);
@@ -147,7 +127,7 @@ namespace Raspire
             if (sender as ListView != null)
                 list = sender as ListView;
             else
-                list = (sender as StackPanel).Children[1] as ListView;
+                list = (sender as Grid).Children[1] as ListView;
             Selector.ItemsSource = SettingsInstance.Subjects;
             if (previous != list)
             {
@@ -167,7 +147,7 @@ namespace Raspire
             if (sender as ListView != null)
                 list = sender as ListView;
             else
-                list = (sender as StackPanel).Children[1] as ListView;
+                list = (sender as Grid).Children[1] as ListView;
             Selector.ItemsSource = SettingsInstance.Subjects;
             if (previous != list)
             {
@@ -202,14 +182,17 @@ namespace Raspire
                 
             }
         }
+        #endregion
+
+        #region Position Logic
         int GetListIndex()
         {
-            var i = list.Parent as StackPanel;
+            var i = list.Parent as Grid;
             return (i.Parent as ItemsRepeater).GetElementIndex(i);
         }
         int GetListWorkday()
         {
-            var i = ((list.Parent as StackPanel).Parent as ItemsRepeater).Parent as StackPanel;
+            var i = ((list.Parent as Grid).Parent as ItemsRepeater).Parent as StackPanel;
             return (i.Parent as ItemsRepeater).GetElementIndex(i);
         }
         int GetHostedClassroom(Teacher teacher, Subject subject, Form form)
@@ -245,11 +228,13 @@ namespace Raspire
             }
             return null;
         }
+        #endregion
+
+        #region Data Manipulation Methods
         private void AddLesson(object sender, RoutedEventArgs e)
         {
             Subject subject = Selector.SelectedItem as Subject;
             int form = GetListIndex();
-            int workday = GetListWorkday();
             Teacher teacher = GetTeacher(subject, form);
             if (teacher == null) return;
             int classroom = GetHostedClassroom(teacher, subject, SettingsInstance.Forms[form]);
@@ -260,35 +245,30 @@ namespace Raspire
                 classroom
                 );
             (list.ItemsSource as ObservableCollection<Lesson>).Add(lesson);
-            Schedule.LessonItems.Add(new LessonItem(lesson, workday));
         }
-
-        private void SelectorTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private void DeleteLessons(object sender, RoutedEventArgs e)
         {
-            var text = sender.Text.ToLower();
-            var suitableItems = new List<Subject>();
-
-            if (text == "")
+            if (list.SelectedItems != null)
             {
-                sender.ItemsSource = SettingsInstance.Subjects;
-                return;
-            }
-            foreach (var unit in SettingsInstance.Subjects)
-            {
-                var found = text.Split(" ").All((key) =>
+                List<object> deleted = new List<object>();
+                deleted.AddRange(list.SelectedItems);
+                foreach (object lesson in deleted)
                 {
-                    return unit.ToString().ToLower().Contains(key);
-                });
-                if (found)
-                {
-                    suitableItems.Add(unit);
+                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(lesson as Lesson);
+                    /*foreach (LessonItem item in Schedule.LessonItems)
+                    {
+                        if (item.Lesson == lesson as Lesson & item.Workday == GetListWorkday())
+                        {
+                            Schedule.LessonItems.Remove(item);
+                            break;
+                        }
+                    }*/
                 }
             }
-            suitableItems.Add(new Subject($"{sender.Text} •"));
-
-            sender.ItemsSource = suitableItems;
         }
+        #endregion
 
+        #region Update Layout Methods
         private void MainSelectorChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -300,7 +280,6 @@ namespace Raspire
                 Selector.SelectedIndex = 0;
             }
         }
-
         private void SelectorChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -313,25 +292,83 @@ namespace Raspire
             }
         }
 
-        private void DeleteLessons(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region Drag and Drop Logic
+        private void dragenter(object sender, DragEventArgs e)
         {
-            if (list.SelectedItems != null)
+
+        }
+        private void dragitems(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+            foreach (var i in args.Items)
             {
-                List<object> deleted = new List<object>();
-                deleted.AddRange(list.SelectedItems);
-                foreach (object lesson in deleted)
-                {
-                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(lesson as Lesson);
-                    foreach (LessonItem item in Schedule.LessonItems)
-                    {
-                        if (item.Lesson == lesson as Lesson & item.Workday == GetListWorkday())
-                        {
-                            Schedule.LessonItems.Remove(item);
-                            break;
-                        }
-                    }
-                }
+                if (list != sender) (sender.ItemsSource as ObservableCollection<Lesson>).Remove((Lesson)i);
             }
         }
+        private void Dropg(UIElement sender, DropCompletedEventArgs args)
+        {
+
+        }
+        private void dragstart(object sender, DragItemsStartingEventArgs e)
+        {
+            var items = new StringBuilder();
+            foreach (var item in e.Items)
+            {
+                if (items.Length > 0) items.AppendLine();
+                items.Append(item.ToString());
+            }
+            // Set the content of the DataPackage
+            e.Data.SetText(items.ToString());
+            // As we want our Reference list to say intact, we only allow Copy
+            e.Data.RequestedOperation = DataPackageOperation.Move;
+        }
+
+        private void dragleave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void dragover(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = (e.DataView.Contains(StandardDataFormats.Text)) ? DataPackageOperation.Move : DataPackageOperation.None;
+        }
+
+        private void dragstarting(UIElement sender, DragStartingEventArgs args)
+        {
+
+        }
+
+        private async void drop(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.Text))
+            {
+                list = sender as ListView;
+                // We need to take a Deferral as we won't be able to confirm the end
+                // of the operation synchronously
+                var def = e.GetDeferral();
+                var s = await e.DataView.GetTextAsync();
+                var items = s.Split('\n');
+                foreach (var item in items)
+                {
+                    Subject subject = new Subject(item.Split(" • ")[0]);
+                    int form = GetListIndex();
+                    Teacher teacher = GetTeacher(subject, form);
+                    if (teacher == null) return;
+                    int classroom = GetHostedClassroom(teacher, subject, SettingsInstance.Forms[form]);
+                    Lesson lesson = new Lesson(
+                        subject,
+                        SettingsInstance.Forms[form],
+                        teacher.Name,
+                        classroom
+                        );
+                    (list.ItemsSource as ObservableCollection<Lesson>).Add(lesson);
+                }
+                e.AcceptedOperation = DataPackageOperation.Move;
+                def.Complete();
+            }
+        }
+        #endregion
+
     }
 }
