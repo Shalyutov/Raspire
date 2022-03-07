@@ -18,7 +18,7 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0"  Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
-                    <ListView Grid.Row="1" ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True" DropCompleted="Dropg" DragEnter="dragenter" DragItemsCompleted="dragitems" DragItemsStarting="dragstart" DragLeave="dragleave" DragOver="dragover" DragStarting="dragstarting" Drop="drop" VerticalAlignment="Stretch"/>
+                    <ListView Grid.Row="1" ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True" DragItemsCompleted="List_DragItemsCompleted" DragItemsStarting="List_DragStarting" DragOver="List_DragOver" Drop="List_Drop" VerticalAlignment="Stretch"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
@@ -53,7 +53,7 @@
         <CommandBar Grid.Row="0" Background="Transparent" IsOpen="False" DefaultLabelPosition="Collapsed" Margin="4" HorizontalAlignment="Left" >
             <AppBarButton Icon="Document" FontFamily="/Assets/Jost.ttf#Jost" Click="OpenDocumentProperties"/>
             <AppBarButton Icon="Save" FontFamily="/Assets/Jost.ttf#Jost" Click="SaveSchedule"/>
-            <AppBarButton Icon="Print" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
+            <AppBarButton Icon="Print" FontFamily="/Assets/Jost.ttf#Jost" Click="OnPrintButtonClick"/>
             <AppBarSeparator Margin="8,0"/>
             <AppBarElementContainer VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
@@ -68,5 +68,6 @@
                 </my:ItemsRepeater.Layout>
             </my:ItemsRepeater>
         </ScrollViewer>
+        <Canvas Grid.Row="1" x:Name="PrintCanvas" Opacity="0"/>
     </Grid>
 </Page>

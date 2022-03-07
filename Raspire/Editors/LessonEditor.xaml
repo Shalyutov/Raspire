@@ -36,12 +36,6 @@
             <Button Margin="4" ToolTipService.ToolTip="Обычный урок">
                 <SymbolIcon Symbol="Accept" Margin="4"/>
             </Button>
-            <Button Margin="4"  ToolTipService.ToolTip="Двойной урок" >
-                <SymbolIcon Symbol="ShowResults" Margin="4"/>
-            </Button>
-            <Button Margin="4"  ToolTipService.ToolTip="Мероприятие">
-                <SymbolIcon Symbol="Flag" Margin="4"/>
-            </Button>
             <Button Margin="4" ToolTipService.ToolTip="Пустой урок (окно)">
                 <SymbolIcon Symbol="ClearSelection" Margin="4"/>
             </Button>

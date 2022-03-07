@@ -135,8 +135,12 @@
     <Compile Include="Editors\Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editors\ScheduleLayout.xaml.cs">
+      <DependentUpon>ScheduleLayout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logics\Group.cs" />
     <Compile Include="Logics\Lesson.cs" />
+    <Compile Include="Logics\PrintHelper.cs" />
     <Compile Include="NavPages\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
@@ -241,6 +245,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editors\Editor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editors\ScheduleLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

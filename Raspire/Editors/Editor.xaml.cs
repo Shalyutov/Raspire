@@ -9,6 +9,7 @@ using System.Text;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Printing;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -32,6 +33,7 @@ namespace Raspire
         public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
         private ListView list;
+        private PrintHelper printHelper;
         public Editor()
         {
             this.InitializeComponent();
@@ -58,9 +60,22 @@ namespace Raspire
                 MainSelector.SelectedIndex = 0;
                 Selector.SelectedIndex = 0;
             }
+            if (PrintManager.IsSupported())
+            {
+                printHelper = new PrintHelper(this);
+                printHelper.RegisterForPrinting();
+            }
+        }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (printHelper != null)
+            {
+                printHelper.UnregisterForPrinting();
+            }
+            base.OnNavigatedFrom(e);
         }
         private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
-        {
+        {   //try to do the lock c# instruction
             //shield = true;
 
             //int f = GetCurrentListForm();
@@ -110,6 +125,28 @@ namespace Raspire
                 File = f;
             }
         }
+        private async void OnPrintButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (!PrintManager.IsSupported())
+            {
+                MessageDialog dialog = new MessageDialog("Печать не поддерживается");
+                _ = await dialog.ShowAsync();
+                return;
+            }
+            else if (printHelper == null)
+            {
+                printHelper = new PrintHelper(this);
+                printHelper.RegisterForPrinting();
+            }
+            Print();
+        }
+        private async void Print()
+        {
+            printHelper.PreparePrintContent(new ScheduleLayout());
+
+            await printHelper.ShowPrintUIAsync();
+        }
+
         #region Menu Entries
         private async void OpenDocumentProperties(object sender, RoutedEventArgs e)
         {
@@ -255,15 +292,8 @@ namespace Raspire
                 foreach (object lesson in deleted)
                 {
                     _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(lesson as Lesson);
-                    /*foreach (LessonItem item in Schedule.LessonItems)
-                    {
-                        if (item.Lesson == lesson as Lesson & item.Workday == GetListWorkday())
-                        {
-                            Schedule.LessonItems.Remove(item);
-                            break;
-                        }
-                    }*/
                 }
+                list.SelectedItems.Clear();
             }
         }
         #endregion
@@ -295,22 +325,19 @@ namespace Raspire
         #endregion
 
         #region Drag and Drop Logic
-        private void dragenter(object sender, DragEventArgs e)
+        private void List_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
         {
-
-        }
-        private void dragitems(ListViewBase sender, DragItemsCompletedEventArgs args)
-        {
-            foreach (var i in args.Items)
+            list.SelectedItems.Clear();
+            sender.SelectedItems.Clear();
+            if (list != sender)
             {
-                if (list != sender) (sender.ItemsSource as ObservableCollection<Lesson>).Remove((Lesson)i);
+                foreach (var i in args.Items)
+                {
+                    (sender.ItemsSource as ObservableCollection<Lesson>).Remove((Lesson)i);
+                }
             }
         }
-        private void Dropg(UIElement sender, DropCompletedEventArgs args)
-        {
-
-        }
-        private void dragstart(object sender, DragItemsStartingEventArgs e)
+        private void List_DragStarting(object sender, DragItemsStartingEventArgs e)
         {
             var items = new StringBuilder();
             foreach (var item in e.Items)
@@ -318,34 +345,18 @@ namespace Raspire
                 if (items.Length > 0) items.AppendLine();
                 items.Append(item.ToString());
             }
-            // Set the content of the DataPackage
             e.Data.SetText(items.ToString());
-            // As we want our Reference list to say intact, we only allow Copy
             e.Data.RequestedOperation = DataPackageOperation.Move;
         }
-
-        private void dragleave(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void dragover(object sender, DragEventArgs e)
+        private void List_DragOver(object sender, DragEventArgs e)
         {
             e.AcceptedOperation = (e.DataView.Contains(StandardDataFormats.Text)) ? DataPackageOperation.Move : DataPackageOperation.None;
         }
-
-        private void dragstarting(UIElement sender, DragStartingEventArgs args)
-        {
-
-        }
-
-        private async void drop(object sender, DragEventArgs e)
+        private async void List_Drop(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.Text))
             {
                 list = sender as ListView;
-                // We need to take a Deferral as we won't be able to confirm the end
-                // of the operation synchronously
                 var def = e.GetDeferral();
                 var s = await e.DataView.GetTextAsync();
                 var items = s.Split('\n');
