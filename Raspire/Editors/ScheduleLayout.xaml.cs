@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -13,18 +14,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
     /// <summary>
-    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
+    /// Страница макета печати общего расписания
     /// </summary>
     public sealed partial class ScheduleLayout : Page
     {
-        public ScheduleLayout()
+        public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
+        public ScheduleLayout(ObservableCollection<WorkdayForms> units)
         {
             this.InitializeComponent();
+            UnitsWorkdays = units;
         }
     }
 }

@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Raspire
 {
@@ -38,6 +39,8 @@ namespace Raspire
         {
             this.InitializeComponent();
         }
+
+        #region Startup Setup Layout
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             SettingsInstance = Settings.GetSavedSettings();
@@ -48,12 +51,14 @@ namespace Raspire
                 Schedule = (Schedule)(e.Parameter as List<object>)[0];
                 File = (StorageFile)(e.Parameter as List<object>)[1];
                 UnitsWorkdays = Schedule.GetStructWorkday();
+                if (SettingsInstance == null) SettingsInstance = Schedule.Settings;
             }
             if (Schedule == null)
             {
                 MessageDialog dialog = new MessageDialog("Создайте раписание или откройте существующее");
                 _ = await dialog.ShowAsync();
                 Frame.Navigate(typeof(SchedulePage), null, new DrillInNavigationTransitionInfo());
+                return;
             }
             if (SettingsInstance.Subjects.Count > 0)
             {
@@ -62,8 +67,8 @@ namespace Raspire
             }
             if (PrintManager.IsSupported())
             {
-                printHelper = new PrintHelper(this);
-                printHelper.RegisterForPrinting();
+                //printHelper = new PrintHelper(this, UnitsWorkdays);
+                //printHelper.RegisterForPrinting();
             }
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -74,6 +79,7 @@ namespace Raspire
             }
             base.OnNavigatedFrom(e);
         }
+        #endregion
         private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
         {   //try to do the lock c# instruction
             //shield = true;
@@ -116,6 +122,7 @@ namespace Raspire
             //shield = false;
         }
 
+        #region Actions
         private async void SaveSchedule(object sender, RoutedEventArgs e)
         {
             Schedule.RestoreStruct(UnitsWorkdays);
@@ -135,17 +142,37 @@ namespace Raspire
             }
             else if (printHelper == null)
             {
-                printHelper = new PrintHelper(this);
-                printHelper.RegisterForPrinting();
+                //printHelper = new PrintHelper(this, UnitsWorkdays);
+                //printHelper.RegisterForPrinting();
             }
             Print();
         }
         private async void Print()
         {
-            printHelper.PreparePrintContent(new ScheduleLayout());
+            //printHelper.StructBookA4();
+            //printHelper.StructLandA4();
+            //printHelper.PreparePrintContent(new ScheduleLayout(UnitsWorkdays));
+            var defaultPrintHelperOptions = new PrintHelperOptions();
 
-            await printHelper.ShowPrintUIAsync();
+            //Add options that you want to be displayed on the print dialog
+            //defaultPrintHelperOptions.AddDisplayOption(StandardPrintTaskOptions.Orientation);
+            //defaultPrintHelperOptions.AddDisplayOption(StandardPrintTaskOptions.MediaSize);
+
+            //Set preselected settings
+            defaultPrintHelperOptions.Orientation = PrintOrientation.Landscape;
+            defaultPrintHelperOptions.MediaSize = PrintMediaSize.IsoA3;
+            defaultPrintHelperOptions.Bordering = PrintBordering.Borderless;
+
+
+            var printHelper1 = new Microsoft.Toolkit.Uwp.Helpers.PrintHelper(PrintCanvas);
+
+            printHelper1.AddFrameworkElementToPrint(new ScheduleLayout(UnitsWorkdays));
+
+            await printHelper1.ShowPrintUIAsync("Title", defaultPrintHelperOptions);
+
+            //await printHelper.ShowPrintUIAsync();
         }
+        #endregion
 
         #region Menu Entries
         private async void OpenDocumentProperties(object sender, RoutedEventArgs e)

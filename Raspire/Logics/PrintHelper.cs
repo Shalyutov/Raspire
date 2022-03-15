@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-//using SDKTemplate;
 using Windows.Graphics.Printing;
+using Windows.Graphics.Printing.OptionDetails;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -12,16 +13,6 @@ namespace Raspire
 {
     public class PrintHelper
     {
-        /// <summary>
-        /// The percent of app's margin width, content is set at 85% (0.85) of the area's width
-        /// </summary>
-        protected double ApplicationContentMarginLeft = 0.075;
-
-        /// <summary>
-        /// The percent of app's margin height, content is set at 94% (0.94) of tha area's height
-        /// </summary>
-        protected double ApplicationContentMarginTop = 0.03;
-        
         /// <summary>
         /// PrintDocument is used to prepare the pages for printing.
         /// Prepare the pages to print in the handlers for the Paginate, GetPreviewPage, and AddPages events.
@@ -40,15 +31,17 @@ namespace Raspire
         internal List<FrameworkElement> printPreviewPages;
 
         /// <summary>
-        /// First page in the printing-content series
-        /// From this "virtual sized" paged content is split(text is flowing) to "printing pages"
-        /// </summary>
-        protected FrameworkElement page;
-
-        /// <summary>
         ///  A reference back to the scenario page used to access XAML elements on the scenario page
         /// </summary>
         protected Page scenarioPage;
+
+        internal List<FrameworkElement> Pages;
+
+        private ObservableCollection<WorkdayForms> Units;
+        private int A4Book = 0;
+        private int A4Land = 0;
+        //private int A3Book = 0;
+        private int A3Land = 1;
 
         /// <summary>
         ///  A hidden canvas used to hold pages we wish to print
@@ -65,12 +58,59 @@ namespace Raspire
         /// Constructor
         /// </summary>
         /// <param name="scenarioPage">The scenario page constructing us</param>
-        public PrintHelper(Page scenarioPage)
+        public PrintHelper(Page scenarioPage, ObservableCollection<WorkdayForms> units)
         {
             this.scenarioPage = scenarioPage;
             printPreviewPages = new List<FrameworkElement>();
+            Pages = new List<FrameworkElement>();
+
+            Units = units;
         }
 
+        public void StructLandA4()
+        {
+            ObservableCollection<WorkdayForms> workdayForms = new ObservableCollection<WorkdayForms>();
+            int count = 0;
+            foreach (WorkdayForms unit in Units)
+            {
+                workdayForms.Add(unit);
+                count++;
+                if (count % 3 == 0)
+                {
+                    PreparePrintContent(new ScheduleLayout(workdayForms));
+                    workdayForms = new ObservableCollection<WorkdayForms>();
+                    count = 0;
+                }
+            }
+            if (workdayForms.Count > 0) PreparePrintContent(new ScheduleLayout(workdayForms));
+            A4Land = Pages.Count - A4Book;
+        }
+        public void StructBookA4()
+        {
+            ObservableCollection<WorkdayForms> workdayForms = new ObservableCollection<WorkdayForms>();
+            for (int w = 0; w < Units.Count; w++)
+            {
+                if (Units[w].FormLessons.Count < 1) continue;
+                WorkdayForms item = new WorkdayForms(Units[w].Workday, new ObservableCollection<FormLessons>());
+                for(int l = 0; l< Units[w].FormLessons.Count; l++)
+                {
+                    item.FormLessons.Add(Units[w].FormLessons[l]);
+                    if (l % 6 == 0)
+                    {
+                        break;
+                    }
+                }
+                workdayForms.Add(item);
+                if(w == Units.Count - 1)
+                {
+                    PreparePrintContent(new ScheduleLayout(workdayForms));
+                    workdayForms = new ObservableCollection<WorkdayForms>();
+                    w = 0;
+                }
+            }
+            if (workdayForms.Count > 0) PreparePrintContent(new ScheduleLayout(workdayForms));
+            A4Book = Pages.Count;
+        }
         /// <summary>
         /// This function registers the app for printing with Windows and sets up the necessary event handlers for the print process.
         /// </summary>
@@ -110,14 +150,13 @@ namespace Raspire
 
         public async Task ShowPrintUIAsync()
         {
-            // Catch and print out any errors reported
             try
             {
                 await PrintManager.ShowPrintUIAsync();
             }
             catch (Exception e)
             {
-                MessageDialog dialog = new MessageDialog("Error printing: " + e.Message + ", hr=" + e.HResult);
+                MessageDialog dialog = new MessageDialog("Ошибка вывода на печать: " + e.Message + ", hr=" + e.HResult);
                 _ = await dialog.ShowAsync();
             }
         }
@@ -130,24 +169,11 @@ namespace Raspire
         /// <param name="page">The page to print</param>
         public virtual void PreparePrintContent(FrameworkElement page)
         {
-            //firstPage = page;
-            //this.page = page;
-            /*if (firstPage == null)
-            {
-                
-                //StackPanel header = (StackPanel)firstPage.FindName("Header");
-                //header.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            }*/
-
-            // Add the (newly created) page to the print canvas which is part of the visual tree and force it to go
-            // through layout so that the linked containers correctly distribute the content inside them.
             PrintCanvas.Children.Add(page);
             PrintCanvas.InvalidateMeasure();
             PrintCanvas.UpdateLayout();
 
-            printPreviewPages.Add(page);
-
-            //CreatePrintPreviewPages(printDocument, null);
+            Pages.Add(page);
         }
 
         /// <summary>
@@ -157,10 +183,24 @@ namespace Raspire
         /// <param name="e">PrintTaskRequestedEventArgs </param>
         protected virtual void PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs e)
         {
-            //AddPrintPages(printDocument, null);
             PrintTask printTask = null;
-            printTask = e.Request.CreatePrintTask("C# Printing SDK Sample", sourceRequested =>
+            printTask = e.Request.CreatePrintTask("Печать текущего расписания", sourceRequested =>
             {
+                //var deferral = sourceRequested.GetDeferral();
+                PrintTaskOptionDetails printDetailedOptions = PrintTaskOptionDetails.GetFromPrintTaskOptions(printTask.Options);
+                IList<string> displayedOptions = printDetailedOptions.DisplayedOptions;
+
+                // Choose the printer options to be shown.
+                // The order in which the options are appended determines the order in which they appear in the UI
+                displayedOptions.Clear();
+
+                displayedOptions.Add(StandardPrintTaskOptions.Orientation);
+                displayedOptions.Add(StandardPrintTaskOptions.MediaSize);
+
+                printTask.Options.MediaSize = PrintMediaSize.IsoA3;
+                printTask.Options.Orientation = PrintOrientation.Landscape;
+
+                printDetailedOptions.OptionChanged += printDetailedOptions_OptionChanged;
                 // Print Task event handler is invoked when the print job is completed.
                 printTask.Completed += async (s, args) =>
                 {
@@ -174,8 +214,57 @@ namespace Raspire
                         });
                     }
                 };
-
                 sourceRequested.SetSource(printDocumentSource);
+
+                //deferral.Complete();
+            });
+        }
+        /// <summary>
+        /// This is the event handler for whenever the user makes changes to the options. 
+        /// In this case, the options of interest are PageContent, Margins and Header.
+        /// </summary>
+        /// <param name="sender">PrintTaskOptionDetails</param>
+        /// <param name="args">PrintTaskOptionChangedEventArgs</param>
+        async void printDetailedOptions_OptionChanged(PrintTaskOptionDetails sender, PrintTaskOptionChangedEventArgs args)
+        {
+            string optionId = args.OptionId as string;
+            if (string.IsNullOrEmpty(optionId))
+            {
+                return;
+            }
+            var value_m = sender.Options["PageMediaSize"] as PrintMediaSizeOptionDetails;
+            var value_o = sender.Options["PageOrientation"] as PrintOrientationOptionDetails;
+
+            /*printPreviewPages.Clear();
+            if ((PrintMediaSize)value_m.Value == PrintMediaSize.IsoA4)
+            {
+                if ((PrintOrientation)value_o.Value == PrintOrientation.Landscape)
+                {
+                    for(int i = A4Book; i < A4Book + A4Land; i++)
+                    {
+                        printPreviewPages.Add(Pages[i]);
+                    }
+                    //StructLandA4();
+                }
+                else if ((PrintOrientation)value_o.Value == PrintOrientation.Portrait)
+                {
+                    for (int i = 0; i < A4Book; i++)
+                    {
+                        printPreviewPages.Add(Pages[i]);
+                    }
+                }
+            }
+            else if ((PrintMediaSize)value_m.Value == PrintMediaSize.IsoA3)
+            {
+                printPreviewPages.Add(Pages[A4Book + A4Land]);
+                //PreparePrintContent(new ScheduleLayout(Units));
+            }*/
+            await scenarioPage.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                PrintCanvas.InvalidateMeasure();
+                PrintCanvas.UpdateLayout();
+                
+                printDocument.InvalidatePreview();
             });
         }
 
@@ -186,45 +275,8 @@ namespace Raspire
         /// <param name="e">Paginate Event Arguments</param>
         protected virtual void CreatePrintPreviewPages(object sender, PaginateEventArgs e)
         {
-            /*if (PreviewPagesCreated != null)
-            {
-                PreviewPagesCreated.Invoke(printPreviewPages, null);
-            }*/
-            // Clear the cache of preview pages
-            //printPreviewPages.Clear();
-
-            // Clear the print canvas of preview pages
             PrintCanvas.Children.Clear();
-            PrintDocument printDoc = (PrintDocument)sender;
-
-            // Report the number of preview pages created
-            printDocument.SetPreviewPageCount(printPreviewPages.Count, PreviewPageCountType.Final);
-            //lock (printPreviewPages)
-            //{
-                
-
-                // This variable keeps track of the last RichTextBlockOverflow element that was added to a page which will be printed
-                //RichTextBlockOverflow lastRTBOOnPage;
-
-                // Get the PrintTaskOptions
-                //PrintTaskOptions printingOptions = e.PrintTaskOptions;
-
-                // Get the page description to deterimine how big the page is
-                //PrintPageDescription pageDescription = printingOptions.GetPageDescription(0);
-
-                // We know there is at least one page to be printed. passing null as the first parameter to
-                // AddOnePrintPreviewPage tells the function to add the first page.
-                //AddOnePrintPreviewPage(page);
-
-                // We know there are more pages to be added as long as the last RichTextBoxOverflow added to a print preview
-                // page has extra content
-                /*while (lastRTBOOnPage.HasOverflowContent && lastRTBOOnPage.Visibility == Windows.UI.Xaml.Visibility.Visible)
-                {
-                    lastRTBOOnPage = AddOnePrintPreviewPage(lastRTBOOnPage, pageDescription);
-                }*/
-
-                
-            //}
+            printDocument.SetPreviewPageCount(Pages.Count, PreviewPageCountType.Final);
         }
 
         /// <summary>
@@ -236,8 +288,7 @@ namespace Raspire
         /// <param name="e">Arguments containing the preview requested page</param>
         protected virtual void GetPrintPreviewPage(object sender, GetPreviewPageEventArgs e)
         {
-            PrintDocument printDoc = (PrintDocument)sender;
-            printDocument.SetPreviewPage(e.PageNumber, printPreviewPages[e.PageNumber - 1]);
+            printDocument.SetPreviewPage(e.PageNumber, Pages[e.PageNumber - 1]);
         }
 
         /// <summary>
@@ -249,63 +300,11 @@ namespace Raspire
         /// <param name="e">Add page event arguments containing a print task options reference</param>
         protected virtual void AddPrintPages(object sender, AddPagesEventArgs e)
         {
-            // Loop over all of the preview pages and add each one to  add each page to be printied
-            foreach (FrameworkElement i in printPreviewPages)
+            foreach (FrameworkElement page in Pages)
             {
-                // We should have all pages ready at this point...
-                printDocument.AddPage(i);
+                printDocument.AddPage(page);
             }
-            
-            PrintDocument printDoc = (PrintDocument)sender;
-            
-            // Indicate that all of the print pages have been provided
             printDocument.AddPagesComplete();
-        }
-
-        /// <summary>
-        /// This function creates and adds one print preview page to the internal cache of print preview
-        /// pages stored in printPreviewPages.
-        /// </summary>
-        /// <param name="lastRTBOAdded">Last RichTextBlockOverflow element added in the current content</param>
-        /// <param name="printPageDescription">Printer's page description</param>
-        protected virtual void AddOnePrintPreviewPage(FrameworkElement page)
-        {
-            // Set "paper" width
-            /*page.Width = printPageDescription.PageSize.Width;
-            page.Height = printPageDescription.PageSize.Height;
-            
-            Grid printableArea = (Grid)page.FindName("PrintableArea");
-
-            // Get the margins size
-            // If the ImageableRect is smaller than the app provided margins use the ImageableRect
-            double marginWidth = Math.Max(printPageDescription.PageSize.Width - printPageDescription.ImageableRect.Width, printPageDescription.PageSize.Width * ApplicationContentMarginLeft * 2);
-            double marginHeight = Math.Max(printPageDescription.PageSize.Height - printPageDescription.ImageableRect.Height, printPageDescription.PageSize.Height * ApplicationContentMarginTop * 2);
-
-            // Set-up "printable area" on the "paper"
-            printableArea.Width = firstPage.Width - marginWidth;
-            printableArea.Height = firstPage.Height - marginHeight;*/
-
-            // Add the (newley created) page to the print canvas which is part of the visual tree and force it to go
-            // through layout so that the linked containers correctly distribute the content inside them.
-            PrintCanvas.Children.Add(page);
-            PrintCanvas.InvalidateMeasure();
-            PrintCanvas.UpdateLayout();
-
-            // Find the last text container and see if the content is overflowing
-            //textLink = (RichTextBlockOverflow)page.FindName("ContinuationPageLinkedContainer");
-
-            // Check if this is the last page
-            /*if (!textLink.HasOverflowContent && textLink.Visibility == Windows.UI.Xaml.Visibility.Visible)
-            {
-                StackPanel footer = (StackPanel)page.FindName("Footer");
-                footer.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                
-            }*/
-            //PrintCanvas.UpdateLayout();
-            // Add the page to the page preview collection
-            printPreviewPages.Add(page);
-
-            //return textLink;
         }
     }
 }
