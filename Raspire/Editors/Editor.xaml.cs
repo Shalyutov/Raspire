@@ -34,7 +34,6 @@ namespace Raspire
         public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
         private ListView list;
-        private PrintHelper printHelper;
         public Editor()
         {
             this.InitializeComponent();
@@ -65,18 +64,9 @@ namespace Raspire
                 MainSelector.SelectedIndex = 0;
                 Selector.SelectedIndex = 0;
             }
-            if (PrintManager.IsSupported())
-            {
-                //printHelper = new PrintHelper(this, UnitsWorkdays);
-                //printHelper.RegisterForPrinting();
-            }
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            if (printHelper != null)
-            {
-                printHelper.UnregisterForPrinting();
-            }
             base.OnNavigatedFrom(e);
         }
         #endregion
@@ -140,37 +130,13 @@ namespace Raspire
                 _ = await dialog.ShowAsync();
                 return;
             }
-            else if (printHelper == null)
-            {
-                //printHelper = new PrintHelper(this, UnitsWorkdays);
-                //printHelper.RegisterForPrinting();
-            }
             Print();
         }
         private async void Print()
         {
-            //printHelper.StructBookA4();
-            //printHelper.StructLandA4();
-            //printHelper.PreparePrintContent(new ScheduleLayout(UnitsWorkdays));
-            var defaultPrintHelperOptions = new PrintHelperOptions();
-
-            //Add options that you want to be displayed on the print dialog
-            //defaultPrintHelperOptions.AddDisplayOption(StandardPrintTaskOptions.Orientation);
-            //defaultPrintHelperOptions.AddDisplayOption(StandardPrintTaskOptions.MediaSize);
-
-            //Set preselected settings
-            defaultPrintHelperOptions.Orientation = PrintOrientation.Landscape;
-            defaultPrintHelperOptions.MediaSize = PrintMediaSize.IsoA3;
-            defaultPrintHelperOptions.Bordering = PrintBordering.Borderless;
-
-
-            var printHelper1 = new Microsoft.Toolkit.Uwp.Helpers.PrintHelper(PrintCanvas);
-
-            printHelper1.AddFrameworkElementToPrint(new ScheduleLayout(UnitsWorkdays));
-
-            await printHelper1.ShowPrintUIAsync("Title", defaultPrintHelperOptions);
-
-            //await printHelper.ShowPrintUIAsync();
+            SaveSchedule(null, null);
+            Editors.PrintWizard wizard = new Editors.PrintWizard(UnitsWorkdays, PrintCanvas);
+            await wizard.ShowAsync();
         }
         #endregion
 

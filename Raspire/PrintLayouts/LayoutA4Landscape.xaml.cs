@@ -14,15 +14,17 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
+
 namespace Raspire
 {
     /// <summary>
-    /// Страница макета печати общего расписания
+    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class ScheduleLayout : Page
+    public sealed partial class LayoutA4Landscape : Page
     {
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
-        public ScheduleLayout(ObservableCollection<WorkdayForms> units)
+        public LayoutA4Landscape(ObservableCollection<WorkdayForms> units)
         {
             this.InitializeComponent();
             UnitsWorkdays = units;

@@ -135,12 +135,17 @@
     <Compile Include="Editors\Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Editors\ScheduleLayout.xaml.cs">
-      <DependentUpon>ScheduleLayout.xaml</DependentUpon>
+    <Compile Include="Editors\PrintWizard.xaml.cs">
+      <DependentUpon>PrintWizard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintLayouts\LayoutA4Landscape.xaml.cs">
+      <DependentUpon>LayoutA4Landscape.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PrintLayouts\LayoutA3Landscape.xaml.cs">
+      <DependentUpon>LayoutA3Landscape.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logics\Group.cs" />
     <Compile Include="Logics\Lesson.cs" />
-    <Compile Include="Logics\PrintHelper.cs" />
     <Compile Include="NavPages\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
@@ -248,7 +253,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Editors\ScheduleLayout.xaml">
+    <Page Include="Editors\PrintWizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PrintLayouts\LayoutA4Landscape.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PrintLayouts\LayoutA3Landscape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

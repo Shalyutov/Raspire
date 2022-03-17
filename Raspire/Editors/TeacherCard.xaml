@@ -14,7 +14,7 @@
     CornerRadius="10">
     <ContentDialog.TitleTemplate>
         <DataTemplate>
-            <TextBlock Text="Расписание" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <TextBlock Text="Карточка учителя" FontFamily="/Assets/Jost.ttf#Jost"/>
         </DataTemplate>
     </ContentDialog.TitleTemplate>
     <ContentDialog.PrimaryButtonStyle>
