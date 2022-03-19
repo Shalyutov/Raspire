@@ -14,19 +14,21 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
+
 namespace Raspire
 {
     /// <summary>
-    /// Страница макета печати общего расписания
+    /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class LayoutA3Landscape : Page
+    public sealed partial class LayoutA4Book : Page
     {
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
         private string Number;
         private string Year;
         private string Law;
         private DateTime Date;
-        public LayoutA3Landscape(ObservableCollection<WorkdayForms> units, string number, string year, string law, DateTime date)
+        public LayoutA4Book(ObservableCollection<WorkdayForms> units, string number, string year, string law, DateTime date)
         {
             this.InitializeComponent();
             UnitsWorkdays = units;
@@ -45,7 +47,7 @@ namespace Raspire
             var SettingsInstance = Settings.GetSavedSettings();
             if (Law != "1" | Law != "")
             {
-
+                
                 footer += $" приказом № {Law} от {Date.ToShortDateString()}";
             }
             footer += $"\nДиректор {SettingsInstance.SchoolName} {SettingsInstance.HeadSchool}";

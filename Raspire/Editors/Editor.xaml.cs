@@ -70,48 +70,7 @@ namespace Raspire
             base.OnNavigatedFrom(e);
         }
         #endregion
-        private void OpenLessonEditor(object sender, DoubleTappedRoutedEventArgs e)
-        {   //try to do the lock c# instruction
-            //shield = true;
-
-            //int f = GetCurrentListForm();
-            //int w = GetCurrentListWorkday(f);
-
-            /*Lesson unit = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units[CurrentS];
-            LessonEditor lessonEditor = new LessonEditor(unit, SettingsInstance.SubjectUnits, SettingsInstance.TeacherUnits, SettingsInstance.Forms, CurrentC);
-            _ = await lessonEditor.ShowAsync();
-
-            int index = 0;
-            foreach (LessonItem item in Schedule.LessonItems)
-            {
-                if ((lessonEditor.PrimaryButtonCommandParameter as LessonUnit).ToString() == item.Lesson.ToString() && item.Form.ToString() == Schedule.Settings.Forms[CurrentC].ToString() && item.Workday == Schedule.GetDay(CurrentW))
-                {
-                    index = Schedule.LessonItems.IndexOf(item);
-                    Schedule.LessonItems.Remove(item);
-                    break;
-                }
-            }
-
-            if (lessonEditor.PrimaryButtonCommandParameter != null)
-            {
-                ObservableCollection<LessonUnit> src = UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units;
-
-                FormUnit form = Schedule.Settings.Forms[CurrentC];
-                string workday = Schedule.GetDay(Schedule.Settings.Workdays[CurrentW]);
-                Schedule.LessonItems.Insert(index, new LessonItem(lessonEditor.PrimaryButtonCommandParameter as LessonUnit, form, workday));
-
-                src.Insert(CurrentS, lessonEditor.PrimaryButtonCommandParameter as LessonUnit);
-                src.RemoveAt(CurrentS);
-                (sender as TextBlock).Text = (lessonEditor.PrimaryButtonCommandParameter as LessonUnit).ToString();
-            }
-            else
-            {
-                UnitsWorkdays[CurrentW].ClassesUnits[CurrentC].Units.RemoveAt(CurrentS);
-                Schedule.LessonItems.RemoveAt(index);
-            }*/
-            //shield = false;
-        }
-
+        
         #region Actions
         private async void SaveSchedule(object sender, RoutedEventArgs e)
         {
@@ -137,6 +96,25 @@ namespace Raspire
             SaveSchedule(null, null);
             Editors.PrintWizard wizard = new Editors.PrintWizard(UnitsWorkdays, PrintCanvas);
             await wizard.ShowAsync();
+        }
+        private async void OpenLessonEditor(object sender, RoutedEventArgs e)
+        {
+            LessonEditor lessonEditor = new LessonEditor(list.SelectedItems[0] as Lesson);
+            _ = await lessonEditor.ShowAsync();
+
+            Lesson lesson = lessonEditor.PrimaryButtonCommandParameter as Lesson;
+            if (lesson != null)
+            {
+                foreach (var item in list.SelectedItems)
+                {
+                    (item as Lesson).Subject = lesson.Subject;
+                    (item as Lesson).Classroom = lesson.Classroom;
+                    (item as Lesson).TeacherName = lesson.TeacherName;
+                }
+            }
+            var s = list.ItemsSource;
+            list.ItemsSource = null;
+            list.ItemsSource = s;
         }
         #endregion
 
@@ -374,5 +352,6 @@ namespace Raspire
         }
         #endregion
 
+        
     }
 }

@@ -7,41 +7,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Урок"
-    CornerRadius="10" >
+    PrimaryButtonText="Готово"
+    CornerRadius="10" PrimaryButtonClick="LessonSubmit" >
     <ContentDialog.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="Урок" FontFamily="/Assets/Jost.ttf#Jost"/>
         </DataTemplate>
     </ContentDialog.TitleTemplate>
+    <ContentDialog.PrimaryButtonStyle>
+        <Style TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="FontFamily" Value="/Assets/Jost.ttf#Jost"/>
+        </Style>
+    </ContentDialog.PrimaryButtonStyle>
     <StackPanel HorizontalAlignment="Stretch">
-        
         <Grid x:Name="FirstUnit">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <AutoSuggestBox x:Name="EventSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps"  />
-            <TextBox Grid.Column="1" x:Name="CabSelector" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" />
-        </Grid>
-        <Grid x:Name="SecondUnit" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox x:Name="EventSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок или мероприятие" QueryIcon="AllApps"  />
-            <TextBox Grid.Column="1" x:Name="CabSelector2" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" />
+            <AutoSuggestBox Grid.Column="0" x:Name="Lesson" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок/мероприятие" VerticalAlignment="Center" Text="{x:Bind Unit.Subject}" TextChanged="LessonChanged" SuggestionChosen="LessonChosen"/>
+            <Button Grid.Column="1" Margin="4" ToolTipService.ToolTip="Очистить">
+                <SymbolIcon Symbol="Contact" />
+            </Button>
+            <TextBox Grid.Column="2" x:Name="Classroom" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" VerticalAlignment="Center" Text="{x:Bind Unit.Classroom}" TextChanged="ClassroomChanged"/>
+            <Button Grid.Column="3" Margin="4" ToolTipService.ToolTip="Очистить" Click="ClearLesson">
+                <SymbolIcon Symbol="Clear" />
+            </Button>
         </Grid>
-        
-        <StackPanel Orientation="Horizontal" Margin="0,4">
-            <Button Margin="4" ToolTipService.ToolTip="Обычный урок">
-                <SymbolIcon Symbol="Accept" Margin="4"/>
-            </Button>
-            <Button Margin="4" ToolTipService.ToolTip="Пустой урок (окно)">
-                <SymbolIcon Symbol="ClearSelection" Margin="4"/>
-            </Button>
-            <Button Margin="4"  ToolTipService.ToolTip="Удалить урок">
-                <SymbolIcon Symbol="Delete" Margin="4"/>
-            </Button>
-        </StackPanel>
     </StackPanel>
 </ContentDialog>

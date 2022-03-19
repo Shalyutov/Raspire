@@ -16,183 +16,63 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Raspire
 {
-    /*
+    
     internal sealed partial class LessonEditor : ContentDialog
     {
         public Lesson Unit { get; set; }
-        public ObservableCollection<Subject> SubjectUnits { get; set; }
-        public ObservableCollection<Teacher> TeacherUnits { get; set; }
-        public ObservableCollection<Form> FormUnits { get; set; }
-        int iForm;
-        bool loaded = false;
-        bool shield = false;
-        public LessonEditor(Lesson unit, ObservableCollection<Subject> subjectUnits, ObservableCollection<Teacher> teacherUnits, ObservableCollection<Form> formUnits, int indexForm)
+        public ObservableCollection<Subject> Subjects { get; set; }
+        public ObservableCollection<Teacher> Teachers { get; set; }
+        public ObservableCollection<Form> Forms { get; set; }
+        
+        public LessonEditor(Lesson unit)
         {
-            //Unit = unit == null ? new Lesson() : unit;
-            SubjectUnits = subjectUnits;
-            TeacherUnits = teacherUnits;
-            FormUnits = formUnits;
-            iForm = indexForm;
-            loaded = false;
+            Unit = unit == null ? new Lesson(new Subject(""), new Form("0", 0), "", 0) : unit;
+            Settings settings = Settings.GetSavedSettings();
+            Subjects = settings.Subjects;
+            Teachers = settings.Teachers;
+            Forms = settings.Forms;
             this.InitializeComponent();
         }
         private void DialogLoaded(object sender, RoutedEventArgs e)
         {
-            shield = true;
-            if (Unit.Subject.Count == 1)
-            {
-                EventSelector.Text = Unit.Subject[0].Name;
-                if (Unit.Cabinet[0] == -1)
-                {
-                    CabSelector.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    CabSelector.Text = Unit.Cabinet[0].ToString();
-                }
-            }
-            else if (Unit.Subject.Count == 2)
-            {
-                SecondUnit.Visibility = Visibility.Visible;
-
-                EventSelector.Text = Unit.Subject[0].Name;
-                if (Unit.Cabinet[0] == -1)
-                {
-                    CabSelector.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    CabSelector.Text = Unit.Cabinet[0].ToString();
-                }
-
-                EventSelector2.Text = Unit.Subject[1].Name;
-                if (Unit.Cabinet[1] == -1)
-                {
-                    CabSelector2.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    CabSelector2.Text = Unit.Cabinet[1].ToString();
-                }
-
-            }
-            loaded = true;
-            
+            Lesson.Text = Unit.Subject.ToString();
+            Classroom.Text = Unit.Classroom.ToString();
         }
 
-        private void EmptyLesson(object sender, RoutedEventArgs e)
+        private void ClearLesson(object sender, RoutedEventArgs e)
         {
-            Unit.Subject.Clear();
-            Unit.Cabinet.Clear();
-            Unit.Teacher.Clear();
+            Unit.Subject = new Subject("");
+            Unit.Classroom = 0;
+            Unit.TeacherName = "";
+        }
 
+        private void LessonSubmit(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
             PrimaryButtonCommandParameter = Unit;
-            Hide();
         }
 
-        private void DeleteLesson(object sender, RoutedEventArgs e)
+        private void ClassroomChanged(object sender, TextChangedEventArgs e)
         {
-            PrimaryButtonCommandParameter = null;
-            Hide();
+            try
+            {
+                Unit.Classroom = int.Parse(Classroom.Text);
+            }
+            catch (Exception)
+            {
+            }
         }
 
-        private void StandardLesson(object sender, RoutedEventArgs e)
+        private void LessonChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (Unit.Subject.Count > 1)
-            {
-                Unit.Subject.RemoveAt(1);
-                Unit.Cabinet.RemoveAt(1);
-                Unit.Teacher.RemoveAt(1);
-            }
-            PrimaryButtonCommandParameter = Unit;
-
-            Hide();
-        }
-
-        private void DoubleLesson(object sender, RoutedEventArgs e)
-        {
-            SecondUnit.Visibility = Visibility.Visible;
-            if (Unit.Subject.Count != 2 || Unit.Subject[0] == null || Unit.Subject[1] == null) return;
-            PrimaryButtonCommandParameter = Unit;
-            Hide();
-        }
-
-        private void CabSelectorChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!loaded) return;
-            if (Unit == null) return;
-            if ((sender as TextBox).Text == "") return;
-            if (Unit.Cabinet.Count >= 1)
-            {
-                try
-                {
-                    Unit.Cabinet[0] = int.Parse((sender as TextBox).Text);
-                }
-                catch (Exception)
-                {
-                    return;
-                }
-            }
-            else return;
-        }
-        private void CabSelector2Changed(object sender, TextChangedEventArgs e)
-        {
-            if (!loaded) return;
-            if (Unit == null) return;
-            if ((sender as TextBox).Text == "") return;
-            if (Unit.Cabinet.Count == 2)
-            {
-                try
-                {
-                    Unit.Cabinet[1] = int.Parse((sender as TextBox).Text);
-                }
-                catch (Exception)
-                {
-                    return;
-                }
-            }
-            else return;
-        }
-
-        private void StandardEvent(object sender, RoutedEventArgs e)
-        {
-            if (Unit.Subject.Count > 1)
-            {
-                if (Unit.Subject[1] == null)
-                {
-                    Unit.Subject.RemoveAt(1);
-                    Unit.Cabinet.RemoveAt(1);
-                    Unit.Teacher.RemoveAt(1);
-                }
-            }
-            else if (Unit.Subject.Count < 1)
-            {
-                Unit.Subject.Add(null);
-                Unit.Teacher.Add(null);
-                Unit.Cabinet.Add(-1);
-            }
-
-            PrimaryButtonCommandParameter = Unit;
-
-            Hide();
-        }
-
-        private void TextChangedSuggest(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-       {
-            if (shield)
-            {
-                shield = false;
-                return;
-            }
             var text = sender.Text.ToLower();
             var suitableItems = new List<Subject>();
-            
+
             if (text == "")
             {
-                sender.ItemsSource = SubjectUnits;
+                sender.ItemsSource = Subjects;
                 return;
             }
-            foreach (var unit in SubjectUnits)
+            foreach (var unit in Subjects)
             {
                 var found = text.Split(" ").All((key) =>
                 {
@@ -203,110 +83,52 @@ namespace Raspire
                     suitableItems.Add(unit);
                 }
             }
-            suitableItems.Add(new Subject(sender.Text + "~ мероприятие"));
-            
+            suitableItems.Add(new Subject(sender.Text + "•"));
+
             sender.ItemsSource = suitableItems;
         }
-
-        private void SuggestChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        Teacher GetTeacher(Subject subject, int form)
         {
-            shield = true;
-            if (args.SelectedItem.ToString().Contains("~"))
-            {
-                (args.SelectedItem as Subject).Name = args.SelectedItem.ToString().Split("~")[0];
-                EventSelector.Text = (args.SelectedItem as Subject).Name;
-                if (Unit.Subject.Count > 0)
-                {
-                    Unit.Subject[0] = (Subject)args.SelectedItem;
-                    Unit.Cabinet[0] = -1;
-                    Unit.Teacher[0] = null;
-                }
-                CabSelector.Visibility = Visibility.Collapsed;
-                
-                return;
-            }
-            else
-            {
-                sender.Text = args.SelectedItem.ToString();
-                CabSelector.Visibility = Visibility.Visible;
-            }
-
-            Teacher teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
-            if (teacher != null)
-            {
-                Unit = new LessonUnit((Subject)args.SelectedItem, c, teacher);
-                CabSelector.Text = c.ToString();
-            }
-            else
-            {
-                sender.Text = "";
-            }
-        }
-        private void SuggestChosen2(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-        {
-            shield = true;
-            if (args.SelectedItem.ToString().Contains("~"))
-            {
-                (args.SelectedItem as Subject).Name = args.SelectedItem.ToString().Split("~")[0];
-                EventSelector2.Text = (args.SelectedItem as Subject).Name;
-                if (Unit.Subject.Count == 1)
-                {
-                    Unit.Subject.Add((Subject)args.SelectedItem);
-                    Unit.Cabinet.Add(-1);
-                    Unit.Teacher.Add(null);
-                }
-                CabSelector2.Visibility = Visibility.Collapsed;
-                return;
-            }
-            else
-            {
-                sender.Text = args.SelectedItem.ToString();
-                CabSelector2.Visibility = Visibility.Visible;
-            }
-
-            Teacher teacher = GetTeacher(args.SelectedItem.ToString(), out int c);
-            if (teacher != null)
-            {
-                if (Unit.Subject.Count == 1)
-                {
-                    Unit.Subject.Add((Subject)args.SelectedItem);
-                    Unit.Cabinet.Add(c);
-                    Unit.Teacher.Add(teacher.Name);
-                }
-                CabSelector2.Text = c.ToString();
-            }
-            else
-            {
-                sender.Text = "";
-            }
-        }
-        public Teacher GetTeacher(string args, out int cab)
-        {
-            cab = -1;
-            foreach (Teacher t in TeacherUnits)
+            foreach (Teacher t in Teachers)
             {
                 foreach (Host s in t.HostedSubjects)
                 {
-                    bool subjectMatch = s.Subject.ToString() == args;
-                    bool formMatch = false;
+                    if (s.Subject != subject) continue;
                     foreach (FormClassroom f in s.Forms)
                     {
-                        int i = iForm;
-                        if (f.Form.ToString() == FormUnits[i].ToString())
+                        if (f.Form == Forms[form])
                         {
-                            formMatch = true;
-                            cab = f.Cabinet;
-                            break;
+                            return t;
                         }
-                    }
-                    if (subjectMatch && formMatch)
-                    {
-                        return t;
                     }
                 }
             }
             return null;
         }
+        private void LessonChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            string item = args.SelectedItem.ToString();
+            if (item.Contains("•"))
+            {
+                Lesson.Text = item.Split("•")[0];
+                Classroom.Text = "";
+                Classroom.Focus(FocusState.Programmatic);
+            }
+            else
+            {
+                Lesson.Text = item;
+                Teacher teacher = GetTeacher(new Subject(item), Forms.IndexOf(Unit.Group));
+                if (teacher != null)
+                {
+                    Unit.TeacherName = teacher.Name;
+                    Unit.Classroom = teacher.Classroom;
+                    Classroom.Focus(FocusState.Programmatic);
+                }
+                else
+                {
+                    Lesson.Text = "";
+                }
+            }
+        }
     }
-    */
 }

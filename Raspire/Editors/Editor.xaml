@@ -40,7 +40,7 @@
                 <AppBarButton Icon="Add" Click="AddLesson" />
             </my:CommandBarFlyout>
             <my:CommandBarFlyout x:Name="LessonCommander" x:Key="LessonCommander">
-                <AppBarButton Icon="Edit"/>
+                <AppBarButton Icon="Edit" Click="OpenLessonEditor"/>
                 <AppBarButton Icon="Delete" Click="DeleteLessons"/>
             </my:CommandBarFlyout>
         </ResourceDictionary>

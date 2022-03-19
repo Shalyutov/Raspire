@@ -46,15 +46,14 @@
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Расписание уроков на          полугодие             учебного года" FontWeight="Bold" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="{x:Bind GetHeader()}" FontWeight="Bold" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Center"/>
         <my:ItemsRepeater Grid.Row="1" ItemTemplate="{StaticResource ItemV2}" ItemsSource="{x:Bind UnitsWorkdays}">
             <my:ItemsRepeater.Layout>
                 <my:StackLayout Orientation="Vertical" Spacing="8"/>
             </my:ItemsRepeater.Layout>
         </my:ItemsRepeater>
         <StackPanel Grid.Row="2">
-            <TextBlock Text="Утверждено приказом №            от" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <TextBlock Text="Директор:" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <TextBlock Text="{x:Bind GetFooter()}" FontFamily="/Assets/Jost.ttf#Jost"/>
         </StackPanel>
     </Grid>
 </Page>
