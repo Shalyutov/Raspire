@@ -64,6 +64,7 @@ namespace Raspire
                 MainSelector.SelectedIndex = 0;
                 Selector.SelectedIndex = 0;
             }
+            UnitsRepeater.ItemsSource = UnitsWorkdays;
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {

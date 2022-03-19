@@ -7,8 +7,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 
-// Документацию по шаблону элемента "Диалоговое окно содержимого" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
     internal sealed partial class TeacherCard : ContentDialog
@@ -100,10 +98,6 @@ namespace Raspire
 
         private void SubjectClicked(object sender, ItemClickEventArgs e)
         {
-            FlyoutShowOptions myOption = new FlyoutShowOptions
-            {
-                ShowMode = FlyoutShowMode.Standard
-            };
             SelectedSubject = e.ClickedItem as Subject;
         }
         private void FormsSelected(object sender, SelectionChangedEventArgs e)

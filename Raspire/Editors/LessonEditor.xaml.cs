@@ -26,7 +26,7 @@ namespace Raspire
         
         public LessonEditor(Lesson unit)
         {
-            Unit = unit == null ? new Lesson(new Subject(""), new Form("0", 0), "", 0) : unit;
+            Unit = unit ?? new Lesson(new Subject(""), new Form("0", 0), "", 0);
             Settings settings = Settings.GetSavedSettings();
             Subjects = settings.Subjects;
             Teachers = settings.Teachers;
@@ -44,6 +44,9 @@ namespace Raspire
             Unit.Subject = new Subject("");
             Unit.Classroom = 0;
             Unit.TeacherName = "";
+
+            Lesson.Text = "";
+            Classroom.Text = "";
         }
 
         private void LessonSubmit(ContentDialog sender, ContentDialogButtonClickEventArgs args)

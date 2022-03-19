@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Title="Урок"
     PrimaryButtonText="Готово"
-    CornerRadius="10" PrimaryButtonClick="LessonSubmit" >
+    CornerRadius="10" PrimaryButtonClick="LessonSubmit" Loaded="DialogLoaded">
     <ContentDialog.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="Урок" FontFamily="/Assets/Jost.ttf#Jost"/>
@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <AutoSuggestBox Grid.Column="0" x:Name="Lesson" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок/мероприятие" VerticalAlignment="Center" Text="{x:Bind Unit.Subject}" TextChanged="LessonChanged" SuggestionChosen="LessonChosen"/>
-            <Button Grid.Column="1" Margin="4" ToolTipService.ToolTip="Очистить">
+            <Button Grid.Column="1" Margin="4" ToolTipService.ToolTip="Учитель" Visibility="Collapsed">
                 <SymbolIcon Symbol="Contact" />
             </Button>
             <TextBox Grid.Column="2" x:Name="Classroom" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" VerticalAlignment="Center" Text="{x:Bind Unit.Classroom}" TextChanged="ClassroomChanged"/>

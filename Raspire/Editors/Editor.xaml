@@ -62,7 +62,7 @@
             </AppBarElementContainer>
         </CommandBar>
         <ScrollViewer Grid.Row="1" Margin="4" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto">
-            <my:ItemsRepeater ItemTemplate="{StaticResource ItemV2}" ItemsSource="{x:Bind UnitsWorkdays}">
+            <my:ItemsRepeater x:Name="UnitsRepeater" ItemTemplate="{StaticResource ItemV2}" ItemsSource="{x:Bind UnitsWorkdays}">
                 <my:ItemsRepeater.Layout>
                     <my:StackLayout Orientation="Vertical" Spacing="8"/>
                 </my:ItemsRepeater.Layout>

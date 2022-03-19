@@ -45,10 +45,11 @@ namespace Raspire.Editors
 
         private async void PrintA3Land(object sender, RoutedEventArgs e)
         {
-            var options = new PrintHelperOptions();
-
-            options.Orientation = PrintOrientation.Landscape;
-            options.MediaSize = PrintMediaSize.IsoA3;
+            var options = new PrintHelperOptions
+            {
+                Orientation = PrintOrientation.Landscape,
+                MediaSize = PrintMediaSize.IsoA3
+            };
 
             ObservableCollection<WorkdayForms> workdayForms = new ObservableCollection<WorkdayForms>();
             int i = 0;
@@ -96,10 +97,11 @@ namespace Raspire.Editors
 
         private async void PrintA4Book(object sender, RoutedEventArgs e)
         {
-            var options = new PrintHelperOptions();
-
-            options.Orientation = PrintOrientation.Portrait;
-            options.MediaSize = PrintMediaSize.IsoA4;
+            var options = new PrintHelperOptions
+            {
+                Orientation = PrintOrientation.Portrait,
+                MediaSize = PrintMediaSize.IsoA4
+            };
 
             ObservableCollection<WorkdayForms> workdayForms = new ObservableCollection<WorkdayForms>();
             int i = 0;

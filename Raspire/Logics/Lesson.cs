@@ -51,7 +51,8 @@ namespace Raspire
         }
         public override string ToString()
         {
-            return $"{Subject} • {Classroom}";
+            string ClassroomFormat = Classroom == 0 ? "" : Classroom.ToString();
+            return $"{Subject} • {ClassroomFormat}";
         }
     }
     public class LessonItem : IEquatable<LessonItem>

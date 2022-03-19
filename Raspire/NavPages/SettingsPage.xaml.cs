@@ -42,11 +42,13 @@ namespace Raspire
                 FormUnitsList.ItemsSource = SettingsInstance.Forms;
                 FormUnitsList2.Visibility = Visibility.Collapsed;
                 ShiftSeparator.Visibility = Visibility.Collapsed;
+                SecondShiftCheckBox.Visibility = Visibility.Collapsed;
             }
             else
             {
                 FormUnitsList2.Visibility = Visibility.Visible;
                 ShiftSeparator.Visibility = Visibility.Visible;
+                SecondShiftCheckBox.Visibility = Visibility.Visible;
                 foreach (Form unit in SettingsInstance.Forms)
                 {
                     if (unit.Shift == 1)
@@ -403,14 +405,14 @@ namespace Raspire
                     }
                 }
                 FormUnitsList2.Visibility = Visibility.Visible;
-                SecondShiftCheckBox.IsEnabled = true;
+                SecondShiftCheckBox.Visibility = Visibility.Visible;
                 FormUnitsList.ItemsSource = Shift1;
                 //Bindings.Update();
             }
             else
             {
                 FormUnitsList2.Visibility = Visibility.Collapsed;
-                SecondShiftCheckBox.IsEnabled = false;
+                SecondShiftCheckBox.Visibility = Visibility.Collapsed;
                 FormUnitsList.ItemsSource = SettingsInstance.Forms;
                 //Bindings.Update();
             }
@@ -424,10 +426,6 @@ namespace Raspire
         private void LogicsToogled(object sender, RoutedEventArgs e)
         {
             SettingsHelper.SaveObjectLocal("Logics", (sender as ToggleSwitch).IsOn);
-        }
-        public void BackWork(object sender, RoutedEventArgs e)
-        {
-            Frame.GoBack();
         }
     }
 }

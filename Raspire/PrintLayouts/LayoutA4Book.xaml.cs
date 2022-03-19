@@ -24,10 +24,10 @@ namespace Raspire
     public sealed partial class LayoutA4Book : Page
     {
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
-        private string Number;
-        private string Year;
-        private string Law;
-        private DateTime Date;
+        private readonly string Number;
+        private readonly string Year;
+        private readonly string Law;
+        private readonly DateTime Date;
         public LayoutA4Book(ObservableCollection<WorkdayForms> units, string number, string year, string law, DateTime date)
         {
             this.InitializeComponent();

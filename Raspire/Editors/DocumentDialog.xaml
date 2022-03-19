@@ -20,41 +20,13 @@
         </Style>
     </ContentDialog.PrimaryButtonStyle>
     <StackPanel>
-        <!--<TextBlock Text="Тип" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost"/>
-        <StackPanel Orientation="Horizontal">
-            <Button IsEnabled="False" Content="" FontFamily="/Assets/Jost.ttf#Jost"/>
-            <Button x:Name="SemiButton" Margin="12,0,0,0">
-                <Button.Flyout>
-                    <Flyout x:Name="ChangeSemiScheduleFlyout" >
-                        <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Content="1" Margin="4" Click="ChangeSemi" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="2" Margin="4" Click="ChangeSemi" FontFamily="/Assets/Jost.ttf#Jost"/>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-                <TextBlock Text="" FontFamily="/Assets/Jost.ttf#Jost"/>
-            </Button>
-            <Button x:Name="QuartButton" Margin="12,0,0,0">
-                <Button.Flyout>
-                    <Flyout x:Name="ChangeQuarterScheduleFlyout" >
-                        <StackPanel Margin="8" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Content="1" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="2" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="3" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
-                            <Button Content="4" Margin="4" Click="ChangeQuarter" FontFamily="/Assets/Jost.ttf#Jost"/>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-                <TextBlock Text="" FontFamily="/Assets/Jost.ttf#Jost"/>
-            </Button>
-        </StackPanel>-->
         <Button Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}" Click="ExportDocument">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="SaveLocal"/>
                 <TextBlock Text="Экспорт" Margin="8,0"/>
             </StackPanel>
         </Button>
-        <Button IsEnabled="False" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
+        <Button IsEnabled="False" Visibility="Collapsed" Margin="0,8" FontFamily="/Assets/Jost.ttf#Jost" Style="{StaticResource ButtonRevealStyle}">
             <StackPanel Orientation="Horizontal">
                 <SymbolIcon Symbol="CalendarReply"/>
                 <TextBlock Text="Изменения" Margin="8,0"/>
