@@ -10,7 +10,7 @@
     xmlns:my="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Enabled">
     <Page.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml">
             <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
                 <Grid Width="200" Height="350" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
                     <Grid.RowDefinitions>

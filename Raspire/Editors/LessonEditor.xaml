@@ -20,21 +20,19 @@
         </Style>
     </ContentDialog.PrimaryButtonStyle>
     <StackPanel HorizontalAlignment="Stretch">
-        <Grid x:Name="FirstUnit">
+        <ListView x:Name="LessonList" Margin="4" ItemsSource="{x:Bind Unit.Lessons}" SelectionChanged="LessonSelected"/>
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <AutoSuggestBox Grid.Column="0" x:Name="Lesson" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок/мероприятие" VerticalAlignment="Center" Text="{x:Bind Unit.Subject}" TextChanged="LessonChanged" SuggestionChosen="LessonChosen"/>
-            <Button Grid.Column="1" Margin="4" ToolTipService.ToolTip="Учитель" Visibility="Collapsed">
-                <SymbolIcon Symbol="Contact" />
-            </Button>
-            <TextBox Grid.Column="2" x:Name="Classroom" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" VerticalAlignment="Center" Text="{x:Bind Unit.Classroom}" TextChanged="ClassroomChanged"/>
-            <Button Grid.Column="3" Margin="4" ToolTipService.ToolTip="Очистить" Click="ClearLesson">
-                <SymbolIcon Symbol="Clear" />
-            </Button>
+            <AutoSuggestBox Grid.Column="0" x:Name="Lesson" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок/мероприятие" VerticalAlignment="Center" Text="{x:Bind Unit.Subject()}" TextChanged="LessonChanged" SuggestionChosen="LessonChosen"/>
+            <AppBarButton Grid.Column="1" Margin="4" ToolTipService.ToolTip="Учитель" Visibility="Collapsed" Icon="Contact"/>
+            <TextBox Grid.Column="2" x:Name="Classroom" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" VerticalAlignment="Center" Text="{x:Bind Unit.Classroom()}" TextChanged="ClassroomChanged"/>
+            <AppBarButton x:Name="ClearButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Очистить" Click="ClearLesson" Icon="Clear" Label="Очистить" Visibility="Collapsed"/>
+            <AppBarButton x:Name="AddButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Очистить" Icon="Add" Label="Добавить" Visibility="Collapsed" Click="AddLesson"/>
         </Grid>
     </StackPanel>
 </ContentDialog>

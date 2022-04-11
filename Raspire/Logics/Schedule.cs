@@ -31,12 +31,12 @@ namespace Raspire
                 units.Add(new FormWorkdays(form, new ObservableCollection<WorkdayLessons>()));
                 foreach (int day in Settings.Workdays)
                 {
-                    units.Last().WorkdayLessons.Add(new WorkdayLessons(new ObservableCollection<Lesson>(), day));
+                    units.Last().WorkdayLessons.Add(new WorkdayLessons(new ObservableCollection<MultipleLesson>(), day));
                 }
             }
             foreach (LessonItem item in LessonItems)
             {
-                int f = Settings.Forms.IndexOf(item.Lesson.Group as Form);
+                int f = Settings.Forms.IndexOf(item.Lesson.Lessons[0].Form);
                 units[f].WorkdayLessons[item.Workday].Lessons.Add(item.Lesson);
             }
             return units;
@@ -49,13 +49,13 @@ namespace Raspire
                 var unitsl = new ObservableCollection<FormLessons>();
                 foreach (Form form in Settings.Forms)
                 {
-                    unitsl.Add(new FormLessons(new ObservableCollection<Lesson>(), form));
+                    unitsl.Add(new FormLessons(new ObservableCollection<MultipleLesson>(), form));
                 }
                 units.Add(new WorkdayForms(workday, unitsl));
             }
             foreach (LessonItem item in LessonItems)
             {
-                int f = Settings.Forms.IndexOf(item.Lesson.Group);
+                int f = Settings.Forms.IndexOf(item.Lesson.Lessons[0].Form);
                 units[item.Workday].FormLessons[f].Lessons.Add(item.Lesson);
             }
             return units;
@@ -67,7 +67,7 @@ namespace Raspire
             {
                 foreach(FormLessons form in unit.FormLessons)
                 {
-                    foreach(Lesson lesson in form.Lessons)
+                    foreach(MultipleLesson lesson in form.Lessons)
                     {
                         LessonItems.Add(new LessonItem(lesson, unit.Workday));
                     }
@@ -161,8 +161,8 @@ namespace Raspire
     public class FormLessons
     {
         public Form Form { get; set; }
-        public ObservableCollection<Lesson> Lessons { get; set; }
-        public FormLessons(ObservableCollection<Lesson> units, Form form)
+        public ObservableCollection<MultipleLesson> Lessons { get; set; }
+        public FormLessons(ObservableCollection<MultipleLesson> units, Form form)
         {
             Lessons = units;
             Form = form;
@@ -171,8 +171,8 @@ namespace Raspire
     public class WorkdayLessons
     {
         public int Workday { get; set; }
-        public ObservableCollection<Lesson> Lessons { get; set; }
-        public WorkdayLessons(ObservableCollection<Lesson> lessonUnits, int workday)
+        public ObservableCollection<MultipleLesson> Lessons { get; set; }
+        public WorkdayLessons(ObservableCollection<MultipleLesson> lessonUnits, int workday)
         {
             Lessons = lessonUnits;
             Workday = workday;

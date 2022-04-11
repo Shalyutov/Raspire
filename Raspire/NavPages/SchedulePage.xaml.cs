@@ -115,6 +115,7 @@ namespace Raspire
                 MessageDialog dialog = new MessageDialog("Перед началом работы с расписаниями проверьте данные о школе в Параметрах");
                 _ = await dialog.ShowAsync();
                 Frame.Navigate(typeof(SettingsPage), null, new DrillInNavigationTransitionInfo());
+                return;
             }
             if (settings.AreSettingsCorreсt())
             {
@@ -122,12 +123,6 @@ namespace Raspire
                 
                 List<object> param = new List<object>() {schedule, null};
                 Frame.Navigate(typeof(Editor), param, new DrillInNavigationTransitionInfo());
-            }
-            else
-            {
-                MessageDialog dialog = new MessageDialog("Перед началом работы с расписаниями проверьте данные о школе в Параметрах");
-                _ = await dialog.ShowAsync();
-                Frame.Navigate(typeof(SettingsPage), null, new DrillInNavigationTransitionInfo());
             }
         }
         private async void CreateNewQuarterSchedule(object sender, RoutedEventArgs e)

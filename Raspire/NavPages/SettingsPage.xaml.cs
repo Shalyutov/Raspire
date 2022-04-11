@@ -104,21 +104,8 @@ namespace Raspire
         }
         private void AddFormUnit()
         {
-            if (FormUnitBox.Text != "")//could use regex
+            if (FormUnitBox.Text != "")
             {
-                string n = "";
-                string l = "";
-                foreach (char i in FormUnitBox.Text)
-                {
-                    if ("0123456789".Contains(i))
-                    {
-                        n += i;
-                    }
-                    else if (i.ToString() != " ")
-                    {
-                        l += i;
-                    }
-                }
                 if (SecondShiftEnabled())
                 {
                     var value = SecondShiftCheckBox.IsChecked;
@@ -225,6 +212,7 @@ namespace Raspire
         {
             if (SubjectUnitsList.SelectedItem != null)
             {
+                if ((SubjectUnitsList.SelectedItem as Subject).Name == "Пустой") return;
                 _ = SettingsInstance.Subjects.Remove(SubjectUnitsList.SelectedItem as Subject);
                 SettingsInstance.SaveSubjectUnits();
                 CheckSettings();
@@ -294,7 +282,6 @@ namespace Raspire
             {
                 (WorkdaysPanel.Children[i] as ToggleButton).IsChecked = true;
             }
-            //Bindings.Update();
             CheckSettings();
             Update();
         }
@@ -407,14 +394,12 @@ namespace Raspire
                 FormUnitsList2.Visibility = Visibility.Visible;
                 SecondShiftCheckBox.Visibility = Visibility.Visible;
                 FormUnitsList.ItemsSource = Shift1;
-                //Bindings.Update();
             }
             else
             {
                 FormUnitsList2.Visibility = Visibility.Collapsed;
                 SecondShiftCheckBox.Visibility = Visibility.Collapsed;
                 FormUnitsList.ItemsSource = SettingsInstance.Forms;
-                //Bindings.Update();
             }
         }
 

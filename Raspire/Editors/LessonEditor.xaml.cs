@@ -16,55 +16,55 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Raspire
 {
-    
     internal sealed partial class LessonEditor : ContentDialog
     {
-        public Lesson Unit { get; set; }
+        public MultipleLesson Unit { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
         public ObservableCollection<Teacher> Teachers { get; set; }
         public ObservableCollection<Form> Forms { get; set; }
-        
-        public LessonEditor(Lesson unit)
+        public Form Form { get; set; }
+        public LessonEditor(MultipleLesson unit, Form form)
         {
-            Unit = unit ?? new Lesson(new Subject(""), new Form("0", 0), "", 0);
+            Unit = unit ?? new MultipleLesson(new Lesson(new Subject(""), new Form("0", 0), "", 0, 0));
             Settings settings = Settings.GetSavedSettings();
             Subjects = settings.Subjects;
             Teachers = settings.Teachers;
             Forms = settings.Forms;
+            Form = form;
+            
             this.InitializeComponent();
         }
         private void DialogLoaded(object sender, RoutedEventArgs e)
         {
-            Lesson.Text = Unit.Subject.ToString();
-            Classroom.Text = Unit.Classroom.ToString();
+            LessonList.ItemsSource = Unit.Lessons;
+            LessonList.SelectedIndex = 0;
         }
-
         private void ClearLesson(object sender, RoutedEventArgs e)
         {
-            Unit.Subject = new Subject("");
-            Unit.Classroom = 0;
-            Unit.TeacherName = "";
-
-            Lesson.Text = "";
-            Classroom.Text = "";
+            if (LessonList.SelectedItem != null)
+            {
+                Lesson.Text = "";
+                Classroom.Text = "";
+            }
         }
-
         private void LessonSubmit(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             PrimaryButtonCommandParameter = Unit;
         }
-
         private void ClassroomChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                Unit.Classroom = int.Parse(Classroom.Text);
+                if (LessonList.SelectedItem != null)
+                {
+                    Unit.Lessons[LessonList.SelectedIndex].Classroom = int.Parse(Classroom.Text);
+
+                }
             }
             catch (Exception)
             {
             }
         }
-
         private void LessonChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             var text = sender.Text.ToLower();
@@ -120,17 +120,62 @@ namespace Raspire
             else
             {
                 Lesson.Text = item;
-                Teacher teacher = GetTeacher(new Subject(item), Forms.IndexOf(Unit.Group));
+                Teacher teacher = GetTeacher(new Subject(item), Forms.IndexOf(Form));
                 if (teacher != null)
                 {
-                    Unit.TeacherName = teacher.Name;
-                    Unit.Classroom = teacher.Classroom;
-                    Classroom.Focus(FocusState.Programmatic);
+                    if (LessonList.SelectedItem != null)
+                    {
+                        Unit.Lessons[LessonList.SelectedIndex].TeacherName = teacher.Name;
+                        Unit.Lessons[LessonList.SelectedIndex].Classroom = teacher.Classroom;
+                        Classroom.Focus(FocusState.Programmatic);
+
+                        LessonList.ItemsSource = null;
+                        LessonList.ItemsSource = Unit.Lessons;
+                    }
                 }
-                else
+                else if (LessonList.SelectedItem != null)
                 {
                     Lesson.Text = "";
                 }
+            }
+        }
+        private void LessonSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                Lesson.Text = (LessonList.SelectedItem as Lesson).Subject.ToString();
+                Classroom.Text = (LessonList.SelectedItem as Lesson).Classroom.ToString();
+                ClearButton.Visibility = Visibility.Visible;
+                AddButton.Visibility = Visibility.Collapsed;
+                return;
+            }
+            else if (e.RemovedItems.Count > 0)
+            {
+                Lesson.Text = "";
+                Classroom.Text = "";
+            }
+            ClearButton.Visibility = Visibility.Collapsed;
+            AddButton.Visibility = Visibility.Visible;
+        }
+
+        private void AddLesson(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Lesson lesson = new Lesson(new Subject(Lesson.Text), Form, "", int.Parse(Classroom.Text), 0);
+                Teacher teacher = GetTeacher(lesson.Subject, Forms.IndexOf(Form));
+                if (teacher != null)
+                {
+                    lesson.TeacherName = teacher.Name;
+                    lesson.Classroom = teacher.Classroom;
+                }
+                Unit.Lessons.Add(lesson);
+
+                LessonList.ItemsSource = Unit.Lessons;
+            }
+            catch (Exception)
+            {
+
             }
         }
     }

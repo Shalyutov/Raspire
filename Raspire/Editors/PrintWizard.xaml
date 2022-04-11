@@ -12,18 +12,24 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
             <TextBox x:Name="Number" PlaceholderText="Полугодие" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Width="20"/>
-            <TextBlock Text="полугодие" VerticalAlignment="Center" Margin="4"/>
+            <TextBlock Text="полугодие" VerticalAlignment="Center" Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
             <TextBox x:Name="Year"  PlaceholderText="Учебный год" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Width="30"/>
-            <TextBlock Text="учебного года" VerticalAlignment="Center" Margin="4"/>
+            <TextBlock Text="учебного года" VerticalAlignment="Center" Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Margin="8">
-            <CheckBox Content="Приказ" Checked="LawUpdate" Unchecked="LawUpdate" Margin="4"/>
-            <TextBox x:Name="Law" PlaceholderText="№" Header="№" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Width="20" IsEnabled="False" HorizontalAlignment="Left"/>
-            <DatePicker x:Name="Date" IsEnabled="False" Header="Дата" Margin="4"/>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="Приказ" Checked="LawUpdate" Unchecked="LawUpdate" Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
+                <TextBlock Text="№" VerticalAlignment="Center" Margin="4" Foreground="Gray" FontFamily="/Assets/Jost.ttf#Jost"/>
+                <TextBox x:Name="Law" PlaceholderText="Номер" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" HorizontalAlignment="Left"/>
+                <TextBlock Text="от" VerticalAlignment="Center" Margin="4" Foreground="Gray" FontFamily="/Assets/Jost.ttf#Jost"/>
+            </StackPanel>
+            <DatePicker x:Name="Date" IsEnabled="False"  Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
         </StackPanel>
+        <CheckBox Content="Только таблица" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
+        <CheckBox Content="Компактный макет" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="8">
-            <SymbolIcon Symbol="Orientation" Margin="8,4"/>
+            <SymbolIcon Symbol="Print" Margin="8,4"/>
             <Button Content="А3 • Альбом" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA3Land" HorizontalAlignment="Stretch"/>
             <Button Content="А4 • Книга" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Book" HorizontalAlignment="Stretch"/>
         </StackPanel>

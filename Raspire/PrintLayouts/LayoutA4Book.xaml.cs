@@ -14,8 +14,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Raspire
 {
     /// <summary>
@@ -45,9 +43,8 @@ namespace Raspire
         {
             string footer = "Утверждено";
             var SettingsInstance = Settings.GetSavedSettings();
-            if (Law != "1" | Law != "")
+            if (Law != "")
             {
-                
                 footer += $" приказом № {Law} от {Date.ToShortDateString()}";
             }
             footer += $"\nДиректор {SettingsInstance.SchoolName} {SettingsInstance.HeadSchool}";

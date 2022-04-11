@@ -100,22 +100,27 @@ namespace Raspire
         }
         private async void OpenLessonEditor(object sender, RoutedEventArgs e)
         {
-            LessonEditor lessonEditor = new LessonEditor(list.SelectedItems[0] as Lesson);
+            LessonEditor lessonEditor = new LessonEditor(list.SelectedItems[0] as MultipleLesson, SettingsInstance.Forms[GetListIndex()]);
             _ = await lessonEditor.ShowAsync();
 
-            Lesson lesson = lessonEditor.PrimaryButtonCommandParameter as Lesson;
-            if (lesson != null)
+            MultipleLesson multiple = lessonEditor.PrimaryButtonCommandParameter as MultipleLesson;
+            if (multiple != null)
             {
-                foreach (var item in list.SelectedItems)
+                if (list.SelectedItems != null)
                 {
-                    (item as Lesson).Subject = lesson.Subject;
-                    (item as Lesson).Classroom = lesson.Classroom;
-                    (item as Lesson).TeacherName = lesson.TeacherName;
+                    List<object> deleted = new List<object>();
+                    deleted.AddRange(list.SelectedItems);
+                    foreach (object lesson in deleted)
+                    {
+                        int i = (list.ItemsSource as ObservableCollection<MultipleLesson>).IndexOf(lesson as MultipleLesson);
+                        var item = new MultipleLesson(new List<Lesson>(multiple.Lessons));
+
+                        (list.ItemsSource as ObservableCollection<MultipleLesson>).Insert(i, item);
+                        (list.ItemsSource as ObservableCollection<MultipleLesson>).RemoveAt(i + 1);
+                    }
+                    list.SelectedItems.Clear();
                 }
             }
-            var s = list.ItemsSource;
-            list.ItemsSource = null;
-            list.ItemsSource = s;
         }
         #endregion
 
@@ -145,7 +150,6 @@ namespace Raspire
                 Selector.Focus(FocusState.Programmatic);
             }
         }
-
         private void OpenCommander(object sender, RightTappedRoutedEventArgs e)
         {
             FlyoutShowOptions myOption = new FlyoutShowOptions
@@ -244,16 +248,25 @@ namespace Raspire
         {
             Subject subject = Selector.SelectedItem as Subject;
             int form = GetListIndex();
+
+            if (subject.Name == "Пустой")
+            {
+                Lesson l = new Lesson(new Subject(""), SettingsInstance.Forms[form], "", 0, 0);
+                (list.ItemsSource as ObservableCollection<MultipleLesson>).Add(new MultipleLesson(l));
+                return;
+            }
+
             Teacher teacher = GetTeacher(subject, form);
             if (teacher == null) return;
+
             int classroom = GetHostedClassroom(teacher, subject, SettingsInstance.Forms[form]);
             Lesson lesson = new Lesson(
                 subject,
                 SettingsInstance.Forms[form],
                 teacher.Name,
-                classroom
+                classroom, 0
                 );
-            (list.ItemsSource as ObservableCollection<Lesson>).Add(lesson);
+            (list.ItemsSource as ObservableCollection<MultipleLesson>).Add(new MultipleLesson(lesson));
         }
         private void DeleteLessons(object sender, RoutedEventArgs e)
         {
@@ -263,7 +276,7 @@ namespace Raspire
                 deleted.AddRange(list.SelectedItems);
                 foreach (object lesson in deleted)
                 {
-                    _ = (list.ItemsSource as ObservableCollection<Lesson>).Remove(lesson as Lesson);
+                    _ = (list.ItemsSource as ObservableCollection<MultipleLesson>).Remove(lesson as MultipleLesson);
                 }
                 list.SelectedItems.Clear();
             }
@@ -305,7 +318,7 @@ namespace Raspire
             {
                 foreach (var i in args.Items)
                 {
-                    (sender.ItemsSource as ObservableCollection<Lesson>).Remove((Lesson)i);
+                    (sender.ItemsSource as ObservableCollection<MultipleLesson>).Remove((MultipleLesson)i);
                 }
             }
         }
@@ -343,9 +356,9 @@ namespace Raspire
                         subject,
                         SettingsInstance.Forms[form],
                         teacher.Name,
-                        classroom
+                        classroom, 0
                         );
-                    (list.ItemsSource as ObservableCollection<Lesson>).Add(lesson);
+                    (list.ItemsSource as ObservableCollection<MultipleLesson>).Add(new MultipleLesson(lesson));
                 }
                 e.AcceptedOperation = DataPackageOperation.Move;
                 def.Complete();
