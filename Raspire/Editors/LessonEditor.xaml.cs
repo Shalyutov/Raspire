@@ -37,14 +37,22 @@ namespace Raspire
         private void DialogLoaded(object sender, RoutedEventArgs e)
         {
             LessonList.ItemsSource = Unit.Lessons;
-            LessonList.SelectedIndex = 0;
+            LessonList.SelectedIndex = -1;
         }
-        private void ClearLesson(object sender, RoutedEventArgs e)
+        private void AcceptLesson(object sender, RoutedEventArgs e)
         {
             if (LessonList.SelectedItem != null)
             {
-                Lesson.Text = "";
-                Classroom.Text = "";
+                if (Lesson.Text == "" & Classroom.Text == "") return;
+                LessonList.ItemsSource = Unit.Lessons;
+                LessonList.SelectedIndex = -1;
+            }
+        }
+        private void DeleteLesson(object sender, RoutedEventArgs e)
+        {
+            if (LessonList.SelectedItem != null)
+            {
+                Unit.Lessons.Remove(LessonList.SelectedItem as Lesson);
             }
         }
         private void LessonSubmit(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -172,6 +180,7 @@ namespace Raspire
                 Unit.Lessons.Add(lesson);
 
                 LessonList.ItemsSource = Unit.Lessons;
+                LessonList.SelectedIndex = -1;
             }
             catch (Exception)
             {

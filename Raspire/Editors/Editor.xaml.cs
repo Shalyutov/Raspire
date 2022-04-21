@@ -113,7 +113,7 @@ namespace Raspire
                     foreach (object lesson in deleted)
                     {
                         int i = (list.ItemsSource as ObservableCollection<MultipleLesson>).IndexOf(lesson as MultipleLesson);
-                        var item = new MultipleLesson(new List<Lesson>(multiple.Lessons));
+                        var item = new MultipleLesson(new ObservableCollection<Lesson>(multiple.Lessons));
 
                         (list.ItemsSource as ObservableCollection<MultipleLesson>).Insert(i, item);
                         (list.ItemsSource as ObservableCollection<MultipleLesson>).RemoveAt(i + 1);

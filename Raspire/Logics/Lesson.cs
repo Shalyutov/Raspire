@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -105,15 +106,15 @@ namespace Raspire
     }
     public class MultipleLesson : IEquatable<MultipleLesson>
     {
-        public List<Lesson> Lessons { get; set; }
+        public ObservableCollection<Lesson> Lessons { get; set; }
         [JsonConstructor]
-        public MultipleLesson(List<Lesson> lessons)
+        public MultipleLesson(ObservableCollection<Lesson> lessons)
         {
             Lessons = lessons;
         }
         public MultipleLesson(Lesson lesson)
         {
-            Lessons = new List<Lesson>
+            Lessons = new ObservableCollection<Lesson>
             {
                 lesson
             };
@@ -127,12 +128,12 @@ namespace Raspire
         public bool Equals(MultipleLesson other)
         {
             return other != null &&
-                   EqualityComparer<List<Lesson>>.Default.Equals(Lessons, other.Lessons);
+                   EqualityComparer<ObservableCollection<Lesson>>.Default.Equals(Lessons, other.Lessons);
         }
 
         public override int GetHashCode()
         {
-            return 2007667718 + EqualityComparer<List<Lesson>>.Default.GetHashCode(Lessons);
+            return 2007667718 + EqualityComparer<ObservableCollection<Lesson>>.Default.GetHashCode(Lessons);
         }
 
         public static bool operator ==(MultipleLesson left, MultipleLesson right)
