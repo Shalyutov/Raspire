@@ -138,6 +138,9 @@
     <Compile Include="Editors\PrintWizard.xaml.cs">
       <DependentUpon>PrintWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintLayouts\LayoutA4Land.xaml.cs">
+      <DependentUpon>LayoutA4Land.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PrintLayouts\LayoutA4Book.xaml.cs">
       <DependentUpon>LayoutA4Book.xaml</DependentUpon>
     </Compile>
@@ -256,6 +259,10 @@
     <Page Include="Editors\PrintWizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PrintLayouts\LayoutA4Land.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PrintLayouts\LayoutA4Book.xaml">
       <SubType>Designer</SubType>

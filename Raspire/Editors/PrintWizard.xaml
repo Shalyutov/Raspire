@@ -26,12 +26,15 @@
             </StackPanel>
             <DatePicker x:Name="Date" IsEnabled="False"  Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
         </StackPanel>
-        <CheckBox Content="Только таблица" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
-        <CheckBox Content="Компактный макет" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False"/>
+        <CheckBox Content="Только таблица" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" Visibility="Collapsed"/>
+        <CheckBox Content="Компактный макет" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" Visibility="Collapsed"/>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="8">
             <SymbolIcon Symbol="Print" Margin="8,4"/>
-            <Button Content="А3 • Альбом" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA3Land" HorizontalAlignment="Stretch"/>
-            <Button Content="А4 • Книга" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Book" HorizontalAlignment="Stretch"/>
+            <TextBlock Text="А3 •" VerticalAlignment="Center" Margin="6"/>
+            <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA3Land" HorizontalAlignment="Stretch"/>
+            <TextBlock Text="А4 •" VerticalAlignment="Center" Margin="6"/>
+            <Button Content="Книга" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Book" HorizontalAlignment="Stretch"/>
+            <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Land" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </StackPanel>
 </ContentDialog>

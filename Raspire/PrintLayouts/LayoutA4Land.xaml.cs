@@ -19,14 +19,14 @@ namespace Raspire
     /// <summary>
     /// Страница макета печати общего расписания
     /// </summary>
-    public sealed partial class LayoutA3Landscape : Page
+    public sealed partial class LayoutA4Land : Page
     {
         public ObservableCollection<WorkdayForms> UnitsWorkdays { get; set; }
         private readonly string Number;
         private readonly string Year;
         private readonly string Law;
         private readonly DateTime Date;
-        public LayoutA3Landscape(ObservableCollection<WorkdayForms> units, string number, string year, string law, DateTime date)
+        public LayoutA4Land(ObservableCollection<WorkdayForms> units, string number, string year, string law, DateTime date)
         {
             this.InitializeComponent();
             UnitsWorkdays = units;

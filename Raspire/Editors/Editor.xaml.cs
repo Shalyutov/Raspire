@@ -119,6 +119,8 @@ namespace Raspire
                         (list.ItemsSource as ObservableCollection<MultipleLesson>).RemoveAt(i + 1);
                     }
                     list.SelectedItems.Clear();
+                    list.ItemsSource = null;
+                    list.ItemsSource = UnitsWorkdays[GetListWorkday()].FormLessons[GetListIndex()].Lessons;
                 }
             }
         }
@@ -247,8 +249,9 @@ namespace Raspire
         private void AddLesson(object sender, RoutedEventArgs e)
         {
             Subject subject = Selector.SelectedItem as Subject;
-            int form = GetListIndex();
+            if (subject == null) return;
 
+            int form = GetListIndex();
             if (subject.Name == "Пустой")
             {
                 Lesson l = new Lesson(new Subject(""), SettingsInstance.Forms[form], "", 0, 0);

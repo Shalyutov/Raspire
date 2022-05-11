@@ -23,6 +23,7 @@ namespace Raspire
         public ObservableCollection<Teacher> Teachers { get; set; }
         public ObservableCollection<Form> Forms { get; set; }
         public Form Form { get; set; }
+        public Lesson SelectedLesson { get; set; }
         public LessonEditor(MultipleLesson unit, Form form)
         {
             Unit = unit ?? new MultipleLesson(new Lesson(new Subject(""), new Form("0", 0), "", 0, 0));
@@ -153,7 +154,7 @@ namespace Raspire
             {
                 Lesson.Text = (LessonList.SelectedItem as Lesson).Subject.ToString();
                 Classroom.Text = (LessonList.SelectedItem as Lesson).Classroom.ToString();
-                ClearButton.Visibility = Visibility.Visible;
+                AcceptButton.Visibility = Visibility.Visible;
                 AddButton.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -162,7 +163,7 @@ namespace Raspire
                 Lesson.Text = "";
                 Classroom.Text = "";
             }
-            ClearButton.Visibility = Visibility.Collapsed;
+            AcceptButton.Visibility = Visibility.Collapsed;
             AddButton.Visibility = Visibility.Visible;
         }
 
