@@ -65,9 +65,9 @@ namespace Raspire
 
             SubjectUnitsList.ItemsSource = SettingsInstance.Subjects;
             TeacherUnitsList.ItemsSource = SettingsInstance.Teachers;
-            Organization.Text = SettingsInstance.SchoolName;
-            Head.Text = SettingsInstance.HeadSchool;
-            Holder.Text = SettingsInstance.ScheduleHolder;
+            Organization.Text = SettingsInstance.SchoolName != null ? SettingsInstance.SchoolName : "";
+            Head.Text = SettingsInstance.HeadSchool != null ? SettingsInstance.HeadSchool : "";
+            Holder.Text = SettingsInstance.ScheduleHolder != null ? SettingsInstance.ScheduleHolder : "";
             CheckSettings();
         }
         public void CheckSettings()

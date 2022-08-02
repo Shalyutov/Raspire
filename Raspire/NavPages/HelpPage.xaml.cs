@@ -33,7 +33,7 @@ namespace Raspire
             PackageId packageId = package.Id;
             PackageVersion version = packageId.Version;
             string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return $"Версия: 22{alphabet[version.Minor]}{version.Build} • α";
+            return $"Версия: 22{alphabet[version.Minor]}{version.Build}";
         }
     }
 }

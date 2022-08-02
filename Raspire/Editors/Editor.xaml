@@ -12,17 +12,23 @@
     <Page.Resources>
         <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml">
             <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
-                <Grid Width="200" Height="350" Margin="0,6" Background="{ThemeResource AppBarBackgroundThemeBrush}" CornerRadius="4" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="1,0">
+                <Grid Width="200" Height="350" Margin="0,6" CornerRadius="8" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="0,0" Translation="0,0,32">
+                    <Grid.Shadow>
+                        <ThemeShadow/>
+                    </Grid.Shadow>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"  Text="{x:Bind Form}" Foreground="Gray" HorizontalAlignment="Center" FontSize="10" Margin="4"/>
+                    <TextBlock Grid.Row="0" Text="{x:Bind Form}" Foreground="DarkGray" HorizontalAlignment="Center" FontSize="10" Margin="4,6" FontFamily="/Assets/Jost.ttf#Jost"/>
                     <ListView Grid.Row="1" ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True" DragItemsCompleted="List_DragItemsCompleted" DragItemsStarting="List_DragStarting" DragOver="List_DragOver" Drop="List_Drop" VerticalAlignment="Stretch"/>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" CornerRadius="8" BorderBrush="Gray" BorderThickness="1" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" CornerRadius="16" Translation="0,0,24">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <TextBlock Text="{x:Bind GetDay(Workday)}" Width="30" Margin="20" FontSize="20" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>
                     <my:ItemsRepeater ItemsSource="{x:Bind FormLessons}" ItemTemplate="{StaticResource ListItemV2}">
                         <my:ItemsRepeater.Layout>

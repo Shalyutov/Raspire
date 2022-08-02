@@ -34,7 +34,7 @@ namespace Raspire
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameter = e.Parameter as List<object>;
+            List<object> parameter = e.Parameter as List<object>;
             if (parameter != null)
             {
                 MainFrame.Navigate(typeof(Editor), parameter, new DrillInNavigationTransitionInfo());

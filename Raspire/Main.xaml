@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="Assets/Square44x44Logo.png" HorizontalAlignment="Left" Width="30" Height="30" Margin="10"/>
+            <Image Grid.Column="0" Source="Assets/Raspire.png" HorizontalAlignment="Left" Width="30" Height="30" Margin="10"/>
             <StackPanel Grid.Column="1" CornerRadius="4" Padding="8,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Green">
                 <TextBlock x:Name="FrameState" Text="Редактор" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>

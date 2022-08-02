@@ -12,9 +12,9 @@ namespace Raspire
         public ObservableCollection<Form> Forms { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
         public ObservableCollection<Teacher> Teachers { get; set; }
-        public string SchoolName { get; set; }
-        public string HeadSchool { get; set; }
-        public string ScheduleHolder { get; set; }
+        public string SchoolName { get; set; } = string.Empty;
+        public string HeadSchool { get; set; } = string.Empty;
+        public string ScheduleHolder { get; set; } = string.Empty;
         /// <summary>
         /// Create new instance of settings by providing information about school
         /// </summary>
@@ -208,12 +208,20 @@ namespace Raspire
 
         public static ObservableCollection<T> GetObservableCollectionLocal<T>(string key)
         {
-            return JsonConvert.DeserializeObject<ObservableCollection<T>>(localSettings.Values[key] as string);
+            var value = localSettings.Values[key] as string;
+            if (value == null) 
+                return new ObservableCollection<T>();
+            else
+                return JsonConvert.DeserializeObject<ObservableCollection<T>>(value);
         }
 
         public static List<T> GetListLocal<T>(string key)
         {
-            return JsonConvert.DeserializeObject<List<T>>(localSettings.Values[key] as string);
+            var value = localSettings.Values[key] as string;
+            if (value == null)
+                return new List<T>();
+            else
+                return JsonConvert.DeserializeObject<List<T>>(value);
         }
     }
     /// <summary>
@@ -309,7 +317,6 @@ namespace Raspire
         public Form Form { get; set; }
         public int Subgroup { get; set; }
         public int Classroom { get; set; }
-
         public FormClassroom(Form form, int classroom, int subgroup)
         {
             Form = form;
