@@ -34,6 +34,7 @@ namespace Raspire
         public StorageFile File { get; set; }
         private Settings SettingsInstance { get; set; }
         private ListView list;
+        private bool shield;
         public Editor()
         {
             this.InitializeComponent();
@@ -86,7 +87,7 @@ namespace Raspire
         {
             if (!PrintManager.IsSupported())
             {
-                MessageDialog dialog = new MessageDialog("Печать не поддерживается");
+                MessageDialog dialog = new MessageDialog("Печать не поддерживается на этом устройстве");
                 _ = await dialog.ShowAsync();
                 return;
             }
@@ -96,6 +97,9 @@ namespace Raspire
         {
             SaveSchedule(null, null);
             Editors.PrintWizard wizard = new Editors.PrintWizard(UnitsWorkdays, PrintCanvas);
+            Commander.Hide();
+            LessonCommander.Hide();
+            shield = true;
             await wizard.ShowAsync();
         }
         private async void OpenLessonEditor(object sender, RoutedEventArgs e)
@@ -135,6 +139,7 @@ namespace Raspire
         }
         private void OpenCommander(object sender, PointerRoutedEventArgs e)
         {
+            if (shield) return;
             FlyoutShowOptions myOption = new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Transient
@@ -147,13 +152,16 @@ namespace Raspire
             Selector.ItemsSource = SettingsInstance.Subjects;
             if (previous != list)
             {
+                if (previous != null) (previous.Parent as Grid).BorderThickness = new Thickness(0);
+                (list.Parent as Grid).BorderThickness = new Thickness(1);
                 Commander.Hide();
-                Commander.ShowAt(sender as UIElement, myOption);
+                Commander.ShowAt(list.Parent, myOption);
                 Selector.Focus(FocusState.Programmatic);
             }
         }
         private void OpenCommander(object sender, RightTappedRoutedEventArgs e)
         {
+            if (shield) return;
             FlyoutShowOptions myOption = new FlyoutShowOptions
             {
                 ShowMode = FlyoutShowMode.Standard
@@ -194,7 +202,6 @@ namespace Raspire
                         Commander.ShowAt(sender as UIElement, myOption);
                     }
                 }
-                
             }
         }
         #endregion
@@ -368,7 +375,5 @@ namespace Raspire
             }
         }
         #endregion
-
-        
     }
 }

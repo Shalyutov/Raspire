@@ -8,7 +8,8 @@
     x:Class="Raspire.Main"
     mc:Ignorable="d"
     NavigationCacheMode="Required"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    RequestedTheme="Light">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,12 +23,12 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="Assets/Raspire.png" HorizontalAlignment="Left" Width="30" Height="30" Margin="10"/>
-            <StackPanel Grid.Column="1" CornerRadius="4" Padding="8,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Green">
+            <Image Grid.Column="0" Source="Assets/RaspireIcon.png" HorizontalAlignment="Left" Width="28" Height="28" Margin="12"/>
+            <StackPanel Grid.Column="1" CornerRadius="4" Padding="10,5" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Green">
                 <TextBlock x:Name="FrameState" Text="Редактор" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>
-            <StackPanel Grid.Column="2" x:Name="FileNameParent" Margin="8,0" Visibility="Collapsed" Orientation="Horizontal" CornerRadius="4" Padding="6,2" VerticalAlignment="Center" BorderThickness="1" BorderBrush="{ThemeResource SystemAccentColor}">
-                <TextBlock x:Name="FileName" Text="Файл" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <StackPanel Grid.Column="2" x:Name="FileNameParent" Margin="8,0" Visibility="Collapsed" Orientation="Horizontal" CornerRadius="4" Padding="10,5" VerticalAlignment="Center" BorderThickness="1" BorderBrush="{ThemeResource SystemAccentColor}">
+                <TextBlock x:Name="FileName" Text="Файл" FontSize="12" FontFamily="/Assets/Jost.ttf#Jost" FontWeight="Bold"/>
             </StackPanel>
         </Grid>
         <Custom:NavigationView x:Name="NavView" Grid.Row="1" ItemInvoked="NavItemInvoked" IsBackButtonVisible="Collapsed" PaneDisplayMode="LeftCompact">

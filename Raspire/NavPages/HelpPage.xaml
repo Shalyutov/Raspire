@@ -23,7 +23,7 @@
                         </TransitionCollection>
                     </StackPanel.ChildrenTransitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="/Assets/Raspire.png" Width="45" Height="45" Margin="16"/>
+                        <Image Source="/Assets/RaspireIcon.png" Width="45" Height="45" Margin="16"/>
                         <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" FontWeight="Bold"/>
                     </StackPanel>
                     <TextBlock MaxWidth="500" Margin="20" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="Приложение для создания, редактирования и доставки расписания учебно-образовательного процесса."/>
@@ -48,7 +48,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                         <TextBlock Text="Документация доступна на сайте" FontFamily="/Assets/Jost.ttf#Jost" VerticalAlignment="Center"/>
-                        <HyperlinkButton NavigateUri="https://netsword.azurewebsites.net/raspire-docs" FontFamily="/Assets/Jost.ttf#Jost" Content="Raspire Docs" />
+                        <HyperlinkButton NavigateUri="https://storage.yandexcloud.net/raspire/docs/index.html" FontFamily="/Assets/Jost.ttf#Jost" Content="Raspire Docs" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

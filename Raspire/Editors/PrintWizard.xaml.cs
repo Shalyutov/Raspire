@@ -100,7 +100,7 @@ namespace Raspire.Editors
 
             await PrintHelper.ShowPrintUIAsync("Печать расписания", options);
 
-            Hide();
+            //Hide();
         }
 
         private async void PrintA4Book(object sender, RoutedEventArgs e)
@@ -152,7 +152,7 @@ namespace Raspire.Editors
 
             await PrintHelper.ShowPrintUIAsync("Печать расписания", options);
 
-            Hide();
+            //Hide();
         }
         private async void PrintA4Land(object sender, RoutedEventArgs e)
         {
@@ -211,7 +211,7 @@ namespace Raspire.Editors
 
             await PrintHelper.ShowPrintUIAsync("Печать расписания", options);
 
-            Hide();
+            //Hide();
         }
         private void LawUpdate(object sender, RoutedEventArgs e)
         {
@@ -226,6 +226,10 @@ namespace Raspire.Editors
             {
                 Law.Text = "";
             }
+        }
+        private void HideDialog(object sender, RoutedEventArgs e)
+        {
+            Hide();
         }
     }
 }

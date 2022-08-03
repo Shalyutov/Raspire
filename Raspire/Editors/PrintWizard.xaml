@@ -7,7 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     CornerRadius="10">
-    <StackPanel >
+    
+    <StackPanel>
+        <Button Padding="8" HorizontalAlignment="Right" Click="HideDialog">
+            <SymbolIcon Symbol="Clear"/>
+        </Button>
         <TextBlock Text="Печать" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Center" FontSize="22"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
@@ -24,17 +28,24 @@
                 <TextBox x:Name="Law" PlaceholderText="Номер" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" HorizontalAlignment="Left"/>
                 <TextBlock Text="от" VerticalAlignment="Center" Margin="4" Foreground="Gray" FontFamily="/Assets/Jost.ttf#Jost"/>
             </StackPanel>
-            <DatePicker x:Name="Date" IsEnabled="False"  Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
+            <DatePicker x:Name="Date" IsEnabled="False" Margin="4" FontFamily="/Assets/Jost.ttf#Jost"/>
         </StackPanel>
         <CheckBox Content="Только таблица" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" Visibility="Collapsed"/>
         <CheckBox Content="Компактный макет" Margin="16,2" FontFamily="/Assets/Jost.ttf#Jost" IsEnabled="False" Visibility="Collapsed"/>
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="8">
-            <SymbolIcon Symbol="Print" Margin="8,4"/>
-            <TextBlock Text="А3 •" VerticalAlignment="Center" Margin="6"/>
-            <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA3Land" HorizontalAlignment="Stretch"/>
-            <TextBlock Text="А4 •" VerticalAlignment="Center" Margin="6"/>
-            <Button Content="Книга" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Book" HorizontalAlignment="Stretch"/>
-            <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Land" HorizontalAlignment="Stretch"/>
+        <StackPanel HorizontalAlignment="Center" Margin="8">
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <SymbolIcon Symbol="Print" Margin="8,4"/>
+                <TextBlock Text="Печать" Margin="8,4"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock Text="А3 •" VerticalAlignment="Center" Margin="6"/>
+                <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA3Land" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock Text="А4 •" VerticalAlignment="Center" Margin="6"/>
+                <Button Content="Книга" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Book" HorizontalAlignment="Stretch"/>
+                <Button Content="Альбом" Margin="2,4" FontFamily="/Assets/Jost.ttf#Jost" Click="PrintA4Land" HorizontalAlignment="Stretch"/>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </ContentDialog>

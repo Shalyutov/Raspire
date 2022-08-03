@@ -20,7 +20,10 @@
                         <EntranceThemeTransition IsStaggeringEnabled="True"/>
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
-                <StackPanel x:Name="GeneralStack" Margin="16">
+                <StackPanel x:Name="GeneralStack" Margin="0,8" Translation="0,0,16" Padding="8">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <TextBlock Text="Общие" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                     <ToggleSwitch Header="Открыть последний файл" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Вручную" OnContent="Автоматически" IsOn="{x:Bind ScheduleStartupButton()}" Margin="0,4" Toggled="StartupToggled" />
                     <ToggleSwitch Header="Кнопка Продолжить" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Не показывать" OnContent="Показывать" IsOn="{x:Bind ShowContinueButton()}" Margin="0,4" Toggled="ShowContinueButtonToogled"/>
@@ -28,7 +31,10 @@
                     <ToggleSwitch Header="Логика" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключена" OnContent="Включена" IsOn="{x:Bind LogicsOn()}" Margin="0,4" Toggled="LogicsToogled" IsEnabled="False"/>
                     <ToggleSwitch Header="Автосохранения" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено"  Margin="0,4" IsEnabled="False"/>
                 </StackPanel>
-                <StackPanel x:Name="WorkdaysList" Margin="16,4">
+                <StackPanel x:Name="WorkdaysList" Margin="0,8" Translation="0,0,16" Padding="8">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Учебные дни" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                         <SymbolIcon x:Name="WorkdaysValidator" Symbol="Accept" Margin="16,0"/>

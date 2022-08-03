@@ -12,7 +12,7 @@
     <Page.Resources>
         <ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml">
             <DataTemplate x:Key="ListItemV2" x:DataType="local:FormLessons">
-                <Grid Width="200" Height="350" Margin="0,6" CornerRadius="8" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush}" BorderThickness="0,0" Translation="0,0,32">
+                <Grid Width="160" Height="300" Margin="0,6" CornerRadius="8" PointerEntered="OpenCommander" RightTapped="OpenCommander" BorderThickness="0" BorderBrush="DarkGray" Translation="0,0,32">
                     <Grid.Shadow>
                         <ThemeShadow/>
                     </Grid.Shadow>
@@ -20,8 +20,14 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="{x:Bind Form}" Foreground="DarkGray" HorizontalAlignment="Center" FontSize="10" Margin="4,6" FontFamily="/Assets/Jost.ttf#Jost"/>
-                    <ListView Grid.Row="1" ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" FontFamily="/Assets/Jost.ttf#Jost" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True" DragItemsCompleted="List_DragItemsCompleted" DragItemsStarting="List_DragStarting" DragOver="List_DragOver" Drop="List_Drop" VerticalAlignment="Stretch"/>
+                    <TextBlock Grid.Row="0" Text="{x:Bind Form}" Foreground="DarkGray" HorizontalAlignment="Center" FontSize="11" Margin="4,8" FontFamily="/Assets/Jost.ttf#Jost"/>
+                    <ListView Grid.Row="1" ItemsSource="{x:Bind Lessons}" SelectionMode="Multiple" PointerEntered="OpenCommander" CanDragItems="True" CanReorderItems="True" AllowDrop="True" DragItemsCompleted="List_DragItemsCompleted" DragItemsStarting="List_DragStarting" DragOver="List_DragOver" Drop="List_Drop" VerticalAlignment="Stretch" IsMultiSelectCheckBoxEnabled="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:MultipleLesson">
+                                <TextBlock Text="{x:Bind ToString()}" FontFamily="/Assets/Jost.ttf#Jost" FontSize="14"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ItemV2" x:DataType="local:WorkdayForms">
