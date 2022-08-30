@@ -229,6 +229,7 @@ namespace Raspire.Editors
         }
         private void HideDialog(object sender, RoutedEventArgs e)
         {
+            CloseButtonCommandParameter = true;
             Hide();
         }
     }

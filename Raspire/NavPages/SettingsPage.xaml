@@ -5,7 +5,7 @@
     xmlns:local="using:Raspire"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      mc:Ignorable="d"
+    mc:Ignorable="d"
     NavigationCacheMode="Required">
 
     <Grid>
@@ -13,14 +13,14 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" HorizontalScrollMode="Enabled">
-            <StackPanel x:Name="SettingsStack" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ScrollViewer Grid.Row="0" HorizontalScrollMode="Enabled" Margin="0,8,0,0">
+            <StackPanel x:Name="SettingsStack" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8">
                 <StackPanel.ChildrenTransitions>
                     <TransitionCollection>
                         <EntranceThemeTransition IsStaggeringEnabled="True"/>
                     </TransitionCollection>
                 </StackPanel.ChildrenTransitions>
-                <StackPanel x:Name="GeneralStack" Margin="0,8" Translation="0,0,16" Padding="8">
+                <StackPanel x:Name="GeneralStack" Margin="0" Translation="0,0,16" Padding="16">
                     <StackPanel.Shadow>
                         <ThemeShadow/>
                     </StackPanel.Shadow>
@@ -31,7 +31,7 @@
                     <ToggleSwitch Header="Логика" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключена" OnContent="Включена" IsOn="{x:Bind LogicsOn()}" Margin="0,4" Toggled="LogicsToogled" IsEnabled="False"/>
                     <ToggleSwitch Header="Автосохранения" Visibility="Collapsed" FontFamily="/Assets/Jost.ttf#Jost" OffContent="Отключено" OnContent="Включено"  Margin="0,4" IsEnabled="False"/>
                 </StackPanel>
-                <StackPanel x:Name="WorkdaysList" Margin="0,8" Translation="0,0,16" Padding="8">
+                <StackPanel x:Name="WorkdaysList" Margin="0" Translation="0,0,16" Padding="16">
                     <StackPanel.Shadow>
                         <ThemeShadow/>
                     </StackPanel.Shadow>
@@ -49,7 +49,10 @@
                         <ToggleButton Content="ВС" Click="WorkdayClick" IsChecked="{x:Bind Workdays.Contains(6)}" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel x:Name="ClassesStack" Margin="16">
+                <StackPanel x:Name="ClassesStack" Padding="16" Translation="0,0,16">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Классы" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                         <SymbolIcon x:Name="ClassesValidator" Symbol="Accept" Margin="16,0"/>
@@ -93,7 +96,10 @@
                         <CheckBox x:Name="SecondShiftCheckBox" IsEnabled="{x:Bind SecondShiftEnabled()}" FontFamily="/Assets/Jost.ttf#Jost" Grid.Column="1" Margin="8,4" Content="2 смена" Checked="GetShiftChecked" Unchecked="GetShiftChecked"/>
                     </Grid>
                 </StackPanel>
-                <StackPanel x:Name="SubjectsStack" Margin="16">
+                <StackPanel x:Name="SubjectsStack" Padding="16" Translation="0,0,16">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Предметы" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                         <SymbolIcon x:Name="SubjectsValidator" Symbol="Accept" Margin="16,0"/>
@@ -114,7 +120,10 @@
                     </ListView>
                     <TextBox PlaceholderText="Название" KeyDown="KeyHandlerSubject" HorizontalAlignment="Stretch" Width="Auto" Margin="0,4" FontFamily="/Assets/Jost.ttf#Jost" />
                 </StackPanel>
-                <StackPanel x:Name="TeachersStack" Margin="16">
+                <StackPanel x:Name="TeachersStack" Padding="16" Translation="0,0,16">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Учителя" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                         <SymbolIcon x:Name="TeachersValidator" Symbol="Accept" Margin="16,0"/>
@@ -131,33 +140,38 @@
                     </ListView>
                     <TextBox PlaceholderText="Полное имя" KeyDown="EnterTeacherHandler" HorizontalAlignment="Stretch" Width="Auto" Margin="0,4" FontFamily="/Assets/Jost.ttf#Jost"/>
                 </StackPanel>
-                <StackPanel x:Name="InfoStack" Margin="16">
+                <StackPanel x:Name="InfoStack" Padding="16" Translation="0,0,16">
+                    <StackPanel.Shadow>
+                        <ThemeShadow/>
+                    </StackPanel.Shadow>
                     <TextBlock Text="Сведения об организации" Margin="0,4" FontSize="24" FontFamily="/Assets/Jost.ttf#Jost"/>
                     <TextBox x:Name="Organization" Text="{x:Bind SettingsInstance.SchoolName}" PlaceholderText="Наименование" FontFamily="/Assets/Jost.ttf#Jost" Header="Организация" TextChanged="SchoolNameChanged" Margin="0,4"/>
                     <TextBox x:Name="Head" Text="{x:Bind SettingsInstance.HeadSchool}" PlaceholderText="Полное имя" Header="Директор" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="HeadSchoolChanged" Margin="0,4"/>
                     <TextBox x:Name="Holder" Text="{x:Bind SettingsInstance.ScheduleHolder}" PlaceholderText="Полное имя" Header="Ответственный за расписание" FontFamily="/Assets/Jost.ttf#Jost" TextChanged="ScheduleHolderChanged" Margin="0,4" />
                 </StackPanel>
-                <Button Content="Шаблон" Margin="8" HorizontalAlignment="Center">
-                    <Button.Flyout>
-                        <Flyout x:Name="DefaultsPopup">
-                            <StackPanel>
-                                <TextBlock Text="Очистка и установка шаблона" HorizontalAlignment="Center" Margin="8"/>
-                                <Button Content="Заполнить по умолчанию" Click="LoadDefaults" HorizontalAlignment="Center" Margin="8"/>
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-                <Button Content="Очистить" Margin="8" HorizontalAlignment="Center">
-                    <Button.Flyout>
-                        <Flyout x:Name="ClearSettingsPopup">
-                            <StackPanel>
-                                <TextBlock Text="Уверены?" Margin="8" HorizontalAlignment="Center"/>
-                                <Button Content="Очистить" Click="CleanSettings" Margin="8" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
             </StackPanel>
         </ScrollViewer>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
+            <Button Content="Шаблон" Margin="4" HorizontalAlignment="Stretch">
+                <Button.Flyout>
+                    <Flyout x:Name="DefaultsPopup">
+                        <StackPanel>
+                            <TextBlock Text="Очистка и установка шаблона" HorizontalAlignment="Center" Margin="8"/>
+                            <Button Content="Заполнить по умолчанию" Click="LoadDefaults" HorizontalAlignment="Center" Margin="8"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="Очистить" Margin="4" HorizontalAlignment="Stretch">
+                <Button.Flyout>
+                    <Flyout x:Name="ClearSettingsPopup">
+                        <StackPanel>
+                            <TextBlock Text="Уверены?" Margin="8" HorizontalAlignment="Center"/>
+                            <Button Content="Очистить" Click="CleanSettings" Margin="8" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

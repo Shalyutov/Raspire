@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     NavigationCacheMode="Required">
-
     <Grid>
         <ScrollViewer>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -23,14 +22,14 @@
                         </TransitionCollection>
                     </StackPanel.ChildrenTransitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="/Assets/RaspireIcon.png" Width="45" Height="45" Margin="16"/>
-                        <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" FontWeight="Bold"/>
+                        <Image Source="/Assets/Raspire4 exp lg.png" Width="200" Margin="16"/>
+                        <TextBlock Text="Raspire" Style="{ThemeResource HeaderTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" FontWeight="Bold" Visibility="Collapsed"/>
                     </StackPanel>
-                    <TextBlock MaxWidth="500" Margin="20" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="/Assets/Jost.ttf#Jost" Text="Приложение для создания, редактирования и доставки расписания учебно-образовательного процесса."/>
-                    <TextBlock x:Name="VersionLabel" Text="{x:Bind GetAppVersion()}" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
-                    <TextBlock Text="Стадия разработки: α" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
-                    <TextBlock Text="Разработчик: Шалютов Андрей" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,8"/>
-                    <Image Source="/Assets/netsword full 1.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="132" Height="50" Margin="0,16,0,0" />
+                    <TextBlock MaxWidth="500" Margin="20,4" FontWeight="Bold" FontSize="16" FontFamily="/Assets/Jost.ttf#Jost" Text="Приложение для создания, редактирования и доставки расписания учебно-образовательного процесса." TextWrapping="Wrap"/>
+                    <TextBlock x:Name="VersionLabel" Text="{x:Bind GetAppVersion()}" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,4"/>
+                    <TextBlock Text="Стадия разработки: α" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,4"/>
+                    <TextBlock Text="Разработчик: Шалютов Андрей" FontFamily="/Assets/Jost.ttf#Jost" Margin="20,4"/>
+                    <Image Source="/Assets/netsword full 1.png" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Margin="0,8" />
                 </StackPanel>
                 <StackPanel Margin="16,6" VerticalAlignment="Center" HorizontalAlignment="Stretch" CornerRadius="6" Background="{ThemeResource SystemBaseLowColor}" Padding="16">
                     <StackPanel.ChildrenTransitions>

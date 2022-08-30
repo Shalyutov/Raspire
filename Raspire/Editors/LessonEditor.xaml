@@ -37,8 +37,12 @@
             <AutoSuggestBox Grid.Column="0" x:Name="Lesson" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Урок/мероприятие" VerticalAlignment="Center" TextChanged="LessonChanged" SuggestionChosen="LessonChosen"/>
             <AppBarButton Grid.Column="1" Margin="4" ToolTipService.ToolTip="Учитель" Visibility="Collapsed" Icon="Contact"/>
             <TextBox Grid.Column="2" x:Name="Classroom" Margin="2" FontFamily="/Assets/Jost.ttf#Jost"  PlaceholderText="Кабинет" VerticalAlignment="Center" TextChanged="ClassroomChanged"/>
-            <AppBarButton x:Name="AcceptButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Применить" Click="AcceptLesson" Icon="Accept" Label="Применить" Visibility="Collapsed"/>
-            <AppBarButton x:Name="AddButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Добавить урок" Icon="Add" Label="Добавить" Click="AddLesson"/>
+            <Button x:Name="AcceptButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Применить" Click="AcceptLesson" Visibility="Collapsed">
+                <SymbolIcon Symbol="Accept"/>
+            </Button>
+            <Button x:Name="AddButton" Grid.Column="3" Margin="4" ToolTipService.ToolTip="Добавить урок" Click="AddLesson">
+                <SymbolIcon Symbol="Add"/>
+            </Button>
         </Grid>
     </StackPanel>
 </ContentDialog>

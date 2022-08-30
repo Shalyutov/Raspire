@@ -35,6 +35,7 @@ namespace Raspire
         private Settings SettingsInstance { get; set; }
         private ListView list;
         private bool shield;
+
         public Editor()
         {
             this.InitializeComponent();
@@ -101,6 +102,8 @@ namespace Raspire
             LessonCommander.Hide();
             shield = true;
             await wizard.ShowAsync();
+            if ((bool)wizard.CloseButtonCommandParameter)
+                shield = false;
         }
         private async void OpenLessonEditor(object sender, RoutedEventArgs e)
         {

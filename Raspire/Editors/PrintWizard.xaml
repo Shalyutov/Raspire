@@ -12,7 +12,7 @@
         <Button Padding="8" HorizontalAlignment="Right" Click="HideDialog">
             <SymbolIcon Symbol="Clear"/>
         </Button>
-        <TextBlock Text="Печать" FontFamily="/Assets/Jost.ttf#Jost" HorizontalAlignment="Center" FontSize="22"/>
+        <TextBlock Text="Печать" FontFamily="/Assets/Jost.ttf#Jost" Margin="16,2" FontSize="18" FontWeight="Bold"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="8">
             <TextBox x:Name="Number" PlaceholderText="Полугодие" Margin="4" FontFamily="/Assets/Jost.ttf#Jost" Width="20"/>
@@ -35,7 +35,7 @@
         <StackPanel HorizontalAlignment="Center" Margin="8">
             <StackPanel Orientation="Horizontal" Margin="4">
                 <SymbolIcon Symbol="Print" Margin="8,4"/>
-                <TextBlock Text="Печать" Margin="8,4"/>
+                <TextBlock Text="Макет печати" FontFamily="/Assets/Jost.ttf#Jost" Margin="8,4"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="4">
                 <TextBlock Text="А3 •" VerticalAlignment="Center" Margin="6"/>

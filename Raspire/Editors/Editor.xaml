@@ -66,7 +66,8 @@
             <AppBarButton Icon="Document" FontFamily="/Assets/Jost.ttf#Jost" Click="OpenDocumentProperties"/>
             <AppBarButton Icon="Save" FontFamily="/Assets/Jost.ttf#Jost" Click="SaveSchedule"/>
             <AppBarButton Icon="Print" FontFamily="/Assets/Jost.ttf#Jost" Click="OnPrintButtonClick"/>
-            <AppBarSeparator Margin="8,0"/>
+            <AppBarButton Icon="CalendarDay" IsEnabled="False"/>
+            <AppBarSeparator Margin="16,0"/>
             <AppBarElementContainer VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <ComboBox x:Name="MainSelector" PlaceholderText="Предмет" Width="150" ItemsSource="{x:Bind SettingsInstance.Subjects}" FontFamily="/Assets/Jost.ttf#Jost" SelectionChanged="MainSelectorChanged"/>
